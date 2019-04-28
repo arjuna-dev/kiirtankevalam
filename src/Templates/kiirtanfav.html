@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block kiirtantabs %}
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link active" href="../kiirtanfav/">Favorite</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="../kiirtanfeed/">Feed</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="../kiirtanall/">All</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="../kiirtanuploads/">Uploads</a>
+    </li>
+  </ul>
+{% endblock kiirtantabs %}
+
+{% block bodyblock %} 
+  {% block renderkiirtans %}
+    {% include 'renderer.html' with songlist=allKiirtan%}
+  {% endblock renderkiirtans %}
+{% endblock bodyblock %}
