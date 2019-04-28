@@ -1,0 +1,46 @@
+"""kiirtankevalam URL Configuration
+
+The `urlpatterns` list routes URLs to views. For more information please see:
+    https://docs.djangoproject.com/en/2.2/topics/http/urls/
+Examples:
+Function views
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+Class-based views
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+Including another URLconf
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+from django.contrib import admin
+from django.urls import path
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.views.generic.base import TemplateView
+
+from Pages.views import record_view, newsong_view, song_view, profile_view, main_view, kiirtanfav_view, kiirtanall_view, kiirtanuploads_view, kiirtanfeed_view, psfav_view, psall_view, psuploads_view, psfeed_view, bhajanfav_view, bhajanall_view, bhajanuploads_view, bhajanfeed_view
+
+
+
+urlpatterns = [
+    path('', main_view),
+    path('kiirtanfav/', kiirtanfav_view),
+    path('kiirtanfeed/', kiirtanfeed_view),
+    path('kiirtanall/', kiirtanall_view),
+    path('kiirtanuploads/', kiirtanuploads_view),
+    path('psfav/', psfav_view),
+    path('psfeed/', psfeed_view),
+    path('psall/', psall_view),
+    path('psuploads/', psuploads_view),
+    path('bhajanfav/', bhajanfav_view),
+    path('bhajanfeed/', bhajanfeed_view),
+    path('bhajanall/', bhajanall_view),
+    path('bhajanuploads/', bhajanuploads_view),
+    path('song/', song_view),
+    path('record/', record_view),
+    path('newsong/', newsong_view),
+    path('profile/', profile_view),
+    path('admin/', admin.site.urls),
+]
+
+urlpatterns += staticfiles_urlpatterns()

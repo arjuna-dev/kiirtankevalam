@@ -1,0 +1,80 @@
+
+.firstnav {
+    position: absolute;
+    z-index: 1000;
+    width: 100%;
+    right: 0px;
+}
+
+.choose-type{
+    text-align: center;
+}
+.choose-type div a{
+    padding: 0%;
+    margin: 1.5%;
+    text-align: center;
+    border: 1px solid orange;
+    border-radius: 7px;
+}
+
+.menu-box-containers {
+    padding: 0%;
+}
+
+.appear-on-dropdown{
+    opacity: 0;
+}
+
+.firstnav div p{
+    margin: 1%;
+}
+
+.list-group-item{
+    border-top: 0px solid rebeccapurple;
+    /* color: red; */
+}
+
+#no-songs-message{
+    margin-top: 30%;
+}
+@media only screen and (max-width: 320px) {
+    .nav-link{
+        font-size: 80%;
+    }
+  }
+@media only screen and (max-width: 280px) {
+    .nav-link{
+        font-size: 70%;
+    }
+  }
+@media only screen and (max-width: 260px) {
+    .nav-link{
+        font-size: 60%;
+    }
+  }
+
+.type-in-title {
+    font-size: small;
+    font-style: italic;
+}
+
+/* #square-container{
+    display:flex;
+    width: 100vw;
+    justify-content: center;
+}
+
+.square{
+    display:flex;
+    height: 10vh;
+    width: 10vh;
+    background-color: mediumpurple;
+    margin: 3%;
+} */
+
+/* #popper{
+    height: 5vh;
+    width: 5vh;
+    background-color: wheat;
+    border: 2px solid greenyellow;
+} */
