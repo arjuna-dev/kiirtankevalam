@@ -1,5 +1,8 @@
 {% extends 'bhajanfav.html' %}
 
+{% block youarenotloggedin %}
+{% endblock youarenotloggedin %}
+
 {% block renderbhajans %}
     {% include 'renderer.html' with songlist=allBhajan%}
 {% endblock renderbhajans %}

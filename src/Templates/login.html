@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Kiirtan Kevalam</title>
+    {% load static %}
+</head>
+<body>
+    <div class="container">
+        <div>
+            <h1>Login here :</h1>
+            <form method="post" action="{% url 'user_login' %}">
+                {% csrf_token %}
+                {{ user_form.as_p }}
+                {# A more "HTML" way of creating the login form #}
+                <label for="username">Sanskritname/ Username:</label>
+                <input type="text" name="username" placeholder="Username">
+                <label for="password">Password:</label>
+                <input type="password" name="password" placeholder="Password">
+                <input type="submit" name="" value="Login">
+            </form>
+        </div>
+    </div>
+
+    <div id="square-container">
+        <div id="sq1" class="square"></div>
+        <div id="popper"></div>
+        <div id="sq2" class="square"></div>
+        <div id="sq3" class="square"></div>
+    </div>
+
+    <script src="{% static 'vendors/js/popper.min.js' %}"></script>
+    <script src="{% static 'vendors/js/jquery-3.4.0.min.js' %}"></script>
+    <script src="{% static 'vendors/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'vendors/js/anime.min.js' %}"></script>
+    <script src="{% static 'resources/js/index.js' %}"></script>
+</body>
+</html>
+
+{# tutorial from https://medium.com/@himanshuxd/how-to-create-registration-login-webapp-with-django-2-0-fd33dc7a6c67 #}

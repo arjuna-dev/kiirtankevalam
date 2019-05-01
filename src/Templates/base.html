@@ -34,25 +34,6 @@
                         </div>
                     </div>
                 </li>
-                <!-- <li><p class="text-primary">Choose song list:</p></li>
-                <li class="nav-item active">
-                    <div class="menu-box-containers container">
-                        <div class="row no-gutters choose-type">
-                            <div class="col">
-                                <a class="nav-link active" href="#">Favorite<span class="sr-only">(current)</span></a>
-                            </div>
-                            <div class="col">
-                                <a class="nav-link" href="#">Feed<span class="sr-only">(current)</span></a>
-                            </div>
-                            <div class="col">
-                                <a class="nav-link" href="#">All<span class="sr-only">(current)</span></a>
-                            </div>
-                            <div class="col">
-                                <a class="nav-link" href="#">Uploads<span class="sr-only">(current)</span></a>
-                            </div>
-                        </div>
-                    </div>
-                </li> -->
                 <li class="nav-item">
                     <a class="nav-link" href="#">Settings</a>
                 </li>
@@ -66,11 +47,14 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Profile</a>
+                    <a class="nav-link" href="../profile/">Profile</a>
+                </li>
+                <li>
+                    
                 </li>
             </ul>
             <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search user or song" aria-label="Search">
             <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
             </form>
         </div>
@@ -89,30 +73,16 @@
     {% block bhajantabs %}
     {% endblock bhajantabs %}
 
+    {% block youarenotloggedin %}
+    {% endblock youarenotloggedin %}
 
     {% block bodyblock %} 
-    <!-- <ul class="list-group list-group-flush">
-        {% if allSongs %}
-        {% for song in allSongs %}
-        <a href="#">
-        <li class="list-group-item">
-            <h5 class="card-title">{{ song.title }}</h5>
-            <h6 class="card-subtitle mt-10 text-muted">uploaded by {% firstof song.uploader.sanskrit_name song.uploader.name "a margii"%} from {{ song.uploader.country }}</h6>
-        </li>
-        </a>
-        {% endfor %}
-        {% else %}
-            <p class="text-muted">No favourite songs yet!</p>
-        {% endif %}
-    </ul> -->
-
-    <!-- <div id="square-container">
+    <div id="square-container">
         <div id="sq1" class="square"></div>
         <div id="popper"></div>
         <div id="sq2" class="square"></div>
         <div id="sq3" class="square"></div>
-    </div> -->
-
+    </div>
     {% endblock bodyblock %}
         
 <script src="{% static 'vendors/js/popper.min.js' %}"></script>

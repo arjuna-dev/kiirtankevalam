@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     #other
     #own
     'Song',
-    'Pages',
 ]
 
 MIDDLEWARE = [
