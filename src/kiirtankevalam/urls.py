@@ -17,8 +17,9 @@ from django.contrib import admin
 from django.urls import path
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views.generic.base import TemplateView
+from django.urls import path, include
 
-from Pages.views import record_view, newsong_view, song_view, profile_view, main_view, kiirtanfav_view, kiirtanall_view, kiirtanuploads_view, kiirtanfeed_view, psfav_view, psall_view, psuploads_view, psfeed_view, bhajanfav_view, bhajanall_view, bhajanuploads_view, bhajanfeed_view
+from Song.views import record_view, newsong_view, song_view, profile_view, main_view, kiirtanfav_view, kiirtanall_view, kiirtanuploads_view, kiirtanfeed_view, psfav_view, psall_view, psuploads_view, psfeed_view, bhajanfav_view, bhajanall_view, bhajanuploads_view, bhajanfeed_view, signup, user_login
 
 
 
@@ -40,6 +41,8 @@ urlpatterns = [
     path('record/', record_view),
     path('newsong/', newsong_view),
     path('profile/', profile_view),
+    path('signup/', signup, name='signup'),
+    path('login/', user_login, name='user_login'),
     path('admin/', admin.site.urls),
 ]
 

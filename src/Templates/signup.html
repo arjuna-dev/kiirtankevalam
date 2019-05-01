@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <div class="container">
+    <div class="jumbotron">
+      {% if registered %}
+      <h1>Thank you for registering!</h1>
+      {% else %}
+      <h1>Register Here</h1>
+      <h3>Just fill out the form.</h3>
+
+      <form enctype="multipart/form-data" method="POST">
+        {% csrf_token %}
+        {{ user_form.as_p }}
+        {{ profile_form.as_p }}
+        <input type="submit" name="" value="Register">
+      </form>
+
+      {% endif %}
+    </div>
+  </div>
+  <script src="{% static 'vendors/js/popper.min.js' %}"></script>
+  <script src="{% static 'vendors/js/jquery-3.4.0.min.js' %}"></script>
+  <script src="{% static 'vendors/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'vendors/js/anime.min.js' %}"></script>
+  <script src="{% static 'resources/js/index.js' %}"></script>
+</body>
+</html>
+
+  {# tutorial from https://medium.com/@himanshuxd/how-to-create-registration-login-webapp-with-django-2-0-fd33dc7a6c67 #}

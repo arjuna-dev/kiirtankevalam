@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -12,29 +13,39 @@ class Song(models.Model):
     type           = models.CharField(max_length=30, choices=SONG_TYPES)
     capo           = models.PositiveIntegerField(blank=True, null=True)
     description    = models.TextField(blank=True)
-    uploader       = models.ForeignKey('User', null=True, on_delete=models.SET_NULL)
+    uploader       = models.ForeignKey('Profile', null=True, on_delete=models.SET_NULL)
     written_by     = models.CharField(max_length=50, blank=True)      
     song_text      = models.TextField(blank=True)
     audio_file_path = models.FilePathField(path=None, match=None, max_length=100)
     upload_date    = models.DateField(auto_now=False, auto_now_add=True)
     edit_date      = models.DateField(auto_now=True, auto_now_add=False)
 
-class User(models.Model):
-    name          = models.CharField(max_length=100)
-    last_name     = models.CharField(max_length=100)
-    sanskrit_name = models.CharField(max_length=100, blank=True, null=True)
-    email         = models.CharField(max_length=100, unique=True)
-    password      = models.CharField(max_length=25)
-    sign_up_date  = models.DateField(auto_now=False, auto_now_add=True)
-    edit_date     = models.DateField(auto_now=True, auto_now_add=False)
+class Profile(models.Model):
+    user = models.OneToOneField(User,on_delete=models.CASCADE)
+    # sanskrit_name = models.CharField(max_length=100, blank=True, null=True)
     country       = models.CharField(max_length=50)
     city          = models.CharField(max_length=50, blank=True, null=True)
-    photo         = models.FilePathField(path=None, match=None, max_length=100, null=True)
+    profile_pic = models.ImageField(upload_to='profile_pics',blank=True)
     liked_songs   = models.ManyToManyField(Song, through='IsFavourite')
+    def __str__(self):
+        return self.user.username
+
+''' class User(models.Model):
+    password      = models.CharField(max_length=25)
+    email         = models.CharField(max_length=100, unique=True)
+    first_name          = models.CharField(max_length=100)
+    last_name     = models.CharField(max_length=100)
+    sign_up_date  = models.DateField(auto_now=False, auto_now_add=True)
+    edit_date     = models.DateField(auto_now=True, auto_now_add=False)
+    sanskrit_name = models.CharField(max_length=100, blank=True, null=True)
+    country       = models.CharField(max_length=50)
+    city          = models.CharField(max_length=50, blank=True, null=True)
+    profile_photo         = models.FilePathField(path=None, match=None, max_length=100, null=True)
+    liked_songs   = models.ManyToManyField(Song, through='IsFavourite') '''
 
 class IsFavourite(models.Model):
     song         = models.ForeignKey(Song, on_delete=models.CASCADE)
-    user         = models.ForeignKey(User, on_delete=models.CASCADE)
+    profile         = models.ForeignKey(Profile, on_delete=models.CASCADE)
     is_favourite = models.BooleanField()
 
 class Chord(models.Model):

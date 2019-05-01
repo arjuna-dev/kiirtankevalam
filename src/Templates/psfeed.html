@@ -1,5 +1,8 @@
 {% extends "psfav.html" %}
 
+{% block youarenotloggedin %}
+{% endblock youarenotloggedin %}
+
 {% block renderps %}
     {% include 'renderer.html' with songlist=allPS%}
 {% endblock renderps %}

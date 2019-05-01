@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block bodyblock %}
+<div class="jumbotron">
+    <a class="text-muted" href="{% url 'logout' %}">logout</a>
+</div>
+<!-- <div class="jumbotron">
+    <button type="button" class="btn btn-primary"><a class="text-light" href="{% url 'logout' %}">logout</a></button>
+</div> -->
+{% endblock bodyblock %}

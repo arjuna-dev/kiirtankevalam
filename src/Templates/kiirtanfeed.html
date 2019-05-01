@@ -1,5 +1,8 @@
 {% extends "kiirtanfav.html" %}
 
+{% block youarenotloggedin %}
+{% endblock youarenotloggedin %}
+
 {% block renderkiirtans %}
   {% include 'renderer.html' with songlist=allKiirtan%}
 {% endblock renderkiirtans %}
