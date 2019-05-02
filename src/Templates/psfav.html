@@ -3,16 +3,16 @@
 {% block pstabs %}
 <ul class="nav nav-tabs">
     <li class="nav-item">
-      <a class="nav-link active" href="../psfav/">Favorite</a>
+      <a class="nav-link active" href="/psfav/">Favorite</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="../psfeed/">Feed</a>
+      <a class="nav-link" href="/psfeed/">Feed</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="../psall/">All</a>
+      <a class="nav-link" href="/psall/">All</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="../psuploads/">Uploads</a>
+      <a class="nav-link" href="/psuploads/">Uploads</a>
     </li>
   </ul>
 {% endblock pstabs %}
@@ -26,6 +26,6 @@
 
 {% block bodyblock %} 
   {% block renderps %}
-    {% include 'favrenderer.html' with songlist=allPS %} 
+    {% include 'favrenderer.html' with songlist=allPS  songlistlikes=psLikes%} 
   {% endblock renderps %}
 {% endblock bodyblock %}

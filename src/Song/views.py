@@ -13,6 +13,37 @@ allSongs    = Song.objects.all()
 allKiirtan  = Song.objects.filter(type='KI')
 allBhajan   = Song.objects.filter(type='BH')
 allPS       = Song.objects.filter(type='PS')
+
+favorites  = IsFavourite
+
+# print(favorites.objects.all().filter(song.type='KI'))
+# print(favorites)
+# print(favorites)
+
+# print(Profile)
+# print(Profile.objects.all())
+# print(User.country)
+
+# arjuna = Profile.objects.get(pk=16)
+# arjunalikes = arjuna.liked_songs.all().filter(type='KI')
+
+# bhuji = Profile.objects.get(pk=1)
+# bhujilikes = bhuji.liked_songs.all().filter(type='KI')
+
+# print(bhuji.sanskrit_name)
+# print(bhuji.country)
+# if bhujilikes:
+#     print(bhujilikes)
+# else:
+#     print("No likes yet for Bhuji")
+
+# print(arjuna.sanskrit_name)
+# print(arjuna.country)
+# if arjunalikes:
+#     print(arjunalikes)
+# else:
+#     print("No likes yet for Arjuna")
+
     
 # Create your views here.
 
@@ -28,7 +59,10 @@ kiirtanContext = {
     'typeintitle': 'kiirtan',
 }
 def kiirtanfav_view(request):
+    user = request.user
+    kiirtanLikes = user.profile.liked_songs.all().filter(type="KI")
     global kiirtanContext
+    kiirtanContext["kiirtanLikes"]=kiirtanLikes
     return render(request,"kiirtanfav.html",kiirtanContext)
 
 def kiirtanall_view(request):
@@ -47,26 +81,29 @@ def kiirtanuploads_view(request):
 #_-_-_-_-_-_-_-_-_-_-_-_-PS views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 #_-_-_-_-_-_-_-_-_-_-_-_-PS views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 
-pscontext = {
+psContext = {
     'allPS': allPS,
     'typeintitle': 'P.S.',
 }
 
 def psfav_view(request):
-    global pscontext
-    return render(request,"psfav.html",pscontext)
+    user = request.user
+    psLikes = user.profile.liked_songs.all().filter(type="PS")
+    global psContext
+    psContext["psLikes"]=psLikes
+    return render(request,"psfav.html",psContext)
 
 def psall_view(request):
-    global pscontext
-    return render(request,"psall.html",pscontext)
+    global psContext
+    return render(request,"psall.html",psContext)
 
 def psfeed_view(request):
-    global pscontext
-    return render(request,"psfeed.html",pscontext)
+    global psContext
+    return render(request,"psfeed.html",psContext)
 
 def psuploads_view(request):
-    global pscontext
-    return render(request,"psuploads.html",pscontext)
+    global psContext
+    return render(request,"psuploads.html",psContext)
 
 #_-_-_-_-_-_-_-_-_-_-_-_-Bhajan views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 #_-_-_-_-_-_-_-_-_-_-_-_-Bhajan views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
@@ -78,6 +115,10 @@ bhajancontext = {
 }
 
 def bhajanfav_view(request):
+    user = request.user
+    bhajanLikes = user.profile.liked_songs.all().filter(type="BH")
+    global bhajancontext
+    kiirtanContext["bhajanLikes"]=bhajanLikes
     return render(request,"bhajanfav.html",bhajancontext)
 
 def bhajanall_view(request):

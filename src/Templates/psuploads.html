@@ -1,5 +1,22 @@
 {% extends "psfav.html" %}
 
+{% block pstabs %}
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link" href="/psfav/">Favorite</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/psfeed/">Feed</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/psall/">All</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" href="/psuploads/">Uploads</a>
+    </li>
+  </ul>
+{% endblock pstabs %}
+
 {% block youarenotloggedin %}
 {% endblock youarenotloggedin %}
 

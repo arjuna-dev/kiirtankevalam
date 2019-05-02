@@ -1,8 +1,11 @@
 $(document).ready(function(){
 
+
+//Change Username label from Django backend form to Email*
 let usernameText = $("#div_id_username .col-form-label")
 usernameText.text('Email*')
 
+//Animate dropdown menu
 let x = true
 $(".dropdown-animator, .drpdwn-item").click(function(){
     if (x==true){

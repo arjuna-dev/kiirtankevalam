@@ -63,24 +63,12 @@
     display: none;
 }
 
-
-/* #square-container{
-    display:flex;
-    width: 100vw;
-    justify-content: center;
+.songlist-element{
+    display: inline;
+    background-color: red;
 }
 
-.square{
-    display:flex;
-    height: 10vh;
-    width: 10vh;
-    background-color: mediumpurple;
-    margin: 3%;
-} 
-
-#popper{
-    height: 5vh;
-    width: 5vh;
-    background-color: wheat;
-    border: 2px solid greenyellow;
-} */
+#grey-pratik{
+    width:2rem;
+    float: right;
+}
