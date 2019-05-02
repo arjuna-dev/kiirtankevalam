@@ -1,10 +1,6 @@
 from django.shortcuts import render
-from Song.models import Song
-from Song.models import Profile
-from Song.models import IsFavourite
-from Song.models import Chord
-from Song.models import ChordProgression
-from Song.forms import UserForm,UserProfileInfoForm
+from Song.models import Song, Profile, IsFavourite, Chord, ChordProgression
+from Song.forms import UserForm, UserProfileInfoForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, HttpResponseRedirect
@@ -12,12 +8,12 @@ from django.urls import reverse
 # import json
 # from django.core import serializers
 
-allSongs = Song.objects.all()
+allSongs    = Song.objects.all()
 
-allKiirtan = Song.objects.filter(type='KI')
-allBhajan = Song.objects.filter(type='BH')
-allPS = Song.objects.filter(type='PS')
-
+allKiirtan  = Song.objects.filter(type='KI')
+allBhajan   = Song.objects.filter(type='BH')
+allPS       = Song.objects.filter(type='PS')
+    
 # Create your views here.
 
 def main_view(request):
@@ -27,109 +23,81 @@ def main_view(request):
 #_-_-_-_-_-_-_-_-_-_-_-_-Kiirtan views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 #_-_-_-_-_-_-_-_-_-_-_-_-Kiirtan views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 
+kiirtanContext = {
+    'allKiirtan': allKiirtan,
+    'typeintitle': 'kiirtan',
+}
 def kiirtanfav_view(request):
-    context = {
-        'allKiirtan': allKiirtan,
-        'typeintitle': 'kiirtan',
-        'rendererview': renderer_view,
-    }
-    return render(request,"kiirtanfav.html",context)
+    global kiirtanContext
+    return render(request,"kiirtanfav.html",kiirtanContext)
 
 def kiirtanall_view(request):
-    context = {
-        'allKiirtan': allKiirtan,
-        'typeintitle': 'kiirtan',
-    }
-    return render(request,"kiirtanall.html",context)
+    global kiirtanContext
+    return render(request,"kiirtanall.html",kiirtanContext)
 
 def kiirtanfeed_view(request):
-    context = {
-        'allKiirtan': allKiirtan,
-        'typeintitle': 'kiirtan',
-        'allPS': allPS,
-    }
-    return render(request,"kiirtanfeed.html",context)
+    global kiirtanContext
+    return render(request,"kiirtanfeed.html",kiirtanContext)
 
 def kiirtanuploads_view(request):
-    context = {
-        'allKiirtan': allKiirtan,
-        'typeintitle': 'kiirtan',
-    }
-    return render(request,"kiirtanuploads.html",context)
+    global kiirtanContext
+    return render(request,"kiirtanuploads.html",kiirtanContext)
 
 #_-_-_-_-_-_-_-_-_-_-_-_-PS views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 #_-_-_-_-_-_-_-_-_-_-_-_-PS views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 #_-_-_-_-_-_-_-_-_-_-_-_-PS views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
+
+pscontext = {
+    'allPS': allPS,
+    'typeintitle': 'P.S.',
+}
 
 def psfav_view(request):
-    context = {
-        'allPS': allPS,
-        'typeintitle': 'ps',
-    }
-    return render(request,"psfav.html",context)
+    global pscontext
+    return render(request,"psfav.html",pscontext)
 
 def psall_view(request):
-    context = {
-        'allPS': allPS,
-        'typeintitle': 'ps',
-    }
-    return render(request,"psall.html",context)
+    global pscontext
+    return render(request,"psall.html",pscontext)
 
 def psfeed_view(request):
-    context = {
-        'allPS': allPS,
-        'typeintitle': 'ps',
-    }
-    return render(request,"psfeed.html",context)
+    global pscontext
+    return render(request,"psfeed.html",pscontext)
 
 def psuploads_view(request):
-    context = {
-        'allPS': allPS,
-        'typeintitle': 'ps',
-    }
-    return render(request,"psuploads.html",context)
+    global pscontext
+    return render(request,"psuploads.html",pscontext)
 
 #_-_-_-_-_-_-_-_-_-_-_-_-Bhajan views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 #_-_-_-_-_-_-_-_-_-_-_-_-Bhajan views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 #_-_-_-_-_-_-_-_-_-_-_-_-Bhajan views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
+
+bhajancontext = {
+    'allBhajan': allBhajan,
+    'typeintitle': 'bhajan',
+}
 
 def bhajanfav_view(request):
-    context = {
-        'allBhajan': allBhajan,
-        'typeintitle': 'bhajan',
-    }
-    return render(request,"bhajanfav.html",context)
+    return render(request,"bhajanfav.html",bhajancontext)
 
 def bhajanall_view(request):
-    context = {
-        'allBhajan': allBhajan,
-        'typeintitle': 'bhajan',
-    }
-    return render(request,"bhajanall.html",context)
+    global bhajancontext
+    return render(request,"bhajanall.html",bhajancontext)
 
 def bhajanfeed_view(request):
-    context = {
-        'allBhajan': allBhajan,
-        'typeintitle': 'bhajan',
-    }
-    return render(request,"bhajanfeed.html",context)
+    global bhajancontext
+    return render(request,"bhajanfeed.html",bhajancontext)
 
 def bhajanuploads_view(request):
-    context = {
-        'allBhajan': allBhajan,
-        'typeintitle': 'bhajan',
-    }
-    return render(request,"bhajanuploads.html",context)
+    global bhajancontext
+    return render(request,"bhajanuploads.html",bhajancontext)
 
 #_-_-_-_-_-_-_-_-_-_-_-_-Other views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 #_-_-_-_-_-_-_-_-_-_-_-_-Other views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 #_-_-_-_-_-_-_-_-_-_-_-_-Other views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 
 def renderer_view(request):
-    context:{
-        
-    }
-    return render(request,"renderer.html",context)
+    return render(request,"renderer.html",{})
 
 def song_view(request):
     return render(request,"song.html",{})
@@ -172,6 +140,12 @@ def signup(request):
                 profile.profile_pic = request.FILES['profile_pic']
             profile.save()
             registered = True
+            user = authenticate(
+                username=user_form.cleaned_data['username'], 
+                password=user_form.cleaned_data['password'],
+            )
+            login(request, user)
+            return HttpResponseRedirect("/kiirtanfav/")
         else:
             print(user_form.errors,profile_form.errors)
     else:
@@ -190,7 +164,7 @@ def user_login(request):
         if user:
             if user.is_active:
                 login(request,user)
-                return HttpResponseRedirect(reverse('index'))
+                return HttpResponseRedirect(reverse(kiirtanfav_view))
             else:
                 return HttpResponse("Your account was inactive.")
         else:

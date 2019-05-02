@@ -1,6 +1,24 @@
-<h2>Login</h2>
-<form method="post">
-{% csrf_token %}
-{{ form.as_p }}
-<button type="submit">Login</button>
-</form>
+{% extends 'base.html' %}
+
+{% block bodyblock %}
+{% load crispy_forms_tags %}
+<div class="jumbotron">
+
+    {% if registered %}
+    <h1>You are already registered :)</h1>
+    {% else %}
+
+    <h2>Login</h2>
+
+    <form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button class="btn btn-primary" type="submit">Login</button>
+    </form>
+<br>
+    <p>Or sign up:</p>
+    <a href="/signup/"><button class="btn btn-secondary">Signup</button></a> 
+
+    {% endif %}
+</div>
+{% endblock bodyblock %}

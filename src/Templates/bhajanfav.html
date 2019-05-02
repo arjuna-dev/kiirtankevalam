@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block bhajantabs %}
-<ul class="nav nav-tabs">
+  <ul class="nav nav-tabs">
     <li class="nav-item">
       <a class="nav-link active" href="../bhajanfav/">Favorite</a>
     </li>
@@ -20,15 +20,12 @@
 {% block youarenotloggedin %}
   {% if user.is_authenticated %}
   {% else %}
-    <div class="jumbotron">
-      <p><a href="{% url 'login' %}">Login </a>to see your favorites </p>
-    </div>
-    
+    {% include 'loginbutton.html' %}
   {% endif %}  
 {% endblock youarenotloggedin %}
 
 {% block bodyblock %}
   {% block renderbhajans %}
-    {% include 'renderer.html' with songlist=allBhajan%}
+   {% include 'favrenderer.html' with songlist=allBhajan %}
   {% endblock renderbhajans %}
 {% endblock bodyblock %}

@@ -1,0 +1,21 @@
+{% with user.profile.liked_songs.all as favorite_songs %}
+    {% for song in songlist %}
+        {% if song in favorite_songs %}
+        <a href="#">
+            <li class="list-group-item">
+                <h5 class="card-title">{{ song.title }}</h5>
+                <h6 class="card-subtitle mt-10 text-muted">Uploaded by {% firstof song.uploader.sanskrit_name song.uploader.name "a margii"%} from {{ song.uploader.country }}</h6>
+            </li>
+        </a>
+        {% endif %}
+    {% endfor %}
+    
+    {% comment %}
+    <div id="no-songs-message" class="jumbotron">
+        <p class="lead">No favourite {{ typeintitle }} yet!</p>
+        <hr class="my-4">
+        <p>Check out the "Feed" or "All" tabs to see songs to add to this list.</p>
+    </div>
+    {% endcomment %}
+        
+{% endwith %}
