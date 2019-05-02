@@ -34,9 +34,6 @@
     /* color: red; */
 }
 
-#no-songs-message{
-    margin-top: 30%;
-}
 @media only screen and (max-width: 320px) {
     .nav-link{
         font-size: 80%;
@@ -56,6 +53,14 @@
 .type-in-title {
     font-size: small;
     font-style: italic;
+}
+
+.navbarbuttons{
+    display: inline-block;
+}
+
+#hint_id_username{
+    display: none;
 }
 
 

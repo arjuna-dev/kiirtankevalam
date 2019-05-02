@@ -11,47 +11,55 @@
     <link rel="stylesheet" href="{% static 'resources/css/custom.css' %}">
 </head>
 <body>
-    <nav class="firstnav navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="firstnav navbar navbar-expand-xs navbar-dark bg-dark">
         <a class="navbar-brand" href="#">Kiirtan Kevalam <span class="text-muted type-in-title">{{ typeintitle }}</span></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
+                {% if user.is_authenticated %}
+                    <li><p class="text-muted">Hello {{ user.profile.sanskrit_name }}!</p></li>
+                {% endif %}
                 <li><p class="text-primary">Choose song type:</p></li>
                 <li class="nav-item">
                     <div class="menu-box-containers container">
                         <div class="row no-gutters choose-type">
                             <div class="col">
-                                <a class="nav-link active" href="../kiirtanfav/">Kiirtan<span class="sr-only">(current)</span></a>
+                                <a class="nav-link active" href="/kiirtanfav/">Kiirtan<span class="sr-only">(current)</span></a>
                             </div>
                             <div class="col">
-                                <a class="nav-link" href="../psfav/">P.S.<span class="sr-only">(current)</span></a>
+                                <a class="nav-link" href="/psfav/">P.S.<span class="sr-only">(current)</span></a>
                             </div>
                             <div class="col">
-                                <a class="nav-link" href="../bhajanfav/">Bhajan<span class="sr-only">(current)</span></a>
+                                <a class="nav-link" href="/bhajanfav/">Bhajan<span class="sr-only">(current)</span></a>
                             </div>
                         </div>
                     </div>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Settings</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle dropdown-animator" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Upload New Song
-                    </a>
-                    <div class="dropdown-menu appear-on-dropdown" aria-labelledby="navbarDropdown">
-                    <a class="drpdwn-item dropdown-item" href="#">Record Song</a>
-                    <a class="drpdwn-item dropdown-item" href="#">Upload from file</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="../profile/">Profile</a>
-                </li>
-                <li>
-                    
-                </li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Settings</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle dropdown-animator" href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Upload New Song
+                        </a>
+                        <div class="dropdown-menu appear-on-dropdown" aria-labelledby="navbarDropdown">
+                            <a class="drpdwn-item dropdown-item" href="#">Record Song</a>
+                            <a class="drpdwn-item dropdown-item" href="#">Upload from file</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/profile/">Profile</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                            <a href="/accounts/login/" class="nav-link navbarbuttons"><button class="btn">Login</button></a>
+                            <a href="/signup/" class="nav-link navbarbuttons"><button class="btn">Signup</button></a>
+                    </li>
+                {% endif %} 
             </ul>
             <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="Search user or song" aria-label="Search">
@@ -77,12 +85,6 @@
     {% endblock youarenotloggedin %}
 
     {% block bodyblock %} 
-    <div id="square-container">
-        <div id="sq1" class="square"></div>
-        <div id="popper"></div>
-        <div id="sq2" class="square"></div>
-        <div id="sq3" class="square"></div>
-    </div>
     {% endblock bodyblock %}
         
 <script src="{% static 'vendors/js/popper.min.js' %}"></script>

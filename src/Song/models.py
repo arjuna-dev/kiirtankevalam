@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django_countries.fields import CountryField
 
 # Create your models here.
 
@@ -21,9 +22,9 @@ class Song(models.Model):
     edit_date      = models.DateField(auto_now=True, auto_now_add=False)
 
 class Profile(models.Model):
-    user = models.OneToOneField(User,on_delete=models.CASCADE)
-    # sanskrit_name = models.CharField(max_length=100, blank=True, null=True)
-    country       = models.CharField(max_length=50)
+    user          = models.OneToOneField(User,on_delete=models.CASCADE)
+    sanskrit_name = models.CharField(max_length=100)
+    country       = CountryField(max_length=50)
     city          = models.CharField(max_length=50, blank=True, null=True)
     profile_pic = models.ImageField(upload_to='profile_pics',blank=True)
     liked_songs   = models.ManyToManyField(Song, through='IsFavourite')

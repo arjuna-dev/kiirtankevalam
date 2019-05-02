@@ -44,6 +44,7 @@ urlpatterns = [
     path('signup/', signup, name='signup'),
     path('login/', user_login, name='user_login'),
     path('admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

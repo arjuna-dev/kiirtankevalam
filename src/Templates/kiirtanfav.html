@@ -20,14 +20,12 @@
 {% block youarenotloggedin %}
   {% if user.is_authenticated %}
   {% else %}
-    <div class="jumbotron">
-      <p><a href="{% url 'login' %}">Login </a>to see your favorites </p>
-    </div>
+    {% include 'loginbutton.html' %}
   {% endif %}  
 {% endblock youarenotloggedin %}
 
 {% block bodyblock %} 
   {% block renderkiirtans %}
-    {% include 'renderer.html' with songlist=allKiirtan%}
+    {% include 'favrenderer.html' with songlist=allKiirtan %}
   {% endblock renderkiirtans %}
 {% endblock bodyblock %}
