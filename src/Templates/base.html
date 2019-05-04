@@ -26,7 +26,7 @@
                     <div class="menu-box-containers container">
                         <div class="row no-gutters choose-type">
                             <div class="col">
-                                <a class="nav-link active" href="/kiirtanfav/">Kiirtan<span class="sr-only">(current)</span></a>
+                                <a class="nav-link" href="/kiirtanfav/">Kiirtan<span class="sr-only">(current)</span></a>
                             </div>
                             <div class="col">
                                 <a class="nav-link" href="/psfav/">P.S.<span class="sr-only">(current)</span></a>
@@ -72,6 +72,7 @@
     </nav>
 
 
+
     {% block kiirtantabs %}
     {% endblock kiirtantabs %}
 
@@ -85,6 +86,10 @@
     {% endblock youarenotloggedin %}
 
     {% block bodyblock %} 
+    <form action="{% url 'test-view' %}" method="POST">
+            {% csrf_token %}
+        <button class="btn" type="submit" name="button-name" value="Smthn">Submit</button>
+    </form>
     {% endblock bodyblock %}
         
 <script src="{% static 'vendors/js/popper.min.js' %}"></script>

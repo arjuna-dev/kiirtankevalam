@@ -3,7 +3,7 @@
 
 {% block bodyblock %}
 {% load crispy_forms_tags %}
-<div class="jumbotron aform">
+<div class="jumbotron">
     {% if registered %}
     <h1>You are already registered :)</h1>
     {% else %}
@@ -12,14 +12,6 @@
       {% csrf_token %}
       {# {{ user_form }} #}
       {{ user_form|crispy }}
-      
-      {% comment %}
-      <p><label for="username">Email:</label>
-      <input type="text" name="username" placeholder="email"></p>
-      <p><label for="password">Password:</label>
-      <input type="password" name="password" placeholder="Password"></p>
-      {% endcomment %}
-      
       {{ profile_form|crispy}}
       <input class="btn btn-primary" type="submit" name="" value="Register">
     </form>
