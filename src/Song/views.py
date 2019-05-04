@@ -28,31 +28,13 @@ def main_view(request):
 def addsong_view(request, id):
     user = request.user
     song = Song.objects.get(pk=id)
-
-    if song in user.profile.liked_songs.all():
-        print("Song not yet in favorites, will add it now.")
-        print("Song not yet in favorites, will add it now.")
-        print("Song not yet in favorites, will add it now.")
-
     previousPage = request.META.get('HTTP_REFERER')
-    print("Previous page is:", previousPage)
-    print("Previous page is:", previousPage)
-    print("Previous page is:", previousPage)
     user.profile.liked_songs.add(song)
     return HttpResponseRedirect(previousPage)
 
 def deletesong_view(request, id):
     user = request.user
     song = Song.objects.get(pk=id)
-    if song in user.profile.liked_songs.all():
-        print("Song already in favorites, will delete it now.")
-        print("Song already in favorites, will delete it now.")
-        print("Song already in favorites, will delete it now.")
-
-    previousPage = request.META.get('HTTP_REFERER')
-    print("Previous page is:", previousPage)
-    print("Previous page is:", previousPage)
-    print("Previous page is:", previousPage)
     user.profile.liked_songs.remove(song)
     return HttpResponseRedirect(previousPage)
 

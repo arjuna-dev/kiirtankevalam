@@ -4,11 +4,11 @@
         <h5 class="card-title"> <a href="#">{{ song.title }}</a>
             {% if song not in user.profile.liked_songs.all %}
                 <a href="{% url 'add-song-view' id=song.pk %}">
-                    <img id="grey-pratik" src="{% static 'resources/img/pratik.png' %}" alt="">
+                    <img class="pratik" src="{% static 'resources/img/pratik.png' %}" alt="">
                 </a>
             {% else %}
                 <a href="{% url 'delete-song-view' id=song.pk %}">
-                    <img id="grey-pratik" src="{% static 'resources/img/pratik.png' %}" alt="">
+                    <img class="pratik-selected" src="{% static 'resources/img/pratik-selected.png' %}" alt="">
                 </a>
             {% endif %}
         </h5>

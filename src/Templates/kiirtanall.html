@@ -1,5 +1,22 @@
 {% extends "kiirtanfav.html" %}
 
+{% block kiirtantabs %}
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link" href="/kiirtanfav/">Favorite</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/kiirtanfeed/">Feed</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" href="/kiirtanall/">All</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/kiirtanuploads/">Uploads</a>
+    </li>
+  </ul>
+{% endblock kiirtantabs %}
+
 {% block youarenotloggedin %}
 {% endblock youarenotloggedin %}
 
