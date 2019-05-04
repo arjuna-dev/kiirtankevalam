@@ -35,8 +35,11 @@ def addsong_view(request, id):
         print("Song not yet in favorites, will add it now.")
 
     previousPage = request.META.get('HTTP_REFERER')
+    print("Previous page is:", previousPage)
+    print("Previous page is:", previousPage)
+    print("Previous page is:", previousPage)
     user.profile.liked_songs.add(song)
-    return HttpResponseRedirect(reverse(bhajanall_view))
+    return HttpResponseRedirect(previousPage)
 
 def deletesong_view(request, id):
     user = request.user
@@ -47,8 +50,11 @@ def deletesong_view(request, id):
         print("Song already in favorites, will delete it now.")
 
     previousPage = request.META.get('HTTP_REFERER')
+    print("Previous page is:", previousPage)
+    print("Previous page is:", previousPage)
+    print("Previous page is:", previousPage)
     user.profile.liked_songs.remove(song)
-    return HttpResponseRedirect(reverse(bhajanall_view))
+    return HttpResponseRedirect(previousPage)
 
 #_-_-_-_-_-_-_-_-_-_-_-_-Kiirtan views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 #_-_-_-_-_-_-_-_-_-_-_-_-Kiirtan views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
