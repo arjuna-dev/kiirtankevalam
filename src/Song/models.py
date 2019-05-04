@@ -27,7 +27,7 @@ class Profile(models.Model):
     country       = CountryField(max_length=50)
     city          = models.CharField(max_length=50, blank=True, null=True)
     profile_pic = models.ImageField(upload_to='profile_pics',blank=True)
-    liked_songs   = models.ManyToManyField(Song, related_name="liked_songs", through='IsFavourite', null=True)
+    liked_songs   = models.ManyToManyField(Song, related_name="liked_songs", through='IsFavourite')
     def __str__(self):
         return self.user.username
 
