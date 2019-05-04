@@ -14,42 +14,24 @@ allKiirtan  = Song.objects.filter(type='KI')
 allBhajan   = Song.objects.filter(type='BH')
 allPS       = Song.objects.filter(type='PS')
 
-favorites  = IsFavourite
+blueKiirtan = Song.objects.get(pk=1)
+print(blueKiirtan.title)
+print(blueKiirtan.title)
+print(blueKiirtan.title)
 
-# print(favorites.objects.all().filter(song.type='KI'))
-# print(favorites)
-# print(favorites)
-
-# print(Profile)
-# print(Profile.objects.all())
-# print(User.country)
-
-# arjuna = Profile.objects.get(pk=16)
-# arjunalikes = arjuna.liked_songs.all().filter(type='KI')
-
-# bhuji = Profile.objects.get(pk=1)
-# bhujilikes = bhuji.liked_songs.all().filter(type='KI')
-
-# print(bhuji.sanskrit_name)
-# print(bhuji.country)
-# if bhujilikes:
-#     print(bhujilikes)
-# else:
-#     print("No likes yet for Bhuji")
-
-# print(arjuna.sanskrit_name)
-# print(arjuna.country)
-# if arjunalikes:
-#     print(arjunalikes)
-# else:
-#     print("No likes yet for Arjuna")
-
-    
 # Create your views here.
 
 def main_view(request):
     return render(request,"base.html",{})
-    
+
+def test_view(request):
+    user = request.user
+    print('fired test_view function')
+    print('fired test_view function')
+    print('fired test_view function')
+    user.profile.liked_songs.add(blueKiirtan)
+    return HttpResponseRedirect(reverse(main_view))
+
 #_-_-_-_-_-_-_-_-_-_-_-_-Kiirtan views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 #_-_-_-_-_-_-_-_-_-_-_-_-Kiirtan views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 #_-_-_-_-_-_-_-_-_-_-_-_-Kiirtan views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
@@ -214,3 +196,4 @@ def user_login(request):
             return HttpResponse("Invalid login details given")
     else:
         return render(request, 'login.html', {})
+

@@ -27,7 +27,7 @@ class Profile(models.Model):
     country       = CountryField(max_length=50)
     city          = models.CharField(max_length=50, blank=True, null=True)
     profile_pic = models.ImageField(upload_to='profile_pics',blank=True)
-    liked_songs   = models.ManyToManyField(Song, through='IsFavourite')
+    liked_songs   = models.ManyToManyField(Song, related_name="liked_songs", through='IsFavourite', null=True)
     def __str__(self):
         return self.user.username
 
@@ -47,7 +47,7 @@ class Profile(models.Model):
 class IsFavourite(models.Model):
     song         = models.ForeignKey(Song, on_delete=models.CASCADE)
     profile       = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    is_favourite = models.BooleanField()
+    is_favourite = models.BooleanField(null=True)
 
 class Chord(models.Model):
     name            = models.CharField(max_length=100)

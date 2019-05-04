@@ -1,0 +1,10 @@
+{% load static %}
+<div class="songlist-element">
+    <li class="list-group-item">
+        <h5 class="card-title"> <a href="#">{{ song.title }}</a>
+            <img id="grey-pratik" src="{% static 'resources/img/pratik.png' %}" alt="">
+        </h5>
+        <h6 class="card-subtitle mt-10 text-muted">Uploaded by
+            {% firstof song.uploader.sanskrit_name song.uploader.name "a margii"%} from {{ song.uploader.country }}</h6>
+    </li>
+</div>
