@@ -86,10 +86,6 @@
     {% endblock youarenotloggedin %}
 
     {% block bodyblock %} 
-    <form action="{% url 'test-view' %}" method="POST">
-            {% csrf_token %}
-        <button class="btn" type="submit" name="button-name" value="Smthn">Submit</button>
-    </form>
     {% endblock bodyblock %}
         
 <script src="{% static 'vendors/js/popper.min.js' %}"></script>

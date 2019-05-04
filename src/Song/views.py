@@ -12,25 +12,43 @@ allSongs    = Song.objects.all()
 
 allKiirtan  = Song.objects.filter(type='KI')
 allBhajan   = Song.objects.filter(type='BH')
-allPS       = Song.objects.filter(type='PS')
+allPs       = Song.objects.filter(type='PS')
 
 blueKiirtan = Song.objects.get(pk=1)
 print(blueKiirtan.title)
 print(blueKiirtan.title)
 print(blueKiirtan.title)
 
+
 # Create your views here.
 
 def main_view(request):
     return render(request,"base.html",{})
 
-def test_view(request):
+def addsong_view(request, id):
     user = request.user
-    print('fired test_view function')
-    print('fired test_view function')
-    print('fired test_view function')
-    user.profile.liked_songs.add(blueKiirtan)
-    return HttpResponseRedirect(reverse(main_view))
+    song = Song.objects.get(pk=id)
+
+    if song in user.profile.liked_songs.all():
+        print("Song not yet in favorites, will add it now.")
+        print("Song not yet in favorites, will add it now.")
+        print("Song not yet in favorites, will add it now.")
+
+    previousPage = request.META.get('HTTP_REFERER')
+    user.profile.liked_songs.add(song)
+    return HttpResponseRedirect(reverse(bhajanall_view))
+
+def deletesong_view(request, id):
+    user = request.user
+    song = Song.objects.get(pk=id)
+    if song in user.profile.liked_songs.all():
+        print("Song already in favorites, will delete it now.")
+        print("Song already in favorites, will delete it now.")
+        print("Song already in favorites, will delete it now.")
+
+    previousPage = request.META.get('HTTP_REFERER')
+    user.profile.liked_songs.remove(song)
+    return HttpResponseRedirect(reverse(bhajanall_view))
 
 #_-_-_-_-_-_-_-_-_-_-_-_-Kiirtan views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 #_-_-_-_-_-_-_-_-_-_-_-_-Kiirtan views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
@@ -64,7 +82,7 @@ def kiirtanuploads_view(request):
 #_-_-_-_-_-_-_-_-_-_-_-_-PS views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 
 psContext = {
-    'allPS': allPS,
+    'allPs': allPs,
     'typeintitle': 'P.S.',
 }
 
@@ -100,7 +118,7 @@ def bhajanfav_view(request):
     user = request.user
     bhajanLikes = user.profile.liked_songs.all().filter(type="BH")
     global bhajancontext
-    kiirtanContext["bhajanLikes"]=bhajanLikes
+    bhajancontext["bhajanLikes"]=bhajanLikes
     return render(request,"bhajanfav.html",bhajancontext)
 
 def bhajanall_view(request):

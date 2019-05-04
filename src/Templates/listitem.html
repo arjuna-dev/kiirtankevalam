@@ -2,7 +2,15 @@
 <div class="songlist-element">
     <li class="list-group-item">
         <h5 class="card-title"> <a href="#">{{ song.title }}</a>
-            <img id="grey-pratik" src="{% static 'resources/img/pratik.png' %}" alt="">
+            {% if song not in user.profile.liked_songs.all %}
+                <a href="{% url 'add-song-view' id=song.pk %}">
+                    <img id="grey-pratik" src="{% static 'resources/img/pratik.png' %}" alt="">
+                </a>
+            {% else %}
+                <a href="{% url 'delete-song-view' id=song.pk %}">
+                    <img id="grey-pratik" src="{% static 'resources/img/pratik.png' %}" alt="">
+                </a>
+            {% endif %}
         </h5>
         <h6 class="card-subtitle mt-10 text-muted">Uploaded by
             {% firstof song.uploader.sanskrit_name song.uploader.name "a margii"%} from {{ song.uploader.country }}</h6>
