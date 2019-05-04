@@ -35,6 +35,7 @@ def addsong_view(request, id):
 def deletesong_view(request, id):
     user = request.user
     song = Song.objects.get(pk=id)
+    previousPage = request.META.get('HTTP_REFERER')
     user.profile.liked_songs.remove(song)
     return HttpResponseRedirect(previousPage)
 
