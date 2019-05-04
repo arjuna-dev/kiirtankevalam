@@ -14,10 +14,10 @@ allKiirtan  = Song.objects.filter(type='KI')
 allBhajan   = Song.objects.filter(type='BH')
 allPs       = Song.objects.filter(type='PS')
 
-blueKiirtan = Song.objects.get(pk=1)
-print(blueKiirtan.title)
-print(blueKiirtan.title)
-print(blueKiirtan.title)
+# blueKiirtan = Song.objects.get(pk=1)
+# print(blueKiirtan.title)
+# print(blueKiirtan.title)
+# print(blueKiirtan.title)
 
 
 # Create your views here.
