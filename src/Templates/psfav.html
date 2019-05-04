@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block pstabs %}
-<ul class="nav nav-tabs">
+  <ul class="nav nav-tabs">
     <li class="nav-item">
       <a class="nav-link active" href="/psfav/">Favorite</a>
     </li>
@@ -26,6 +26,6 @@
 
 {% block bodyblock %} 
   {% block renderps %}
-    {% include 'favrenderer.html' with songlist=allPS  songlistlikes=psLikes%} 
+    {% include 'favrenderer.html' with songlist=allPs  songlistlikes=psLikes%} 
   {% endblock renderps %}
 {% endblock bodyblock %}
