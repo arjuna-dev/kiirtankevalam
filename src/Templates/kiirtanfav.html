@@ -3,20 +3,19 @@
 {% block kiirtantabs %}
   <ul class="nav nav-tabs">
     <li class="nav-item">
-      <a class="nav-link active" href="#kiirtanfav" data-toggle="tab">Favorite</a>
+      <a class="nav-link active" href="/kiirtanfav/">Favorite</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#kiirtanfeed" data-toggle="tab">Feed</a>
+      <a class="nav-link" href="/kiirtanfeed/">Feed</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#kiirtanall" data-toggle="tab">All</a>
+      <a class="nav-link" href="/kiirtanall/">All</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#kiirtanuploads" data-toggle="tab">Uploads</a>
+      <a class="nav-link" href="/kiirtanuploads/">Uploads</a>
     </li>
   </ul>
 {% endblock kiirtantabs %}
-
 
 {% block youarenotloggedin %}
   {% if user.is_authenticated %}
@@ -27,20 +26,6 @@
 
 {% block bodyblock %} 
   {% block renderkiirtans %}
-    <div class="tab-content" id="myTabContent">
-      <div class="tab-pane fade show active" id="kiirtanfav" role="tabpanel" aria-labelledby="home-tab">
-          {% include 'favrenderer.html' with songlist=allKiirtan songlistlikes=kiirtanLikes%}
-      </div>
-      <div class="tab-pane fade" id="kiirtanfeed" role="tabpanel" aria-labelledby="profile-tab">
-          {% include 'renderer.html' with songlist=allKiirtan %}
-      </div>
-      <div class="tab-pane fade" id="kiirtanall" role="tabpanel" aria-labelledby="contact-tab">
-        {% include 'renderer.html' with songlist=allKiirtan %}
-      </div>
-      <div class="tab-pane fade" id="kiirtanuploads" role="tabpanel" aria-labelledby="contact-tab">
-          {% include 'renderer.html' with songlist=allKiirtan %}
-      </div>
-    </div>
-    
+    {% include 'favrenderer.html' with songlist=allKiirtan  songlistlikes=kiirtanLikes %}
   {% endblock renderkiirtans %}
 {% endblock bodyblock %}

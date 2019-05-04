@@ -68,7 +68,7 @@
     background-color: red;
 }
 
-#grey-pratik{
+.pratik, .pratik-selected{
     width:2rem;
     float: right;
 }
