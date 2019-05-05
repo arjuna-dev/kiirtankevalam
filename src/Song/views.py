@@ -38,8 +38,14 @@ def createsong_view(request):
                                 })
 
 def editchords_view(request):
+    user                    = request.user.profile
+    songsByUser             = Song.objects.filter(uploader=user)
+    lastSongByUser          = songsByUser.last()
+    songChords              = ChordIndex.objects.filter(song=lastSongByUser)
+
     context = {
         'allChords': allChords,
+        'songChords': songChords,
     }
     return render(request, 'editchords.html', context)
 # Create your views here.
@@ -73,18 +79,13 @@ def addchord_view(request, idChord):
     lastSongByUser          = songsByUser.latest('pk')
     previousPage            = request.META.get('HTTP_REFERER')
     filterUserLastSong       = ChordIndex.objects.filter(song=lastSongByUser)
-    print('filterUserLastSong', filterUserLastSong)
     if filterUserLastSong:
         lastObjectAdded     = filterUserLastSong.last()
-        print('lastObjectAdded', lastObjectAdded)
         indexOfLastAdded    = lastObjectAdded.index
-        print('indexOfLastAdded', indexOfLastAdded)
         lastSongByUser.chords.add(chord)
         thisObjectAdded         = filterUserLastSong.last()
-        print('thisObjectAdded', thisObjectAdded)
         thisObjectAdded.index   = indexOfLastAdded + 1
         thisObjectAdded.save()
-        print('thisObjectAdded.index', thisObjectAdded.index)
         return HttpResponseRedirect(previousPage)
     else:
         lastSongByUser.chords.add(chord)

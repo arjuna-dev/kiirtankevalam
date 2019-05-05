@@ -1,7 +1,23 @@
 {% extends "base.html" %}
 
 {% block bodyblock %}
-    {% for chord in allChords  %}
-        <button class="btn"><a href="{% url 'add-chord-view' idChord=chord.pk %}">{{ chord.acronym }}</a></button>
-    {% endfor %}
+    <div class="jumbotron">
+        {% for chord in allChords  %}
+            <button class="btn"><a href="{% url 'add-chord-view' idChord=chord.pk %}">{{ chord.acronym }}</a></button>
+        {% endfor %}
+    </div>
+    {% if songChords %}
+    <div class="jumbotron">
+        <p>
+            {% for object in songChords %}
+                {{ object.chord.acronym }}
+            {% endfor %}
+        </p>
+    </div>
+    {% else %}
+        <div class="jumbotron">
+            <p>Add some chords to your song 😉</p>
+        </div>
+    {% endif %}
+        
 {% endblock bodyblock %}

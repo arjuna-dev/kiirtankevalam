@@ -49,6 +49,3 @@ class ChordIndex(models.Model):
     chord  = models.ForeignKey('Chord', on_delete=models.CASCADE)
     song   = models.ForeignKey('Song', on_delete=models.CASCADE)
     index  = models.IntegerField(default=0)
-    # date_time = models.DateTimeField(auto_now=True)
-    class Meta:
-        index_together = [ ["song", "index"], ]
