@@ -10,7 +10,6 @@
 
     <form enctype="multipart/form-data" method="POST">
       {% csrf_token %}
-      {# {{ user_form }} #}
       {{ user_form|crispy }}
       {{ profile_form|crispy}}
       <input class="btn btn-primary" type="submit" name="" value="Register">

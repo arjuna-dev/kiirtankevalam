@@ -72,3 +72,8 @@
     width:2rem;
     float: right;
 }
+@media only screen and (max-width: 240px) {
+    .navbar-brand{
+        font-size: 14px;
+    }
+  }

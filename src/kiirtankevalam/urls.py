@@ -19,7 +19,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views.generic.base import TemplateView
 from django.urls import path, include
 
-from Song.views import record_view, newsong_view, song_view, profile_view, main_view, kiirtanfav_view, kiirtanall_view, kiirtanuploads_view, kiirtanfeed_view, psfav_view, psall_view, psuploads_view, psfeed_view, bhajanfav_view, bhajanall_view, bhajanuploads_view, bhajanfeed_view, signup, user_login, addsong_view, deletesong_view
+from Song.views import record_view, song_view, profile_view, main_view, kiirtanfav_view, kiirtanall_view, kiirtanuploads_view, kiirtanfeed_view, psfav_view, psall_view, psuploads_view, psfeed_view, bhajanfav_view, bhajanall_view, bhajanuploads_view, bhajanfeed_view, signup, user_login, addsong_view, deletesong_view, addchord_view, deletechord_view, createsong_view
 
 
 
@@ -39,7 +39,7 @@ urlpatterns = [
     path('bhajanuploads/', bhajanuploads_view),
     path('song/', song_view),
     path('record/', record_view),
-    path('newsong/', newsong_view),
+    path('createsong/', createsong_view, name='create-song-view'),
     path('profile/', profile_view),
     path('signup/', signup, name='signup'),
     path('login/', user_login, name='user_login'),
@@ -48,6 +48,9 @@ urlpatterns = [
 
     path('addsongview/<int:id>', addsong_view, name='add-song-view'),
     path('deletesongview/<int:id>', deletesong_view, name='delete-song-view'),
+
+    path('addchordview/', addchord_view, name='add-chord-view'),
+    path('deletechordview/', deletechord_view, name='delete-chord-view'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
