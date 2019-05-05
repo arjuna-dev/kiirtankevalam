@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% block bodyblock %}
+    {% for chord in allChords  %}
+        <button class="btn"><a href="{% url 'add-chord-view' idChord=chord.pk %}">{{ chord.acronym }}</a></button>
+    {% endfor %}
+{% endblock bodyblock %}

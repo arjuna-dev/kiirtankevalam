@@ -18,7 +18,7 @@ class Song(models.Model):
     uploader          = models.ForeignKey('Profile', null=True, on_delete=models.SET_NULL)
     written_by        = models.CharField(max_length=50, blank=True)      
     song_text         = models.TextField(blank=True)
-    audio_file         = models.FileField(null=True)
+    audio_file         = models.FileField()
     upload_date       = models.DateField(auto_now=False, auto_now_add=True)
     edit_date         = models.DateField(auto_now=True, auto_now_add=False)
     chords            = models.ManyToManyField('Chord', related_name='chords', through='ChordIndex')
@@ -50,3 +50,5 @@ class ChordIndex(models.Model):
     song   = models.ForeignKey('Song', on_delete=models.CASCADE)
     index  = models.IntegerField(default=0)
     # date_time = models.DateTimeField(auto_now=True)
+    class Meta:
+        index_together = [ ["song", "index"], ]

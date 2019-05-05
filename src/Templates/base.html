@@ -67,6 +67,10 @@
             </form>
         </div>
     </nav>
+    <!-- This next nav-bar remains behind the "real" nav-bar to push down the following html divs. The real nav-bar doesn't push them down as it is set to display: absolute; so it doesn't push divs when menu expands -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Navbar</a>
+    </nav>
 
     {% block kiirtantabs %}
     {% endblock kiirtantabs %}

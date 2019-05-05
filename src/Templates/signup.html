@@ -2,21 +2,21 @@
 
 
 {% block bodyblock %}
-{% load crispy_forms_tags %}
-<div class="jumbotron">
-    {% if registered %}
-    <h1>You are already registered :)</h1>
-    {% else %}
+  {% load crispy_forms_tags %}
+  <div class="jumbotron">
+      {% if registered %}
+      <h1>You are already registered :)</h1>
+      {% else %}
 
-    <form enctype="multipart/form-data" method="POST">
-      {% csrf_token %}
-      {{ user_form|crispy }}
-      {{ profile_form|crispy}}
-      <input class="btn btn-primary" type="submit" name="" value="Register">
-    </form>
+      <form enctype="multipart/form-data" method="POST">
+        {% csrf_token %}
+        {{ user_form|crispy }}
+        {{ profile_form|crispy}}
+        <input class="btn btn-primary" type="submit" name="" value="Register">
+      </form>
 
-    {% endif %}
-</div>
+      {% endif %}
+  </div>
 {% endblock bodyblock %}
 
   {# tutorial from https://medium.com/@himanshuxd/how-to-create-registration-login-webapp-with-django-2-0-fd33dc7a6c67 #}

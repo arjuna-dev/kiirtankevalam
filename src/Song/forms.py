@@ -16,4 +16,4 @@ class UserProfileInfoForm(forms.ModelForm):
 class SongForm(forms.ModelForm):
     class Meta():
         model = Song
-        fields = ('title', 'type', 'description', 'written_by', 'song_text', 'audio_file', 'chords')
+        fields = ('title', 'type', 'audio_file', 'description', 'written_by', 'song_text')

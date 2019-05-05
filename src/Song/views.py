@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from Song.models import Song, Profile, IsFavourite, Chord
+from Song.models import Song, Profile, IsFavourite, Chord, ChordIndex
 from Song.forms import UserForm, UserProfileInfoForm, SongForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
@@ -26,7 +26,7 @@ def createsong_view(request):
             newSong.uploader = user
             newSong.save()
             print("form is valid")
-            return HttpResponseRedirect(previousPage)
+            return HttpResponseRedirect(reverse(editchords_view))
         else:
             print("form not valid")
             return HttpResponseRedirect(previousPage)
@@ -37,7 +37,11 @@ def createsong_view(request):
                                 'allChords': allChords,
                                 })
 
-
+def editchords_view(request):
+    context = {
+        'allChords': allChords,
+    }
+    return render(request, 'editchords.html', context)
 # Create your views here.
 
 def main_view(request):
@@ -62,16 +66,46 @@ def deletesong_view(request, id):
 
 # Add/delete chords from a song
 
-# def addchord_view(request, idSong, idChord):
-def addchord_view(request):
-    song = Song.objects.get(pk=1)
-    chord = Chord.objects.get(pk=1)
-    previousPage = request.META.get('HTTP_REFERER')
-    song.chords.add(chord)
-    print("chord has been added")
-    print("chord has been added")
-    print("chord has been added")
+def addchord_view(request, idChord):
+    user                    = request.user.profile
+    chord                   = Chord.objects.get(pk=idChord)
+    songsByUser             = Song.objects.filter(uploader=user)
+    lastSongByUser          = songsByUser.latest('pk')
+    previousPage            = request.META.get('HTTP_REFERER')
+    filterUserLastSong       = ChordIndex.objects.filter(song=lastSongByUser)
+    print('filterUserLastSong', filterUserLastSong)
+    if filterUserLastSong:
+        lastObjectAdded     = filterUserLastSong.last()
+        print('lastObjectAdded', lastObjectAdded)
+        indexOfLastAdded    = lastObjectAdded.index
+        print('indexOfLastAdded', indexOfLastAdded)
+        lastSongByUser.chords.add(chord)
+        thisObjectAdded         = filterUserLastSong.last()
+        print('thisObjectAdded', thisObjectAdded)
+        thisObjectAdded.index   = indexOfLastAdded + 1
+        thisObjectAdded.save()
+        print('thisObjectAdded.index', thisObjectAdded.index)
+        return HttpResponseRedirect(previousPage)
+    else:
+        lastSongByUser.chords.add(chord)
+        return HttpResponseRedirect(previousPage)
+
+    
+    
+    # previousIndex           = indexOfJustAdded
+    # objectCount             = filterUserLastSong.count()
+    # print('objectCount', objectCount)
+    # if objectCount > 1:
+    #     print('objectJustAdded.index', objectJustAdded.index)
+    #     print('previousIndex', previousIndex)
+    #     objectJustAdded.index = previousIndex + 1
+    #     print('objectJustAdded.index', objectJustAdded.index)
     return HttpResponseRedirect(previousPage)
+    # else:
+    #     return HttpResponseRedirect(previousPage)
+
+
+    
 
 # def deletechord_view(request, idSong, idChord):
 def deletechord_view(request):
