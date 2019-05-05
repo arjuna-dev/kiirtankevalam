@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django_countries.fields import CountryField
+from django.core.validators import MaxValueValidator
 
 # Create your models here.
 
@@ -12,22 +13,23 @@ class Song(models.Model):
         ('BH', 'Bhajan'),
     )
     type              = models.CharField(max_length=30, choices=SONG_TYPES)
-    capo              = models.PositiveIntegerField(blank=True, null=True)
+    capo              = models.PositiveIntegerField(blank=True, null=True, validators=[MaxValueValidator(12)])
     description       = models.TextField(blank=True)
     uploader          = models.ForeignKey('Profile', null=True, on_delete=models.SET_NULL)
     written_by        = models.CharField(max_length=50, blank=True)      
     song_text         = models.TextField(blank=True)
-    audio_file_path    = models.FilePathField(path=None, match=None, max_length=100)
+    audio_file         = models.FileField(null=True)
     upload_date       = models.DateField(auto_now=False, auto_now_add=True)
     edit_date         = models.DateField(auto_now=True, auto_now_add=False)
-    chord_progression = models.ForeignKey('ChordProgression', on_delete=models.CASCADE)
+    chords            = models.ManyToManyField('Chord', related_name='chords', through='ChordIndex')
+    
 
 class Profile(models.Model):
     user          = models.OneToOneField(User,on_delete=models.CASCADE)
     sanskrit_name = models.CharField(max_length=100)
     country       = CountryField(max_length=50)
     city          = models.CharField(max_length=50, blank=True, null=True)
-    profile_pic = models.ImageField(upload_to='profile_pics',blank=True)
+    profile_pic    = models.ImageField(upload_to='profile_pics',blank=True)
     liked_songs   = models.ManyToManyField(Song, related_name="liked_songs", through='IsFavourite')
     def __str__(self):
         return self.user.username
@@ -38,10 +40,13 @@ class IsFavourite(models.Model):
     is_favourite = models.BooleanField(null=True)
 
 class Chord(models.Model):
-    name            = models.CharField(max_length=100)
-    acronym         = models.CharField(max_length=10)
-    image_file_path  = models.FilePathField(path=None, match=None, max_length=100)
-    audio_file_path  = models.FilePathField(path=None, match=None, max_length=100)
+    name            = models.CharField(max_length=100, null=True)
+    acronym         = models.CharField(max_length=10, null=True)
+    image_file_path  = models.FilePathField(path=None, match=None, max_length=100, null=True)
+    audio_file_path  = models.FilePathField(path=None, match=None, max_length=100, null=True)
 
-class ChordProgression(models.Model):
-    chord = models.ManyToManyField(Chord)
+class ChordIndex(models.Model):
+    chord  = models.ForeignKey('Chord', on_delete=models.CASCADE)
+    song   = models.ForeignKey('Song', on_delete=models.CASCADE)
+    index  = models.IntegerField(default=0)
+    # date_time = models.DateTimeField(auto_now=True)

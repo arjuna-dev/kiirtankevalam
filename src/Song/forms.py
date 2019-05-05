@@ -1,5 +1,5 @@
 from django import forms
-from Song.models import Profile
+from Song.models import Profile, Song
 from django.contrib.auth.models import User
 
 class UserForm(forms.ModelForm):
@@ -12,3 +12,8 @@ class UserProfileInfoForm(forms.ModelForm):
      class Meta():
          model = Profile
          fields = ('sanskrit_name', 'country', 'city', 'profile_pic')
+
+class SongForm(forms.ModelForm):
+    class Meta():
+        model = Song
+        fields = ('title', 'type', 'description', 'written_by', 'song_text', 'audio_file', 'chords')

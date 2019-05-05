@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from Song.models import Song, Profile, IsFavourite, Chord, ChordProgression
-from Song.forms import UserForm, UserProfileInfoForm
+from Song.models import Song, Profile, IsFavourite, Chord
+from Song.forms import UserForm, UserProfileInfoForm, SongForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, HttpResponseRedirect
@@ -14,16 +14,37 @@ allKiirtan  = Song.objects.filter(type='KI')
 allBhajan   = Song.objects.filter(type='BH')
 allPs       = Song.objects.filter(type='PS')
 
-# blueKiirtan = Song.objects.get(pk=1)
-# print(blueKiirtan.title)
-# print(blueKiirtan.title)
-# print(blueKiirtan.title)
+allChords   = Chord.objects.all()
+
+def createsong_view(request):
+    previousPage = request.META.get('HTTP_REFERER')
+    user = request.user.profile
+    if request.method == 'POST':
+        create_song_form = SongForm(request.POST, request.FILES)
+        if create_song_form.is_valid():
+            newSong = create_song_form.save()
+            newSong.uploader = user
+            newSong.save()
+            print("form is valid")
+            return HttpResponseRedirect(previousPage)
+        else:
+            print("form not valid")
+            return HttpResponseRedirect(previousPage)
+    else:
+        create_song_form = SongForm()
+    return render(request,"createsong.html",
+                                {'create_song_form':create_song_form,
+                                'allChords': allChords,
+                                })
 
 
 # Create your views here.
 
 def main_view(request):
+    # allSongs.delete()
     return render(request,"base.html",{})
+
+# Add/delete songs from favorites
 
 def addsong_view(request, id):
     user = request.user
@@ -37,6 +58,27 @@ def deletesong_view(request, id):
     song = Song.objects.get(pk=id)
     previousPage = request.META.get('HTTP_REFERER')
     user.profile.liked_songs.remove(song)
+    return HttpResponseRedirect(previousPage)
+
+# Add/delete chords from a song
+
+# def addchord_view(request, idSong, idChord):
+def addchord_view(request):
+    song = Song.objects.get(pk=1)
+    chord = Chord.objects.get(pk=1)
+    previousPage = request.META.get('HTTP_REFERER')
+    song.chords.add(chord)
+    print("chord has been added")
+    print("chord has been added")
+    print("chord has been added")
+    return HttpResponseRedirect(previousPage)
+
+# def deletechord_view(request, idSong, idChord):
+def deletechord_view(request):
+    song = Song.objects.get(pk=1)
+    chord = Chord.objects.get(pk=1)
+    previousPage = request.META.get('HTTP_REFERER')
+    song.chords.remove(chord)
     return HttpResponseRedirect(previousPage)
 
 #_-_-_-_-_-_-_-_-_-_-_-_-Kiirtan views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
@@ -134,9 +176,6 @@ def song_view(request):
 
 def record_view(request):
     return render(request,"record.html",{})
-
-def newsong_view(request):
-    return render(request,"newsong.html",{})
 
 def profile_view(request):
     return render(request,"profile.html",{})
