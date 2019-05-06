@@ -3,14 +3,31 @@
 {% block bodyblock %}
     <div class="jumbotron">
         {% for chord in allChords  %}
-            <button class="btn"><a href="{% url 'add-chord-view' idChord=chord.pk %}">{{ chord.acronym }}</a></button>
+            {% if chord.acronym != silent%}
+                <button class="btn btn-dark"><a href="{% url 'add-chord-view' idChord=chord.pk %}">{{ chord.acronym }}</a></button>
+            {% else %}
+                <button class="btn btn-primary"><a class="text-dark" href="{% url 'add-chord-view' idChord=chord.pk %}">next part</a></button>
+            {% endif %}
         {% endfor %}
     </div>
+
+    {% if songChords %}
+      <button class="btn"><a href="{% url 'delete-chord-view' %}">undo</a></button>
+    {% else %}
+       <button class="btn"><a href="#">undo</a></button>
+    {% endif %}
+
+    <button class="btn"><a href="/kiirtanall/">finish</a></button>
+
     {% if songChords %}
     <div class="jumbotron">
         <p>
             {% for object in songChords %}
-                {{ object.chord.acronym }}
+                {% if object.chord.acronym != silent %}
+                    {{ object.chord.acronym }}
+                {% else %}
+                    <br>
+                {% endif %}
             {% endfor %}
         </p>
     </div>
@@ -19,5 +36,7 @@
             <p>Add some chords to your song 😉</p>
         </div>
     {% endif %}
+
+
         
 {% endblock bodyblock %}

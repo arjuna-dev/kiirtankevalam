@@ -26,6 +26,8 @@
 
 {% block bodyblock %} 
   {% block renderps %}
-    {% include 'favrenderer.html' with songlist=allPs  songlistlikes=psLikes%} 
+    {% if user.is_authenticated %}
+      {% include 'favrenderer.html' with songlist=allPs  songlistlikes=psLikes%} 
+    {% endif %}
   {% endblock renderps %}
 {% endblock bodyblock %}

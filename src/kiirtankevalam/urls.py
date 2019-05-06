@@ -51,7 +51,7 @@ urlpatterns = [
     path('deletesongview/<int:id>', deletesong_view, name='delete-song-view'),
 
     path('addchord/<int:idChord>', addchord_view, name='add-chord-view'),
-    path('deletechord/<int:idChord>', deletechord_view, name='delete-chord-view'),
+    path('deletechord/', deletechord_view, name='delete-chord-view'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()

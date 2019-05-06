@@ -46,6 +46,7 @@ def editchords_view(request):
     context = {
         'allChords': allChords,
         'songChords': songChords,
+        'silent': 'silent'
     }
     return render(request, 'editchords.html', context)
 # Create your views here.
@@ -76,45 +77,42 @@ def addchord_view(request, idChord):
     user                    = request.user.profile
     chord                   = Chord.objects.get(pk=idChord)
     songsByUser             = Song.objects.filter(uploader=user)
-    lastSongByUser          = songsByUser.latest('pk')
+    lastSongByUser          = songsByUser.last()
     previousPage            = request.META.get('HTTP_REFERER')
     filterUserLastSong       = ChordIndex.objects.filter(song=lastSongByUser)
+    print('filterUserLastSong', filterUserLastSong)
     if filterUserLastSong:
         lastObjectAdded     = filterUserLastSong.last()
+        print('lastObjectAdded', lastObjectAdded)
         indexOfLastAdded    = lastObjectAdded.index
+        print('indexOfLastAdded', indexOfLastAdded)
         lastSongByUser.chords.add(chord)
         thisObjectAdded         = filterUserLastSong.last()
+        print('thisObjectAdded', thisObjectAdded)
+        print('thisObjectAdded.index', thisObjectAdded.index)
         thisObjectAdded.index   = indexOfLastAdded + 1
+        print('thisObjectAdded.index', thisObjectAdded.index)
         thisObjectAdded.save()
         return HttpResponseRedirect(previousPage)
     else:
         lastSongByUser.chords.add(chord)
+        thisObjectAdded         = filterUserLastSong.last()
+        thisObjectAdded.index   += 1
+        thisObjectAdded.save()
         return HttpResponseRedirect(previousPage)
-
-    
-    
-    # previousIndex           = indexOfJustAdded
-    # objectCount             = filterUserLastSong.count()
-    # print('objectCount', objectCount)
-    # if objectCount > 1:
-    #     print('objectJustAdded.index', objectJustAdded.index)
-    #     print('previousIndex', previousIndex)
-    #     objectJustAdded.index = previousIndex + 1
-    #     print('objectJustAdded.index', objectJustAdded.index)
     return HttpResponseRedirect(previousPage)
-    # else:
-    #     return HttpResponseRedirect(previousPage)
 
-
-    
-
-# def deletechord_view(request, idSong, idChord):
 def deletechord_view(request):
-    song = Song.objects.get(pk=1)
-    chord = Chord.objects.get(pk=1)
-    previousPage = request.META.get('HTTP_REFERER')
-    song.chords.remove(chord)
+    user                    = request.user.profile
+    songsByUser             = Song.objects.filter(uploader=user)
+    lastSongByUser          = songsByUser.last()
+    previousPage            = request.META.get('HTTP_REFERER')
+    filterUserLastSong       = ChordIndex.objects.filter(song=lastSongByUser)
+    lastObjectAdded         = filterUserLastSong.last()
+    lastChord               = lastObjectAdded.chord
+    lastSongByUser.chords.remove(lastChord)
     return HttpResponseRedirect(previousPage)
+
 
 #_-_-_-_-_-_-_-_-_-_-_-_-Kiirtan views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 #_-_-_-_-_-_-_-_-_-_-_-_-Kiirtan views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
@@ -124,12 +122,17 @@ kiirtanContext = {
     'allKiirtan': allKiirtan,
     'typeintitle': 'kiirtan',
 }
+
+# @login_required
 def kiirtanfav_view(request):
-    user = request.user
-    kiirtanLikes = user.profile.liked_songs.all().filter(type="KI")
-    global kiirtanContext
-    kiirtanContext["kiirtanLikes"]=kiirtanLikes
-    return render(request,"kiirtanfav.html",kiirtanContext)
+    if request.user.is_authenticated: 
+        user = request.user
+        kiirtanLikes = user.profile.liked_songs.all().filter(type="KI")
+        global kiirtanContext
+        kiirtanContext["kiirtanLikes"]=kiirtanLikes
+        return render(request,"kiirtanfav.html",kiirtanContext)
+    else:
+        return render(request,"kiirtanfav.html",kiirtanContext)
 
 def kiirtanall_view(request):
     global kiirtanContext
