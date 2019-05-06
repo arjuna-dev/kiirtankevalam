@@ -26,6 +26,8 @@
 
 {% block bodyblock %} 
   {% block renderkiirtans %}
-    {% include 'favrenderer.html' with songlist=allKiirtan  songlistlikes=kiirtanLikes %}
+    {% if user.is_authenticated %}
+      {% include 'favrenderer.html' with songlist=allKiirtan  songlistlikes=kiirtanLikes %}
+    {% endif %}
   {% endblock renderkiirtans %}
 {% endblock bodyblock %}

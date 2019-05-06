@@ -26,6 +26,8 @@
 
 {% block bodyblock %}
   {% block renderbhajans %}
-   {% include 'favrenderer.html' with songlist=allBhajan  songlistlikes=bhajanLikes%}
+    {% if user.is_authenticated %}
+      {% include 'favrenderer.html' with songlist=allBhajan  songlistlikes=bhajanLikes%}
+    {% endif %}
   {% endblock renderbhajans %}
 {% endblock bodyblock %}
