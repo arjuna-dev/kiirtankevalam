@@ -46,7 +46,15 @@ class Chord(models.Model):
     audio_file_path  = models.FilePathField(path=None, match=None, max_length=100, null=True)
 
 class ChordIndex(models.Model):
+    # user                    = request.user.profile
+    # songsByUser             = Song.objects.filter(uploader=user)
+    # lastSongByUser          = songsByUser.last()
+    def incrementalNumber():
+        objectCount    = ChordIndex.objects.count()
+        if objectCount == None:
+            return 2
+        else:
+            return objectCount + 2
+    index  = models.IntegerField(default=incrementalNumber)
     chord  = models.ForeignKey('Chord', on_delete=models.CASCADE)
-    song   = models.ForeignKey('Song', on_delete=models.CASCADE)
-    index  = models.IntegerField(default=0)
-
+    song   = models.ForeignKey('Song', on_delete=models.CASCADE, default='lastSongByUser')
