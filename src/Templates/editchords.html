@@ -1,6 +1,16 @@
 {% extends "base.html" %}
 
 {% block bodyblock %}
+{% load crispy_forms_tags %}
+    <div class="jumbotron">
+        <form enctype="multipart/form-data" method="POST" action="">
+            {% csrf_token %}
+            {{ addchord_form }}
+            <input class="btn btn-primary" type="submit" name="addchord_form" value="Add Chord">
+        </form>
+    </div>
+    
+    {% comment %}
     <div class="jumbotron">
         {% for chord in allChords  %}
             {% if chord.acronym != silent%}
@@ -10,6 +20,8 @@
             {% endif %}
         {% endfor %}
     </div>
+    {% endcomment %}
+        
 
     {% if songChords %}
       <button class="btn"><a href="{% url 'delete-chord-view' %}">undo</a></button>

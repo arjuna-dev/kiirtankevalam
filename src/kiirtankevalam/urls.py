@@ -40,7 +40,7 @@ urlpatterns = [
     path('song/', song_view),
     path('record/', record_view),
     path('createsong/', createsong_view, name='create-song-view'),
-    path('editchords/', editchords_view),
+    path('editchords/', editchords_view, name='edit-chords-view'),
     path('profile/', profile_view),
     path('signup/', signup, name='signup'),
     path('login/', user_login, name='user_login'),
