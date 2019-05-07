@@ -5,11 +5,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-# import json
-# from django.core import serializers
 
 allSongs    = Song.objects.all()
-
 allKiirtan  = Song.objects.filter(type='KI')
 allBhajan   = Song.objects.filter(type='BH')
 allPs       = Song.objects.filter(type='PS')
@@ -37,6 +34,20 @@ def createsong_view(request):
                                 'allChords': allChords,
                                 })
 
+# def editchords_view(request):
+#     user                    = request.user.profile
+#     songsByUser             = Song.objects.filter(uploader=user)
+#     lastSongByUser          = songsByUser.last()
+#     songChords              = ChordIndex.objects.filter(song=lastSongByUser)
+
+#     context = {
+#         'allChords': allChords,
+#         'songChords': songChords,
+#         'silent': 'silent'
+#     }
+#     return render(request, 'editchords.html', context)
+
+
 def editchords_view(request):
     user                    = request.user.profile
     songsByUser             = Song.objects.filter(uploader=user)
@@ -49,13 +60,10 @@ def editchords_view(request):
         'silent': 'silent'
     }
     return render(request, 'editchords.html', context)
-# Create your views here.
 
 def main_view(request):
     # allSongs.delete()
     return render(request,"base.html",{})
-
-# Add/delete songs from favorites
 
 def addsong_view(request, id):
     user = request.user
@@ -71,8 +79,6 @@ def deletesong_view(request, id):
     user.profile.liked_songs.remove(song)
     return HttpResponseRedirect(previousPage)
 
-# Add/delete chords from a song
-
 def addchord_view(request, idChord):
     user                    = request.user.profile
     chord                   = Chord.objects.get(pk=idChord)
@@ -81,25 +87,30 @@ def addchord_view(request, idChord):
     previousPage            = request.META.get('HTTP_REFERER')
     filterUserLastSong       = ChordIndex.objects.filter(song=lastSongByUser)
     print('filterUserLastSong', filterUserLastSong)
-    if filterUserLastSong:
-        lastObjectAdded     = filterUserLastSong.last()
-        print('lastObjectAdded', lastObjectAdded)
-        indexOfLastAdded    = lastObjectAdded.index
-        print('indexOfLastAdded', indexOfLastAdded)
-        lastSongByUser.chords.add(chord)
-        thisObjectAdded         = filterUserLastSong.last()
-        print('thisObjectAdded', thisObjectAdded)
-        print('thisObjectAdded.index', thisObjectAdded.index)
-        thisObjectAdded.index   = indexOfLastAdded + 1
-        print('thisObjectAdded.index', thisObjectAdded.index)
-        thisObjectAdded.save()
-        return HttpResponseRedirect(previousPage)
-    else:
-        lastSongByUser.chords.add(chord)
-        thisObjectAdded         = filterUserLastSong.last()
-        thisObjectAdded.index   += 1
-        thisObjectAdded.save()
-        return HttpResponseRedirect(previousPage)
+    lastSongByUser.chords.add(chord)
+    thisObjectAdded         = filterUserLastSong.last()
+    print('thisObjectAdded', thisObjectAdded)
+    print('thisObjectAdded.index', thisObjectAdded.index)
+    thisObjectAdded.save()
+    # if filterUserLastSong:
+    #     lastObjectAdded     = filterUserLastSong.last()
+    #     print('lastObjectAdded', lastObjectAdded)
+    #     indexOfLastAdded    = lastObjectAdded.index
+    #     print('indexOfLastAdded', indexOfLastAdded)
+    #     lastSongByUser.chords.add(chord)
+    #     thisObjectAdded         = filterUserLastSong.last()
+    #     print('thisObjectAdded', thisObjectAdded)
+    #     print('thisObjectAdded.index', thisObjectAdded.index)
+    #     thisObjectAdded.index   = indexOfLastAdded + 1
+    #     print('thisObjectAdded.index', thisObjectAdded.index)
+    #     thisObjectAdded.save()
+    #     return HttpResponseRedirect(previousPage)
+    # else:
+    #     lastSongByUser.chords.add(chord)
+    #     thisObjectAdded         = filterUserLastSong.last()
+    #     thisObjectAdded.index   += 1
+    #     thisObjectAdded.save()
+    #     return HttpResponseRedirect(previousPage)
     return HttpResponseRedirect(previousPage)
 
 def deletechord_view(request):
@@ -123,7 +134,6 @@ kiirtanContext = {
     'typeintitle': 'kiirtan',
 }
 
-# @login_required
 def kiirtanfav_view(request):
     if request.user.is_authenticated: 
         user = request.user
