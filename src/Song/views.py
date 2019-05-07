@@ -37,13 +37,8 @@ def createsong_view(request):
                                 'allChords': allChords,
                                 })
 
-# Create your views here.
-
 def main_view(request):
-    # allSongs.delete()
     return render(request,"base.html",{})
-
-# Add/delete songs from favorites
 
 def addsong_view(request, id):
     user = request.user
@@ -72,6 +67,7 @@ def deletesong_view(request, id):
 #     }
 #     return render(request, 'editchords.html', context)
 
+@login_required
 def editchords_view(request):
     user                    = request.user.profile
     songsByUser             = Song.objects.filter(uploader=user)
