@@ -21,4 +21,4 @@ class SongForm(forms.ModelForm):
 class AddChordForm(forms.ModelForm):
     class Meta():
         model = ChordIndex
-        fields = ('chord', 'song', 'index')
+        fields = ('chord', 'song')
