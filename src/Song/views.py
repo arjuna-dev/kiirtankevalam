@@ -5,24 +5,27 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-# import json
-# from django.core import serializers
 
-allSongs    = Song.objects.all()
+from django.test import RequestFactory
 
+from django.db import connection
+
+# allSongs    = Song.objects.all()
+allSongs    = Song.objects.raw('SELECT * FROM Song_Song')
 allKiirtan  = Song.objects.filter(type='KI')
-allBhajan   = Song.objects.filter(type='BH')
+# allBhajan   = Song.objects.filter(type='BH')
+allBhajan   = Song.objects.raw('SELECT * FROM Song_Song WHERE type="BH"')
 allPs       = Song.objects.filter(type='PS')
-
 allChords   = Chord.objects.all()
 
 def createsong_view(request):
-    previousPage = request.META.get('HTTP_REFERER')
-    user = request.user.profile
+    previousPage   = request.META.get('HTTP_REFERER')
+    user           = request.user.profile
+    lastSongByUser = Song.objects.filter(uploader=user).last()
     if request.method == 'POST':
-        create_song_form = SongForm(request.POST, request.FILES)
+        create_song_form  = SongForm(request.POST, request.FILES)
         if create_song_form.is_valid():
-            newSong = create_song_form.save()
+            newSong          = create_song_form.save()
             newSong.uploader = user
             newSong.save()
             print("form is valid")
@@ -70,73 +73,68 @@ def deletesong_view(request, id):
 @login_required
 def editchords_view(request):
     user                    = request.user.profile
+    lastSongByUser          = Song.objects.filter(uploader=user).last()
+    songChords              = ChordIndex.objects.filter(song=lastSongByUser)
+    # print('\n\n', connection.queries)
+    # print('\n\n', songChords.query, '\n\n')
+    # print(songChords.explain())
+    previousPage = request.META.get('HTTP_REFERER')
+    # if request.method == 'POST':
+    #     addchord_form  = AddChordForm(request.POST)
+    #     addchord_form.song = lastSongByUser
+    #     print('addchord_form.song', addchord_form.song)
+    #     print('addchord_form.song', addchord_form.song)
+    #     print('addchord_form.song', addchord_form.song)
+    #     if addchord_form.is_valid():
+    #         newChordIndex = addchord_form.save()
+    #         print('addchord_form.song', addchord_form.song)
+    #         print('addchord_form.song', addchord_form.song)
+    #         print('addchord_form.song', addchord_form.song)
+    #         print("form is valid")
+    #         return HttpResponseRedirect(previousPage)
+    #     else:
+    #         print("form not valid")
+    #         return HttpResponseRedirect(previousPage)
+    # else:
+    #     print("not a POST method!")
+    #     addchord_form = AddChordForm()
+    return render(request,"editchords.html",
+                                {
+                                # 'addchord_form':addchord_form,
+                                'songChords': songChords,
+                                'lastSongByUser': lastSongByUser,
+                                'allChords':allChords,
+                                })
+
+# def addchord_view(request):
+#     previousPage = request.META.get('HTTP_REFERER')
+#     if request.method == 'POST':
+#         addchord_form = AddChordForm(data=request.POST)
+#         if addchord_form.is_valid():
+#             newChordIndex = addchord_form.save()
+#             print("form is valid")
+#             return HttpResponseRedirect(previousPage)
+#         else:
+#             print("form not valid")
+#             return HttpResponseRedirect(previousPage)
+#     else:
+#         addchord_form = SongForm()
+#     return render(request,"editchords.html",
+#                                 {'addchord_form':addchord_form,
+#                                 })
+
+def addchord_view(request, idChord):
+    user                    = request.user.profile
+    chord                   = Chord.objects.get(pk=idChord)
     songsByUser             = Song.objects.filter(uploader=user)
     lastSongByUser          = songsByUser.last()
-    songChords              = ChordIndex.objects.filter(song=lastSongByUser)
-
-    previousPage = request.META.get('HTTP_REFERER')
-    if request.method == 'POST':
-        addchord_form = AddChordForm(request.POST)
-        if addchord_form.is_valid():
-            newChordIndex = addchord_form.save()
-            print("form is valid")
-            return HttpResponseRedirect(previousPage)
-        else:
-            print("form not valid")
-            return HttpResponseRedirect(previousPage)
-    else:
-        addchord_form = AddChordForm()
-    return render(request,"editchords.html",
-                                {'addchord_form':addchord_form,
-                                'songChords': songChords,
-                                })
-
-def addchord_view(request):
-    previousPage = request.META.get('HTTP_REFERER')
-    if request.method == 'POST':
-        addchord_form = AddChordForm(request.POST)
-        if addchord_form.is_valid():
-            newChordIndex = addchord_form.save()
-            print("form is valid")
-            return HttpResponseRedirect(previousPage)
-        else:
-            print("form not valid")
-            return HttpResponseRedirect(previousPage)
-    else:
-        addchord_form = SongForm()
-    return render(request,"editchords.html",
-                                {'lastSongByUser':lastSongByUser,
-                                'addchord_form':addchord_form,
-                                })
-
-# def addchord_view(request, idChord):
-    # user                    = request.user.profile
-    # chord                   = Chord.objects.get(pk=idChord)
-    # songsByUser             = Song.objects.filter(uploader=user)
-    # lastSongByUser          = songsByUser.last()
-    # previousPage            = request.META.get('HTTP_REFERER')
+    previousPage            = request.META.get('HTTP_REFERER')
+    filterUserLastSong       = ChordIndex.objects.create(song=lastSongByUser, chord=chord)
     # filterUserLastSong       = ChordIndex.objects.filter(song=lastSongByUser)
-    # print('filterUserLastSong', filterUserLastSong)
-    # if filterUserLastSong:
-    #     lastObjectAdded     = filterUserLastSong.last()
-    #     print('lastObjectAdded', lastObjectAdded)
-    #     indexOfLastAdded    = lastObjectAdded.index
-    #     print('indexOfLastAdded', indexOfLastAdded)
-    #     lastSongByUser.chords.add(chord)
-    #     thisObjectAdded         = filterUserLastSong.last()
-    #     print('thisObjectAdded', thisObjectAdded)
-    #     print('thisObjectAdded.index', thisObjectAdded.index)
-    #     thisObjectAdded.index   = indexOfLastAdded + 1
-    #     print('thisObjectAdded.index', thisObjectAdded.index)
-    #     thisObjectAdded.save()
-    #     return HttpResponseRedirect(previousPage)
-    # else:
-    #     lastSongByUser.chords.add(chord)
-    #     thisObjectAdded         = filterUserLastSong.last()
-    #     thisObjectAdded.index   += 1
-    #     thisObjectAdded.save()
-    #     return HttpResponseRedirect(previousPage)
-    # return HttpResponseRedirect(previousPage)
+    # lastSongByUser.chords.add(chord)
+    # thisObjectAdded         = filterUserLastSong.last()
+    # thisObjectAdded.save()
+    return HttpResponseRedirect(previousPage)
 
 def deletechord_view(request):
     user                    = request.user.profile

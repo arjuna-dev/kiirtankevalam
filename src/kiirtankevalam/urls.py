@@ -19,7 +19,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views.generic.base import TemplateView
 from django.urls import path, include
 
-from Song.views import record_view, song_view, profile_view, main_view, kiirtanfav_view, kiirtanall_view, kiirtanuploads_view, kiirtanfeed_view, psfav_view, psall_view, psuploads_view, psfeed_view, bhajanfav_view, bhajanall_view, bhajanuploads_view, bhajanfeed_view, signup, user_login, addsong_view, deletesong_view, addchord_view, deletechord_view, createsong_view, editchords_view
+from Song.views import record_view, song_view, profile_view, main_view, kiirtanfav_view, kiirtanall_view, kiirtanuploads_view, kiirtanfeed_view, psfav_view, psall_view, psuploads_view, psfeed_view, bhajanfav_view, bhajanall_view, bhajanuploads_view, bhajanfeed_view, signup, user_login, addsong_view, deletesong_view, deletechord_view, createsong_view, editchords_view, addchord_view
 
 
 

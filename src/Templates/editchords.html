@@ -1,6 +1,30 @@
 {% extends "base.html" %}
 
 {% block bodyblock %}
+
+
+{% comment %}
+{{ addchord_form.non_field_errors }}
+<form name="formy" method="POST" action="">
+{% csrf_token %}
+{{ formset.errors }}
+{{ formset.non_field_errors }}
+<div class="fieldWrapper">
+    <label for="{{ addchord_form.chord.acronym }}">Chord:</label>
+    {{ addchord_form.chord }} 
+</div>
+<div class="fieldWrapper">
+    <label for="{{ addchord_form.song.pk }}">Your song:</label>
+    {{ addchord_form.song }}
+</div>
+<input class="btn btn-primary" type="submit" name="addchord_form" value="Add Chord">
+</form>
+{% endcomment %}
+    
+    
+    
+
+{% comment %}
 {% load crispy_forms_tags %}
     <div class="jumbotron">
         <form enctype="multipart/form-data" method="POST" action="">
@@ -9,8 +33,10 @@
             <input class="btn btn-primary" type="submit" name="addchord_form" value="Add Chord">
         </form>
     </div>
+{% endcomment %}
     
-    {% comment %}
+
+    
     <div class="jumbotron">
         {% for chord in allChords  %}
             {% if chord.acronym != silent%}
@@ -20,7 +46,6 @@
             {% endif %}
         {% endfor %}
     </div>
-    {% endcomment %}
         
 
     {% if songChords %}

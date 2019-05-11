@@ -37,7 +37,7 @@ class Profile(models.Model):
 class IsFavourite(models.Model):
     song         = models.ForeignKey(Song, on_delete=models.CASCADE)
     profile       = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    is_favourite = models.BooleanField(null=True)
+    is_favourite = models.BooleanField(default=True)
 
 class Chord(models.Model):
     name            = models.CharField(max_length=100, null=True)
@@ -48,5 +48,3 @@ class Chord(models.Model):
 class ChordIndex(models.Model):
     chord  = models.ForeignKey('Chord', on_delete=models.CASCADE)
     song   = models.ForeignKey('Song', on_delete=models.CASCADE)
-    index  = models.IntegerField(default=0)
-
