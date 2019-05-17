@@ -27,7 +27,7 @@ SECRET_KEY = "REDACTED"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['django-env.ghk4jxgs2g.eu-central-1.elasticbeanstalk.com']
 
 
 # Application definition

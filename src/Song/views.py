@@ -106,23 +106,6 @@ def editchords_view(request):
                                 'allChords':allChords,
                                 })
 
-# def addchord_view(request):
-#     previousPage = request.META.get('HTTP_REFERER')
-#     if request.method == 'POST':
-#         addchord_form = AddChordForm(data=request.POST)
-#         if addchord_form.is_valid():
-#             newChordIndex = addchord_form.save()
-#             print("form is valid")
-#             return HttpResponseRedirect(previousPage)
-#         else:
-#             print("form not valid")
-#             return HttpResponseRedirect(previousPage)
-#     else:
-#         addchord_form = SongForm()
-#     return render(request,"editchords.html",
-#                                 {'addchord_form':addchord_form,
-#                                 })
-
 def addchord_view(request, idChord):
     user                    = request.user.profile
     chord                   = Chord.objects.get(pk=idChord)
@@ -130,10 +113,6 @@ def addchord_view(request, idChord):
     lastSongByUser          = songsByUser.last()
     previousPage            = request.META.get('HTTP_REFERER')
     filterUserLastSong       = ChordIndex.objects.create(song=lastSongByUser, chord=chord)
-    # filterUserLastSong       = ChordIndex.objects.filter(song=lastSongByUser)
-    # lastSongByUser.chords.add(chord)
-    # thisObjectAdded         = filterUserLastSong.last()
-    # thisObjectAdded.save()
     return HttpResponseRedirect(previousPage)
 
 def deletechord_view(request):
