@@ -1,7 +1,7 @@
 {% load static %}
 <div class="songlist-element">
     <li class="list-group-item">
-        <h5 class="card-title"> <a href="#">{{ song.title }}</a>
+        <h5 class="card-title"> <a href="/song/">{{ song.title }}</a>
             {% if song not in user.profile.liked_songs.all %}
                 <a href="{% url 'add-song-view' id=song.pk %}">
                     <img class="pratik" src="{% static 'resources/img/pratik.png' %}" alt="">
