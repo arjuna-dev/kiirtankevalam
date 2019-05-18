@@ -10,11 +10,11 @@ from django.test import RequestFactory
 
 from django.db import connection
 
-# allSongs    = Song.objects.all()
-allSongs    = Song.objects.raw('SELECT * FROM Song_Song')
+allSongs    = Song.objects.all()
+# allSongs    = Song.objects.raw('SELECT * FROM Song_Song')
 allKiirtan  = Song.objects.filter(type='KI')
-# allBhajan   = Song.objects.filter(type='BH')
-allBhajan   = Song.objects.raw('SELECT * FROM Song_Song WHERE type="BH"')
+allBhajan   = Song.objects.filter(type='BH')
+# allBhajan   = Song.objects.raw('SELECT * FROM Song_Song WHERE type="BH"')
 allPs       = Song.objects.filter(type='PS')
 allChords   = Chord.objects.all()
 
@@ -41,20 +41,22 @@ def createsong_view(request):
                                 })
 
 def main_view(request):
-    return render(request,"base.html",{})
+    return HttpResponseRedirect(reverse(kiirtanfav_view))
 
 def addsong_view(request, id):
-    user = request.user
+    user = request.user.profile
     song = Song.objects.get(pk=id)
     previousPage = request.META.get('HTTP_REFERER')
-    user.profile.liked_songs.add(song)
+    # user.profile.liked_songs.add(song)
+    IsFavourite.objects.create(song=song, profile=user, is_favorite=True)
     return HttpResponseRedirect(previousPage)
 
-def deletesong_view(request, id):
-    user = request.user
+def removesong_view(request, id):
+    user = request.user.profile
     song = Song.objects.get(pk=id)
     previousPage = request.META.get('HTTP_REFERER')
-    user.profile.liked_songs.remove(song)
+    thisSong = IsFavourite.objects.filter(song=song, profile=user)
+    thisSong.delete()
     return HttpResponseRedirect(previousPage)
 
 # def editchords_view(request):
@@ -136,7 +138,6 @@ kiirtanContext = {
     'typeintitle': 'kiirtan',
 }
 
-# @login_required
 def kiirtanfav_view(request):
     if request.user.is_authenticated: 
         user = request.user
@@ -156,7 +157,10 @@ def kiirtanfeed_view(request):
     return render(request,"kiirtanfeed.html",kiirtanContext)
 
 def kiirtanuploads_view(request):
+    user = request.user.profile
     global kiirtanContext
+    userUploads = allSongs.filter(uploader=user)
+    kiirtanContext["userUploads"]=userUploads
     return render(request,"kiirtanuploads.html",kiirtanContext)
 
 #_-_-_-_-_-_-_-_-_-_-_-_-PS views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
