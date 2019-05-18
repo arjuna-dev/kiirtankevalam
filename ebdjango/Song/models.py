@@ -37,13 +37,13 @@ class Profile(models.Model):
 class IsFavourite(models.Model):
     song         = models.ForeignKey(Song, on_delete=models.CASCADE)
     profile       = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    is_favourite = models.BooleanField(default=True)
+    is_favorite  = models.BooleanField(default=True)
 
 class Chord(models.Model):
-    name            = models.CharField(max_length=100, null=True)
-    acronym         = models.CharField(max_length=10, null=True)
-    image_file_path  = models.FilePathField(path=None, match=None, max_length=100, null=True)
-    audio_file_path  = models.FilePathField(path=None, match=None, max_length=100, null=True)
+    name            = models.CharField(max_length=100)
+    acronym         = models.CharField(max_length=10)
+    image_file_path  = models.FilePathField(path='static/resources/img/chords', match=None, max_length=100)
+    # audio_file_path  = models.FilePathField(path=None, match=None, max_length=100)
 
 class ChordIndex(models.Model):
     chord  = models.ForeignKey('Chord', on_delete=models.CASCADE)
