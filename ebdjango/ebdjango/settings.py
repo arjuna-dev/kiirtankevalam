@@ -27,7 +27,9 @@ SECRET_KEY = secretKey
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'django-env.nyir2pgnby.us-west-2.elasticbeanstalk.com','127.0.0.1',
+    'django-env.nyir2pgnby.us-west-2.elasticbeanstalk.com',
+    '127.0.0.1',
+    'kiirtan.org',
 ]
 
 LOGIN_URL = '/accounts/login/'
