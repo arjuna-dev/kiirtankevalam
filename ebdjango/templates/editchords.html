@@ -2,78 +2,37 @@
 
 {% block bodyblock %}
 
-
-{% comment %}
-{{ addchord_form.non_field_errors }}
-<form name="formy" method="POST" action="">
-{% csrf_token %}
-{{ formset.errors }}
-{{ formset.non_field_errors }}
-<div class="fieldWrapper">
-    <label for="{{ addchord_form.chord.acronym }}">Chord:</label>
-    {{ addchord_form.chord }} 
-</div>
-<div class="fieldWrapper">
-    <label for="{{ addchord_form.song.pk }}">Your song:</label>
-    {{ addchord_form.song }}
-</div>
-<input class="btn btn-primary" type="submit" name="addchord_form" value="Add Chord">
-</form>
-{% endcomment %}
-    
-    
-    
-
-{% comment %}
-{% load crispy_forms_tags %}
-    <div class="jumbotron">
-        <form enctype="multipart/form-data" method="POST" action="">
-            {% csrf_token %}
-            {{ addchord_form }}
-            <input class="btn btn-primary" type="submit" name="addchord_form" value="Add Chord">
-        </form>
-    </div>
-{% endcomment %}
-    
-
-    
-    <div class="jumbotron">
-        {% for chord in allChords  %}
-            {% if chord.acronym != silent%}
-                <button class="btn btn-dark"><a href="{% url 'add-chord-view' idChord=chord.pk %}">{{ chord.acronym }}</a></button>
-            {% else %}
-                <button class="btn btn-primary"><a class="text-dark" href="{% url 'add-chord-view' idChord=chord.pk %}">next part</a></button>
-            {% endif %}
-        {% endfor %}
-    </div>
-        
-
-    {% if songChords %}
-      <button class="btn"><a href="{% url 'delete-chord-view' %}">undo</a></button>
-    {% else %}
-       <button class="btn"><a href="#">undo</a></button>
-    {% endif %}
-
-    <button class="btn"><a href="/kiirtanall/">finish</a></button>
-
-    {% if songChords %}
-    <div class="jumbotron">
-        <p>
-            {% for object in songChords %}
-                {% if object.chord.acronym != silent %}
-                    {{ object.chord.acronym }}
+    <div class="card">
+        <h5 class="card-header">Add Some Chords to Your Song</h5>
+        <div class="card-body">
+            {#<h5 class="card-title">Add Some Chords to Your Song</h5>#}
+            {#<div class="jumbotron">#}
+                {% for chord in allChords  %}
+                    {% if chord.acronym != "x"%}
+                        <button class="boton btn btn-light border-dark"><a href="{% url 'add-chord-view' idChord=chord.pk %}">{{ chord.acronym }}</a></button>
+                    {% else %}
+                        <br>
+                        <button class="btn btn-primary"><a class="text-dark" href="{% url 'add-chord-view' idChord=chord.pk %}">next part</a></button>
+                    {% endif %}
+                {% endfor %}
+                {% if songChords %}
+                    <a class="text-muted font-italic" href="{% url 'delete-chord-view' %}">undo</a>
                 {% else %}
-                    <br>
-                {% endif %}
-            {% endfor %}
-        </p>
-    </div>
-    {% else %}
-        <div class="jumbotron">
-            <p>Add some chords to your song 😉</p>
+                    <button class="btn"><a href="#">undo</a></button>
+              {% endif %}
+            {#</div>#}
         </div>
-    {% endif %}
+    </div>
 
+    <div class="card">
+        <div class="card-body">
+            <h3 class="card-title">{{ song.title }}</h3>
+            <h6 class="card-subtitle mb-2 text-muted">Shared by {{ song.uploader }}</h6>
+            {% with songChords as songChordIndex %}
+                {% include "chordrenderer.html" %}
+            {% endwith %}
+            <button class="btn btn-primary float-right"><a class="text-dark" href="/kiirtanall/">Fnish</a></button>
+        </div>
+    </div>
 
-        
 {% endblock bodyblock %}

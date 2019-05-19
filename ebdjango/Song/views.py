@@ -18,6 +18,17 @@ allBhajan   = Song.objects.filter(type='BH')
 allPs       = Song.objects.filter(type='PS')
 allChords   = Chord.objects.all()
 
+def main_view(request):
+    return HttpResponseRedirect(reverse(kiirtanfav_view))
+
+# def song_view(request):
+    # return render(request, "song.html", {})
+
+def song_view(request, songid): 
+    song = allSongs.get(pk=songid)
+    songChords = ChordIndex.objects.filter(song=song)
+    return render(request, "song.html", {"song":song,"songChords":songChords,})
+
 def createsong_view(request):
     previousPage   = request.META.get('HTTP_REFERER')
     user           = request.user.profile
@@ -40,37 +51,27 @@ def createsong_view(request):
                                 'allChords': allChords,
                                 })
 
-def main_view(request):
-    return HttpResponseRedirect(reverse(kiirtanfav_view))
-
 def addsong_view(request, id):
-    user = request.user.profile
-    song = Song.objects.get(pk=id)
     previousPage = request.META.get('HTTP_REFERER')
-    # user.profile.liked_songs.add(song)
-    IsFavourite.objects.create(song=song, profile=user, is_favorite=True)
-    return HttpResponseRedirect(previousPage)
+    if request.user.is_authenticated:
+        user = request.user.profile
+        song = Song.objects.get(pk=id)
+        # user.profile.liked_songs.add(song)
+        IsFavourite.objects.create(song=song, profile=user, is_favorite=True)
+        return HttpResponseRedirect(previousPage)
+    else:
+        return HttpResponse(status=204)
 
 def removesong_view(request, id):
-    user = request.user.profile
-    song = Song.objects.get(pk=id)
     previousPage = request.META.get('HTTP_REFERER')
-    thisSong = IsFavourite.objects.filter(song=song, profile=user)
-    thisSong.delete()
-    return HttpResponseRedirect(previousPage)
-
-# def editchords_view(request):
-#     user                    = request.user.profile
-#     songsByUser             = Song.objects.filter(uploader=user)
-#     lastSongByUser          = songsByUser.last()
-#     songChords              = ChordIndex.objects.filter(song=lastSongByUser)
-
-#     context = {
-#         'allChords': allChords,
-#         'songChords': songChords,
-#         'silent': 'silent'
-#     }
-#     return render(request, 'editchords.html', context)
+    if request.user.is_authenticated:
+        user = request.user.profile
+        song = Song.objects.get(pk=id)
+        thisSong = IsFavourite.objects.filter(song=song, profile=user)
+        thisSong.delete()
+        return HttpResponseRedirect(previousPage)
+    else:
+        return HttpResponse(status=204)
 
 @login_required
 def editchords_view(request):
@@ -81,30 +82,10 @@ def editchords_view(request):
     # print('\n\n', songChords.query, '\n\n')
     # print(songChords.explain())
     previousPage = request.META.get('HTTP_REFERER')
-    # if request.method == 'POST':
-    #     addchord_form  = AddChordForm(request.POST)
-    #     addchord_form.song = lastSongByUser
-    #     print('addchord_form.song', addchord_form.song)
-    #     print('addchord_form.song', addchord_form.song)
-    #     print('addchord_form.song', addchord_form.song)
-    #     if addchord_form.is_valid():
-    #         newChordIndex = addchord_form.save()
-    #         print('addchord_form.song', addchord_form.song)
-    #         print('addchord_form.song', addchord_form.song)
-    #         print('addchord_form.song', addchord_form.song)
-    #         print("form is valid")
-    #         return HttpResponseRedirect(previousPage)
-    #     else:
-    #         print("form not valid")
-    #         return HttpResponseRedirect(previousPage)
-    # else:
-    #     print("not a POST method!")
-    #     addchord_form = AddChordForm()
     return render(request,"editchords.html",
                                 {
-                                # 'addchord_form':addchord_form,
                                 'songChords': songChords,
-                                'lastSongByUser': lastSongByUser,
+                                'song': lastSongByUser,
                                 'allChords':allChords,
                                 })
 
@@ -118,14 +99,14 @@ def addchord_view(request, idChord):
     return HttpResponseRedirect(previousPage)
 
 def deletechord_view(request):
+    previousPage            = request.META.get('HTTP_REFERER')
     user                    = request.user.profile
     songsByUser             = Song.objects.filter(uploader=user)
     lastSongByUser          = songsByUser.last()
-    previousPage            = request.META.get('HTTP_REFERER')
-    filterUserLastSong       = ChordIndex.objects.filter(song=lastSongByUser)
-    lastObjectAdded         = filterUserLastSong.last()
-    lastChord               = lastObjectAdded.chord
-    lastSongByUser.chords.remove(lastChord)
+    lastChord               = ChordIndex.objects.filter(song=lastSongByUser).last()
+    index                   = lastChord.id
+    thisChord = ChordIndex.objects.filter(id=index)
+    thisChord.delete()
     return HttpResponseRedirect(previousPage)
 
 
@@ -157,11 +138,14 @@ def kiirtanfeed_view(request):
     return render(request,"kiirtanfeed.html",kiirtanContext)
 
 def kiirtanuploads_view(request):
-    user = request.user.profile
-    global kiirtanContext
-    userUploads = allSongs.filter(uploader=user)
-    kiirtanContext["userUploads"]=userUploads
-    return render(request,"kiirtanuploads.html",kiirtanContext)
+    if request.user.is_authenticated: 
+        user = request.user.profile
+        global kiirtanContext
+        userUploads = allSongs.filter(uploader=user)
+        kiirtanContext["userUploads"]=userUploads
+        return render(request,"kiirtanuploads.html",kiirtanContext)
+    else:
+        return render(request,"kiirtanuploads.html",kiirtanContext)
 
 #_-_-_-_-_-_-_-_-_-_-_-_-PS views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 #_-_-_-_-_-_-_-_-_-_-_-_-PS views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
@@ -232,9 +216,6 @@ def bhajanuploads_view(request):
 def renderer_view(request):
     return render(request,"renderer.html",{})
 
-def song_view(request):
-    return render(request,"song.html",{})
-
 def record_view(request):
     return render(request,"record.html",{})
 
@@ -286,21 +267,21 @@ def signup(request):
                            'profile_form':profile_form,
                            'registered':registered})
 
-def user_login(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(username=username, password=password)
-        if user:
-            if user.is_active:
-                login(request,user)
-                return HttpResponseRedirect(reverse(kiirtanfav_view))
-            else:
-                return HttpResponse("Your account was inactive.")
-        else:
-            print("Someone tried to login and failed.")
-            print("They used username: {} and password: {}".format(username,password))
-            return HttpResponse("Invalid login details given")
-    else:
-        return render(request, 'registration/login.html', {})
+# def user_login(request):
+#     if request.method == 'POST':
+#         username = request.POST.get('username')
+#         password = request.POST.get('password')
+#         user = authenticate(username=username, password=password)
+#         if user:
+#             if user.is_active:
+#                 login(request,user)
+#                 return HttpResponseRedirect(reverse(kiirtanfav_view))
+#             else:
+#                 return HttpResponse("Your account was inactive.")
+#         else:
+#             print("Someone tried to login and failed.")
+#             print("They used username: {} and password: {}".format(username,password))
+#             return HttpResponse("Invalid login details given")
+#     else:
+#         return render(request, 'registration/login.html', {})
 

@@ -18,8 +18,11 @@ from django.urls import path
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.views.generic.base import TemplateView
 from django.urls import path, include
+#For serving media:
+from django.conf import settings
+from django.conf.urls.static import static
 
-from Song.views import record_view, song_view, profile_view, main_view, kiirtanfav_view, kiirtanall_view, kiirtanuploads_view, kiirtanfeed_view, psfav_view, psall_view, psuploads_view, psfeed_view, bhajanfav_view, bhajanall_view, bhajanuploads_view, bhajanfeed_view, signup, user_login, addsong_view, removesong_view, deletechord_view, createsong_view, editchords_view, addchord_view
+from Song.views import record_view, song_view, profile_view, main_view, kiirtanfav_view, kiirtanall_view, kiirtanuploads_view, kiirtanfeed_view, psfav_view, psall_view, psuploads_view, psfeed_view, bhajanfav_view, bhajanall_view, bhajanuploads_view, bhajanfeed_view, signup, addsong_view, removesong_view, deletechord_view, createsong_view, editchords_view, addchord_view
 
 
 
@@ -37,21 +40,23 @@ urlpatterns = [
     path('bhajanfeed/', bhajanfeed_view),
     path('bhajanall/', bhajanall_view),
     path('bhajanuploads/', bhajanuploads_view),
-    path('song/', song_view),
+    path('song/<int:songid>', song_view, name='song-view'),
     path('record/', record_view),
     path('createsong/', createsong_view, name='create-song-view'),
     path('editchords/', editchords_view, name='edit-chords-view'),
     path('profile/', profile_view),
     path('signup/', signup, name='signup'),
-    path('login/', user_login, name='user_login'),
+    # path('login/', user_login, name='user_login'),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
 
     path('addsongview/<int:id>', addsong_view, name='add-song-view'),
-    path('deletesongview/<int:id>', removesong_view, name='delete-song-view'),
+    path('removesongview/<int:id>', removesong_view, name='delete-song-view'),
 
     path('addchord/<int:idChord>', addchord_view, name='add-chord-view'),
     path('deletechord/', deletechord_view, name='delete-chord-view'),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
+#For serving media:
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

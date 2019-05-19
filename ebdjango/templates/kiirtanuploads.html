@@ -18,6 +18,10 @@
 {% endblock kiirtantabs %}
 
 {% block youarenotloggedin %}
+{% if user.is_authenticated %}
+{% else %}
+  {% include 'loginbutton.html' with songtype='uploads'%}
+{% endif %}  
 {% endblock youarenotloggedin %}
 
 {% block renderkiirtans %}

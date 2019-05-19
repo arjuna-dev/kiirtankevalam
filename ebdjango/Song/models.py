@@ -18,7 +18,7 @@ class Song(models.Model):
     uploader          = models.ForeignKey('Profile', null=True, on_delete=models.SET_NULL)
     written_by        = models.CharField(max_length=50, blank=True)      
     song_text         = models.TextField(blank=True)
-    audio_file         = models.FileField()
+    audio_file         = models.FileField(upload_to='songs/')
     upload_date       = models.DateField(auto_now=False, auto_now_add=True)
     edit_date         = models.DateField(auto_now=True, auto_now_add=False)
     chords            = models.ManyToManyField('Chord', related_name='chords', through='ChordIndex')
@@ -29,7 +29,7 @@ class Profile(models.Model):
     sanskrit_name = models.CharField(max_length=100)
     country       = CountryField(max_length=50)
     city          = models.CharField(max_length=50, blank=True, null=True)
-    profile_pic    = models.ImageField(upload_to='profile_pics',blank=True)
+    profile_pic    = models.ImageField(upload_to='profile_pics/', blank=True)
     liked_songs   = models.ManyToManyField(Song, related_name="liked_songs", through='IsFavourite')
     def __str__(self):
         return self.user.username
