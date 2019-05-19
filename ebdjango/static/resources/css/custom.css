@@ -78,3 +78,19 @@
     }
   }
 
+.audio-controls{
+    position: fixed;
+    bottom: 0%;
+    width: 100%;
+}
+
+.boton{
+    margin-bottom: 7px;
+    /* padding: 5px; */
+    /* background-color: transparent; */
+    font-size: 0.8rem;
+}
+
+.navbar-toggler{
+    border: none;
+}
