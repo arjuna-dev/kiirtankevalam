@@ -18,8 +18,8 @@ allBhajan   = Song.objects.filter(type='BH')
 allPs       = Song.objects.filter(type='PS')
 allChords   = Chord.objects.all()
 
-def main_view(request):
-    return HttpResponseRedirect(reverse(kiirtanfav_view))
+# def main_view(request):
+#     return HttpResponseRedirect(reverse(kiirtanfav_view))
 
 # def song_view(request):
     # return render(request, "song.html", {})
