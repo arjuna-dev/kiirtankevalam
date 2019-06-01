@@ -5,6 +5,45 @@ $(document).ready(function(){
 let usernameText = $("#div_id_username .col-form-label")
 usernameText.text('Email*')
 
+
+//Change orange pratik to grey
+let pratik = $(".pratik")
+
+// pratik.on('click', function(){
+//     var pk = $(this).attr('value')
+//     $.ajax({
+//         type: 'POST',
+//         url: "{% url 'add-remove-song-view' %}",
+//         data: {'id':pk, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+//         dataType: 'json',
+//         success: function(response){
+//             $('pratik').html(response['form'])
+//             console.log($('pratik').html(response['form']))
+//         },
+//         error: function(rs,e){
+//             console.log(rs.responseText)
+//         }
+//     })
+// })
+
+// pratik.click(function(){
+//     // $(this).attr("src", "/static/resources/img/pratik.png")
+//     // $(this).toggleClass("pratik")
+//     // $(this).toggleClass("pratik-selected")
+//     var src = $(this).attr('src');
+//     var newsrc = (src=='/static/resources/img/pratik.png') ? '/static/resources/img/pratik-selected.png' : '/static/resources/img/pratik.png';
+//     $(this).attr('src', newsrc );
+// })
+
+//Change grey pratik to orange
+// let pratik = $(".pratik")
+
+// pratik.click(function(){
+//     $(this).attr("src", "/static/resources/img/pratik-selected.png")
+//     $(this).toggleClass("pratik-selected")
+//     $(this).toggleClass("pratik")
+// })
+
 //Animate dropdown menu
 let x = true
 $(".dropdown-animator, .drpdwn-item").click(function(){

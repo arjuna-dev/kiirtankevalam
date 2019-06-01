@@ -20,7 +20,7 @@
 {% block youarenotloggedin %}
   {% if user.is_authenticated %}
   {% else %}
-    {% include 'loginbutton.html' %}
+    {% include 'loginbutton.html' with songtype='Prabhat Samgiita'%}
   {% endif %}  
 {% endblock youarenotloggedin %}
 
