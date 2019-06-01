@@ -3,8 +3,9 @@ from Song.models import Song, Profile, IsFavourite, Chord, ChordIndex
 from Song.forms import UserForm, UserProfileInfoForm, SongForm, AddChordForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
+from django.template.loader import render_to_string
 
 from django.test import RequestFactory
 
@@ -18,11 +19,6 @@ allBhajan   = Song.objects.filter(type='BH')
 allPs       = Song.objects.filter(type='PS')
 allChords   = Chord.objects.all()
 
-# def main_view(request):
-#     return HttpResponseRedirect(reverse(kiirtanfav_view))
-
-# def song_view(request):
-    # return render(request, "song.html", {})
 
 def song_view(request, songid): 
     song = allSongs.get(pk=songid)
@@ -56,9 +52,9 @@ def addsong_view(request, id):
     if request.user.is_authenticated:
         user = request.user.profile
         song = Song.objects.get(pk=id)
-        # user.profile.liked_songs.add(song)
         IsFavourite.objects.create(song=song, profile=user, is_favorite=True)
         return HttpResponseRedirect(previousPage)
+        # return HttpResponse(status=204)
     else:
         return HttpResponse(status=204)
 
@@ -70,8 +66,32 @@ def removesong_view(request, id):
         thisSong = IsFavourite.objects.filter(song=song, profile=user)
         thisSong.delete()
         return HttpResponseRedirect(previousPage)
+        # return HttpResponse(status=204)
     else:
         return HttpResponse(status=204)
+
+
+# def addremovesong_view(request, id):
+#     post = request.POST.get('id')
+#     isFavorite = False
+#     previousPage = request.META.get('HTTP_REFERER')
+#     if request.user.is_authenticated:
+#         user = request.user.profile
+#         song = Song.objects.get(pk=id)
+#         thisSong = IsFavourite.objects.filter(song=song, profile=user)
+#         if thisSong.exists():
+#             thisSong.delete()
+#             isFavorite = False
+#         else:
+#             IsFavourite.objects.create(song=song, profile=user, is_favorite=True)
+#             isFavorite = True
+#         context = {
+#             'post': post,
+#             'isFavorite': isFavorite,
+#         }
+#         if request.is_ajax():
+#             html = render_to_string('listitem.html', context, request=request)
+#             return JsonResponse({'form': html})
 
 @login_required
 def editchords_view(request):
