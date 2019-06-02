@@ -2,7 +2,9 @@
     {% if songlistlikes %}
         {% for song in songlist %}
             {% if song in favorite_songs %}
-                {% include "listitem.html" %}
+                <div id="btn-section"> 
+                    {% include "listitem.html" %}
+                </div>
             {% endif %}
         {% endfor %}
     {% else %}

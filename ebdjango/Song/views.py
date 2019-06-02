@@ -71,27 +71,33 @@ def removesong_view(request, id):
         return HttpResponse(status=204)
 
 
-# def addremovesong_view(request, id):
-#     post = request.POST.get('id')
-#     isFavorite = False
-#     previousPage = request.META.get('HTTP_REFERER')
-#     if request.user.is_authenticated:
-#         user = request.user.profile
-#         song = Song.objects.get(pk=id)
-#         thisSong = IsFavourite.objects.filter(song=song, profile=user)
-#         if thisSong.exists():
-#             thisSong.delete()
-#             isFavorite = False
-#         else:
-#             IsFavourite.objects.create(song=song, profile=user, is_favorite=True)
-#             isFavorite = True
-#         context = {
-#             'post': post,
-#             'isFavorite': isFavorite,
-#         }
-#         if request.is_ajax():
-#             html = render_to_string('listitem.html', context, request=request)
-#             return JsonResponse({'form': html})
+def addremovesong_view(request):
+    songId = request.POST.get('theId')
+    print(songId)
+    print(songId)
+    print(songId)
+    isFavorite = False
+    previousPage = request.META.get('HTTP_REFERER')
+    if request.user.is_authenticated:
+        user = request.user.profile
+        song = Song.objects.get(pk=songId)
+        thisSong = IsFavourite.objects.filter(song=song, profile=user)
+        if thisSong.exists():
+            thisSong.delete()
+            isFavorite = False
+        else:
+            IsFavourite.objects.create(song=song, profile=user, is_favorite=True)
+            isFavorite = True
+        context = {
+            'song': song,
+            'songId': songId,
+            'isFavorite': isFavorite,
+        }
+        if request.is_ajax():
+            html = render_to_string('listitem.html', context, request=request)
+            return JsonResponse({'form': html})
+    # return HttpResponse(status=204)
+
 
 @login_required
 def editchords_view(request):
