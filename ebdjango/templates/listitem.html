@@ -1,21 +1,27 @@
 {% load static %}
 <div class="songlist-element">
     <li class="list-group-item">
-        <h5 class="card-title"> <a href="{% url 'song-view' songid=song.pk %}">{{ song.title }}</a>
-{% comment %}
-<form action="{% url 'add-remove-song-view' %}" method="POST">
-    {% csrf_token %}
-    {% if song in user.profile.liked_songs.all %}
-        <button class="pratik btn btn-primary" type="submit" name="song_pk" value="{{ song.pk }}">
-            add
-        </button>
-    {% else %}
-    <button class="pratik btn btn-primary" type="submit" name="song_pk" value="{{ song.pk }}">
-        remove
-    </button>
-    {% endif %}
-</form>
-{% endcomment %}
+        <h5 class="card-title"> <a href="{% url 'song-view' songid=song.pk %}">{{ song.title }}</a> </h5>
+
+        
+        {% comment %}
+            
+        
+            
+
+        <form action="{% url 'add-remove-song-view' %}" method="POST">
+            {% csrf_token %}
+            {% if song in user.profile.liked_songs.all %}
+                <button class="pratik btn btn-primary" type="submit" name="song_pk" value="{{ song.pk }}">
+                    add
+                </button>
+            {% else %}
+            <button class="pratik btn btn-primary" type="submit" name="song_pk" value="{{ song.pk }}">
+                remove
+            </button>
+            {% endif %}
+        </form>
+        {% endcomment %}
 
             {% if song in user.profile.liked_songs.all %}
                 <a href="{% url 'remove-song-view' id=song.pk %}">
@@ -27,7 +33,7 @@
                 </a>
             {% endif %}
                 
-        </h5>
+        
         <h6 class="card-subtitle mt-10 text-muted">Shared by
             {% firstof song.uploader.sanskrit_name song.uploader.name "a margii"%} from {{ song.uploader.country }}</h6>
     </li>
