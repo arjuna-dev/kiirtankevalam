@@ -1,28 +1,26 @@
 {% load static %}
 <div class="songlist-element">
     <li class="list-group-item">
-        <h5 class="card-title"> <a href="{% url 'song-view' songid=song.pk %}">{{ song.title }}</a> </h5>
+        <h5 class="card-title"> <a href="{% url 'song-view' songid=song.pk %}">{{ song.title }}</a> 
 
         
-        {% comment %}
-            
         
-            
-
         <form action="{% url 'add-remove-song-view' %}" method="POST">
             {% csrf_token %}
             {% if song in user.profile.liked_songs.all %}
-                <button class="pratik btn btn-primary" type="submit" name="song_pk" value="{{ song.pk }}">
-                    add
+                <button id="favBtn" class="pratik btn" type="submit" name="song_pk" value="{{ song.pk }}">
+                    <img class="pratik" src="{% static 'resources/img/pratik-selected.png' %}" alt="">
                 </button>
             {% else %}
-            <button class="pratik btn btn-primary" type="submit" name="song_pk" value="{{ song.pk }}">
-                remove
+            <button id="favBtn" class="pratik btn" type="submit" name="song_pk" value="{{ song.pk }}">
+                <img class="pratik" src="{% static 'resources/img/pratik.png' %}" alt="">
             </button>
             {% endif %}
         </form>
-        {% endcomment %}
+        
 
+        {% comment %}
+        
             {% if song in user.profile.liked_songs.all %}
                 <a href="{% url 'remove-song-view' id=song.pk %}">
                     <img class="pratik" src="{% static 'resources/img/pratik-selected.png' %}" alt="">
@@ -32,8 +30,8 @@
                     <img class="pratik" src="{% static 'resources/img/pratik.png' %}" alt="">
                 </a>
             {% endif %}
-                
-        
+            {% endcomment %}
+        </h5>
         <h6 class="card-subtitle mt-10 text-muted">Shared by
             {% firstof song.uploader.sanskrit_name song.uploader.name "a margii"%} from {{ song.uploader.country }}</h6>
     </li>
