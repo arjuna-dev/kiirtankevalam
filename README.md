@@ -29,7 +29,7 @@ ___
   * `$ cd ebdjango`
   * `$ pip install -r requirenments.txt`
 
-That's it! 😁
+That's it!
 
 ___
 
