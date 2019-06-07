@@ -7,28 +7,28 @@ usernameText.text('Email*')
 
 
 //Change orange pratik to grey
-let pratik = $("#favBtn")
+// let pratik = $("#favBtn")
 
-pratik.on('click', function(event){
-    event.preventDefault();
-    var pk = $(this).attr('value')
-    console.log('pk:', pk)
-    $.ajax({
-        type: 'POST',
-        url: "{% url 'add-remove-song-view' %}",
-        data: {'theId':pk, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
-        dataType: 'json',
-        success: function(response){
-            console.log('helloHelloHello:')
-            $('#btn-section').html(response['form'])
-            console.log($('#btn-section').html(response['form']))
-        },
-        error: function(rs,e){
-            console.log('noNOHelooNoNo')
-            console.log(rs.responseText)
-        }
-    })
-})
+// pratik.on('click', function(event){
+//     event.preventDefault();
+//     var pk = $(this).attr('value')
+//     console.log('pk:', pk)
+//     $.ajax({
+//         type: 'POST',
+//         url: "{% url 'add-remove-song-view' %}",
+//         data: {'theId':pk, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+//         dataType: 'json',
+//         success: function(response){
+//             console.log('helloHelloHello:')
+//             $('#btn-section').html(response['form'])
+//             console.log($('#btn-section').html(response['form']))
+//         },
+//         error: function(rs,e){
+//             console.log('noNOHelooNoNo')
+//             console.log(rs.responseText)
+//         }
+//     })
+// })
 
 // pratik.click(function(){
 //     // $(this).attr("src", "/static/resources/img/pratik.png")

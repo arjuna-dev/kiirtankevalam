@@ -4,20 +4,9 @@
         <h5 class="card-title"> <a href="{% url 'song-view' songid=song.pk %}">{{ song.title }}</a> 
 
         
-        
-        <form action="{% url 'add-remove-song-view' %}" method="POST">
-            {% csrf_token %}
-            {% if song in user.profile.liked_songs.all %}
-                <button id="favBtn" class="pratik btn" type="submit" name="song_pk" value="{{ song.pk }}">
-                    <img class="pratik" src="{% static 'resources/img/pratik-selected.png' %}" alt="">
-                </button>
-            {% else %}
-            <button id="favBtn" class="pratik btn" type="submit" name="song_pk" value="{{ song.pk }}">
-                <img class="pratik" src="{% static 'resources/img/pratik.png' %}" alt="">
-            </button>
-            {% endif %}
-        </form>
-        
+        <div id="btn-section"> 
+            {% include "button.html" %}
+        </div>
 
         {% comment %}
         
