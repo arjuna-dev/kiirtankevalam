@@ -74,8 +74,6 @@ def removesong_view(request, id):
 def addremovesong_view(request):
     songId = request.POST.get('theId')
     print(songId)
-    print(songId)
-    print(songId)
     isFavorite = False
     previousPage = request.META.get('HTTP_REFERER')
     if request.user.is_authenticated:
@@ -94,9 +92,8 @@ def addremovesong_view(request):
             'isFavorite': isFavorite,
         }
         if request.is_ajax():
-            html = render_to_string('listitem.html', context, request=request)
+            html = render_to_string('button.html', context, request=request)
             return JsonResponse({'form': html})
-    # return HttpResponse(status=204)
 
 
 @login_required
