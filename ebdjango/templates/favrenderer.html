@@ -2,7 +2,7 @@
     {% if songlistlikes %}
         {% for song in songlist %}
             {% if song in favorite_songs %}
-                    {% include "listitem.html" %}
+                {% include "listitem.html" %}
             {% endif %}
         {% endfor %}
     {% else %}
