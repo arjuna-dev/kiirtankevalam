@@ -94,6 +94,33 @@
 <script src="{% static 'resources/js/index.js' %}"></script>
 <script>
 let pratik = $(".favBtn")
+pratik.on('click', function(event){
+    var btn = $(this).children()
+    var src = btn.attr('src');
+    var newsrc = (src=='/static/resources/img/pratik.png') ? '/static/resources/img/pratik-selected.png' : '/static/resources/img/pratik.png';
+    btn.attr('src', newsrc );
+
+    event.preventDefault();
+    var pk = $(this).data('pid')
+    console.log('pk:', pk)
+    $.ajax({
+        type: 'GET',
+        url: "{% url 'add-remove-song-view' %}",
+        data: {'theId':pk},
+        success: function(response){
+            console.log('Hello, ajax successful')
+            $('#btn-section').html(response['form'])
+            console.log($('#btn-section').html(response['form']))
+        },
+        error: function(rs,e){
+            console.log('noNOHelooNoNo')
+            console.log(rs.responseText)
+        }
+    })
+})
+</script>
+<!-- <script>
+let pratik = $(".favBtn")
 
 pratik.on('click', function(event){
     event.preventDefault();
@@ -115,6 +142,6 @@ pratik.on('click', function(event){
         }
     })
 })
-</script>
+</script> -->
 </body>
 </html>

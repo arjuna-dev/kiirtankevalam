@@ -72,7 +72,7 @@ def removesong_view(request, id):
 
 
 def addremovesong_view(request):
-    songId = request.POST.get('theId')
+    songId = request.GET.get('theId')
     print(songId)
     isFavorite = False
     previousPage = request.META.get('HTTP_REFERER')
@@ -94,6 +94,30 @@ def addremovesong_view(request):
         if request.is_ajax():
             html = render_to_string('button.html', context, request=request)
             return JsonResponse({'form': html})
+            
+# def addremovesong_view(request):
+#     songId = request.POST.get('theId')
+#     print(songId)
+#     isFavorite = False
+#     previousPage = request.META.get('HTTP_REFERER')
+#     if request.user.is_authenticated:
+#         user = request.user.profile
+#         song = Song.objects.get(pk=songId)
+#         thisSong = IsFavourite.objects.filter(song=song, profile=user)
+#         if thisSong.exists():
+#             thisSong.delete()
+#             isFavorite = False
+#         else:
+#             IsFavourite.objects.create(song=song, profile=user, is_favorite=True)
+#             isFavorite = True
+#         context = {
+#             'song': song,
+#             'songId': songId,
+#             'isFavorite': isFavorite,
+#         }
+#         if request.is_ajax():
+#             html = render_to_string('button.html', context, request=request)
+#             return JsonResponse({'form': html})
 
 
 @login_required
