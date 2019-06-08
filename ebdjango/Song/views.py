@@ -188,7 +188,7 @@ def kiirtanuploads_view(request):
     if request.user.is_authenticated: 
         user = request.user.profile
         global kiirtanContext
-        userUploads = allSongs.filter(uploader=user)
+        userUploads = allKiirtan.filter(uploader=user)
         kiirtanContext["userUploads"]=userUploads
         return render(request,"kiirtanuploads.html",kiirtanContext)
     else:
@@ -222,14 +222,20 @@ def psfeed_view(request):
     return render(request,"psfeed.html",psContext)
 
 def psuploads_view(request):
-    global psContext
-    return render(request,"psuploads.html",psContext)
+    if request.user.is_authenticated: 
+        user = request.user.profile
+        global psContext
+        userUploads = allPs.filter(uploader=user)
+        psContext["userUploads"]=userUploads
+        return render(request,"psuploads.html",psContext)
+    else:
+        return render(request,"psuploads.html",psContext)
 
 #_-_-_-_-_-_-_-_-_-_-_-_-Bhajan views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 #_-_-_-_-_-_-_-_-_-_-_-_-Bhajan views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 #_-_-_-_-_-_-_-_-_-_-_-_-Bhajan views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 
-bhajancontext = {
+bhajanContext = {
     'allBhajan': allBhajan,
     'typeintitle': 'bhajan',
 }
@@ -238,23 +244,30 @@ def bhajanfav_view(request):
     if request.user.is_authenticated:
         user = request.user
         bhajanLikes = user.profile.liked_songs.all().filter(type="BH")
-        global bhajancontext
-        bhajancontext["bhajanLikes"]=bhajanLikes
-        return render(request,"bhajanfav.html",bhajancontext)
+        global bhajanContext
+        bhajanContext["bhajanLikes"]=bhajanLikes
+        return render(request,"bhajanfav.html",bhajanContext)
     else:
-        return render(request,"bhajanfav.html",bhajancontext)
+        return render(request,"bhajanfav.html",bhajanContext)
 
 def bhajanall_view(request):
-    global bhajancontext
-    return render(request,"bhajanall.html",bhajancontext)
+    global bhajanContext
+    return render(request,"bhajanall.html",bhajanContext)
 
 def bhajanfeed_view(request):
-    global bhajancontext
-    return render(request,"bhajanfeed.html",bhajancontext)
+    global bhajanContext
+    return render(request,"bhajanfeed.html",bhajanContext)
 
 def bhajanuploads_view(request):
-    global bhajancontext
-    return render(request,"bhajanuploads.html",bhajancontext)
+    if request.user.is_authenticated: 
+        user = request.user.profile
+        print(user.sanskrit_name)
+        global bhajanContext
+        userUploads = allBhajan.filter(uploader=user)
+        bhajanContext["userUploads"]=userUploads
+        return render(request,"bhajanuploads.html",bhajanContext)
+    else:
+        return render(request,"bhajanuploads.html",bhajanContext)
 
 #_-_-_-_-_-_-_-_-_-_-_-_-Other views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 #_-_-_-_-_-_-_-_-_-_-_-_-Other views_-_-_-_-_-_-_-_-_-_-_-_-_-_-

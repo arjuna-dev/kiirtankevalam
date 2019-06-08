@@ -25,5 +25,9 @@
 {% endblock youarenotloggedin %}
 
 {% block renderkiirtans %}
-  {% include 'renderer.html' with songlist=userUploads%}
+  {% if userUploads %}
+    {% include 'renderer.html' with songlist=userUploads%}
+  {% else %}
+    {% include "nouploads.html" %}
+  {% endif %}
 {% endblock renderkiirtans %}
