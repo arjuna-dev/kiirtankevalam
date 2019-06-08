@@ -18,8 +18,16 @@
 {% endblock bhajantabs %}
 
 {% block youarenotloggedin %}
+{% if user.is_authenticated %}
+{% else %}
+  {% include 'loginbutton.html' with songtype='uploads'%}
+{% endif %}
 {% endblock youarenotloggedin %}
 
 {% block renderbhajans %}
-    {% include 'renderer.html' with songlist=allBhajan%}
+  {% if userUploads %}
+    {% include 'renderer.html' with songlist=userUploads%}
+  {% else %}
+    {% include "nouploads.html" %}
+  {% endif %}
 {% endblock renderbhajans %}
