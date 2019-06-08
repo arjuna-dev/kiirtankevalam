@@ -7,26 +7,10 @@ usernameText.text('Email*')
 
 
 //Change orange pratik to grey
-let pratik = $(".pratik")
-
-// pratik.on('click', function(){
-//     var pk = $(this).attr('value')
-//     $.ajax({
-//         type: 'POST',
-//         url: "{% url 'add-remove-song-view' %}",
-//         data: {'id':pk, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
-//         dataType: 'json',
-//         success: function(response){
-//             $('pratik').html(response['form'])
-//             console.log($('pratik').html(response['form']))
-//         },
-//         error: function(rs,e){
-//             console.log(rs.responseText)
-//         }
-//     })
-// })
+// let pratik = $(".favBtn")
 
 // pratik.click(function(){
+//     // alert('yoYo')
 //     // $(this).attr("src", "/static/resources/img/pratik.png")
 //     // $(this).toggleClass("pratik")
 //     // $(this).toggleClass("pratik-selected")
@@ -35,7 +19,7 @@ let pratik = $(".pratik")
 //     $(this).attr('src', newsrc );
 // })
 
-//Change grey pratik to orange
+// Change grey pratik to orange
 // let pratik = $(".pratik")
 
 // pratik.click(function(){
