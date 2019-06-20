@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block bhajantabs %}
+  {% include "overtabs.html" %}
   <ul class="nav nav-tabs">
     <li class="nav-item">
       <a class="nav-link active" href="/bhajanfav/">Favorite</a>
@@ -15,6 +16,7 @@
       <a class="nav-link" href="/bhajanuploads/">Uploads</a>
     </li>
   </ul>
+  {% include "uploadbutton.html" %}
 {% endblock bhajantabs %}
 
 {% block youarenotloggedin %}
