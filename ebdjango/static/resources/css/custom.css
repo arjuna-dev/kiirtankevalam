@@ -67,10 +67,6 @@
     display: inline;
 }
 
-.pratik, .pratik-selected{
-    width:2rem;
-    float: right;
-}
 @media only screen and (max-width: 240px) {
     .navbar-brand{
         font-size: 14px;
@@ -92,4 +88,51 @@
 
 .navbar-toggler{
     border: none;
+}
+
+/* #square-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+#square{
+    width: 30px;
+    height: 30px;
+    background-color: violet;
+}
+
+.svg-attributes svg{
+    color: red;
+    background-color: blue;
+} */
+
+.btnContainer{
+    /* width:2rem;
+    height:2rem;
+    float: right;
+    background-color: red; */
+}
+
+.pratik{
+    width:2rem;
+    float: right;
+}
+
+.popper{
+    position: absolute;
+    width:3rem;
+    right: 10px;   
+    display: none;
+}
+
+.stars{
+    width:0.5rem;
+    right: 30px;   
+    top:20px;
+}
+
+.baba{
+    top: 20px;
 }

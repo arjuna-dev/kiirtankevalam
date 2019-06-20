@@ -86,6 +86,28 @@
 
     {% block bodyblock %} 
     {% endblock bodyblock %}
+
+    <!-- <div id="square-container">
+        <div id="square" ></div>
+
+    </div>
+
+    <div class="svg-attributes">
+            <svg width="200" height="200" viewBox="0 0 220 220">
+         <filter id="displacementFilter">
+           <feTurbulence type="turbulence" baseFrequency="0.005"
+               numOctaves="2" result="turbulence"/>
+           <feDisplacementMap in2="turbulence" in="SourceGraphic"
+               scale="50" xChannelSelector="R" yChannelSelector="G"/>
+            <polygon points="640 68.64 8.574 100 63.446 67.68 64 4 64.554 67.68 119.426 100" style="filter: url(#displacementFilter)" fill="currentColor"/>
+         </filter>
+              <polygon points="64 68.64 8.574 100 63.446 67.68 64 4 64.554 67.68 119.426 100" style="filter: url(#displacementFilter)" fill="currentColor"/>
+         <circle cx="100" cy="100" r="100"
+             style="filter: url(#displacementFilter)"/> 
+              <polygon points="100,10 40,198 190,78 10,78 160,198"
+             style="fill:lime;stroke:purple;stroke-width:5;fill-rule:evenodd;" /> 
+       </svg> -->
+    </div>
         
 <script src="{% static 'vendors/js/jquery-3.4.0.min.js' %}"></script>
 <script src="{% static 'vendors/js/popper.min.js' %}"></script>
@@ -93,11 +115,56 @@
 <script src="{% static 'vendors/js/anime.min.js' %}"></script>
 <script src="{% static 'resources/js/index.js' %}"></script>
 <script>
+
 let pratik = $(".favBtn")
 pratik.on('click', function(event){
-    var btn = $(this).children()
-    var src = btn.attr('src');
-    var newsrc = (src=='/static/resources/img/pratik.png') ? '/static/resources/img/pratik-selected.png' : '/static/resources/img/pratik.png';
+    
+    var btn = $(this).find(':first-child');
+    var src = btn.attr('src'); 
+    var newsrc
+    if (src=='/static/resources/img/pratik-selected.png'){
+        newsrc = '/static/resources/img/pratik.png'
+    } else {
+        newsrc = '/static/resources/img/pratik-selected.png'
+        $(this).find(':nth-child(2)').toggleClass('star')
+        $(this).find(':nth-child(2)').toggleClass('poppe')
+        $(this).find(':nth-child(3)').toggleClass('bab')
+        $(this).find(':nth-child(3)').toggleClass('poppe')
+
+        $(this).find(':nth-child(2)').show()
+        $(this).find(':nth-child(3)').show()
+        //$('.popper').show()
+        anime({
+            targets: '.star',
+            scale: 11,
+            opacity:1,
+          });
+        anime({
+            targets: '.bab',
+            opacity: 1,
+          });
+        setTimeout(() => {
+            anime({
+                targets: '.poppe',
+                opacity: 0,
+                duration: 5000,
+            });
+        }, 500);
+          setTimeout(() => {
+            $(this).find(':nth-child(2)').hide()
+            $(this).find(':nth-child(3)').hide()
+            anime({
+                targets: '.star',
+                scale: 1,
+              });
+            $(this).find(':nth-child(2)').toggleClass('star')
+            $(this).find(':nth-child(2)').toggleClass('poppe')
+            $(this).find(':nth-child(3)').toggleClass('bab')
+            $(this).find(':nth-child(3)').toggleClass('poppe')
+        }, 1000);
+
+    }
+//    var newsrc = (src=='/static/resources/img/pratik.png') ? '/static/resources/img/pratik-selected.png' : '/static/resources/img/pratik.png';
     btn.attr('src', newsrc );
 
     event.preventDefault();

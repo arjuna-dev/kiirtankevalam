@@ -9,13 +9,24 @@
             </div>
             {% endcomment %}
             {% if song in user.profile.liked_songs.all %}
-                <a href="{% url 'song-view' songid=song.pk %}">{{ song.title }}</a>
-                <a class="favBtn" href="#" data-pid="{{ song.pk }}"><img class="pratik" src="{% static 'resources/img/pratik-selected.png' %}" alt=""></a>
+                <div class='btnContainer'>
+                    <a href="{% url 'song-view' songid=song.pk %}">{{ song.title }}</a>
+                    <a class="favBtn" href="#" data-pid="{{ song.pk }}">
+                        <img class="pratik" src="{% static 'resources/img/pratik-selected.png' %}" alt="">
+                        <img class="stars popper" src="{% static 'resources/img/stars.png' %}" alt="">
+                        <img class="baba popper" src="{% static 'resources/img/baba.png' %}" alt="">
+                    </a>
+                </div>
             {% else %}
-                <a href="{% url 'song-view' songid=song.pk %}">{{ song.title }}</a>
-                <a class="favBtn" href="#" data-pid="{{ song.pk }}"><img class="pratik" src="{% static 'resources/img/pratik.png' %}" alt=""></a>
+                <div class='btnContainer'>
+                    <a href="{% url 'song-view' songid=song.pk %}">{{ song.title }}</a>
+                    <a class="favBtn" href="#" data-pid="{{ song.pk }}">
+                        <img class="pratik" src="{% static 'resources/img/pratik.png' %}" alt="">
+                        <img class="stars popper" src="{% static 'resources/img/stars.png' %}" alt="">
+                        <img class="baba popper" src="{% static 'resources/img/baba.png' %}" alt="">   
+                    </a>
+                </div>
             {% endif %}
-            
         </h5>
         <h6 class="card-subtitle mt-10 text-muted">
             Shared by {% firstof song.uploader.sanskrit_name song.uploader.name "a margii"%} from {{ song.uploader.country }}
