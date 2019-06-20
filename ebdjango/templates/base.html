@@ -72,6 +72,16 @@
             <a class="navbar-brand" href="#">Navbar</a>
     </nav>
 
+    {% if user.is_authenticated %}
+    {% else %}
+        <div id="alerto" class="alert alert-warning alert-dismissible fade show" role="alert">
+            <p>Login to add to your favorites!</p>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endif %}
+
     {% block kiirtantabs %}
     {% endblock kiirtantabs %}
 
@@ -87,26 +97,6 @@
     {% block bodyblock %} 
     {% endblock bodyblock %}
 
-    <!-- <div id="square-container">
-        <div id="square" ></div>
-
-    </div>
-
-    <div class="svg-attributes">
-            <svg width="200" height="200" viewBox="0 0 220 220">
-         <filter id="displacementFilter">
-           <feTurbulence type="turbulence" baseFrequency="0.005"
-               numOctaves="2" result="turbulence"/>
-           <feDisplacementMap in2="turbulence" in="SourceGraphic"
-               scale="50" xChannelSelector="R" yChannelSelector="G"/>
-            <polygon points="640 68.64 8.574 100 63.446 67.68 64 4 64.554 67.68 119.426 100" style="filter: url(#displacementFilter)" fill="currentColor"/>
-         </filter>
-              <polygon points="64 68.64 8.574 100 63.446 67.68 64 4 64.554 67.68 119.426 100" style="filter: url(#displacementFilter)" fill="currentColor"/>
-         <circle cx="100" cy="100" r="100"
-             style="filter: url(#displacementFilter)"/> 
-              <polygon points="100,10 40,198 190,78 10,78 160,198"
-             style="fill:lime;stroke:purple;stroke-width:5;fill-rule:evenodd;" /> 
-       </svg> -->
     </div>
         
 <script src="{% static 'vendors/js/jquery-3.4.0.min.js' %}"></script>
@@ -117,8 +107,13 @@
 <script>
 
 let pratik = $(".favBtn")
+var alerto = $('#alerto')
 pratik.on('click', function(event){
-    
+    alerto.show()
+    anime({
+        targets: '#alerto',
+        opacity: 1,
+    })
     var btn = $(this).find(':first-child');
     var src = btn.attr('src'); 
     var newsrc
@@ -133,7 +128,7 @@ pratik.on('click', function(event){
 
         $(this).find(':nth-child(2)').show()
         $(this).find(':nth-child(3)').show()
-        //$('.popper').show()
+
         anime({
             targets: '.star',
             scale: 11,
@@ -164,7 +159,7 @@ pratik.on('click', function(event){
         }, 1000);
 
     }
-//    var newsrc = (src=='/static/resources/img/pratik.png') ? '/static/resources/img/pratik-selected.png' : '/static/resources/img/pratik.png';
+
     btn.attr('src', newsrc );
 
     event.preventDefault();
@@ -186,29 +181,5 @@ pratik.on('click', function(event){
     })
 })
 </script>
-<!-- <script>
-let pratik = $(".favBtn")
-
-pratik.on('click', function(event){
-    event.preventDefault();
-    var pk = $(this).attr('value')
-    console.log('pk:', pk)
-    $.ajax({
-        type: 'POST',
-        url: "{% url 'add-remove-song-view' %}",
-        data: {'theId':pk, 'csrfmiddlewaretoken': '{{ csrf_token }}'},
-        dataType: 'json',
-        success: function(response){
-            console.log('Hello, ajax successful')
-            $('#btn-section').html(response['form'])
-            console.log($('#btn-section').html(response['form']))
-        },
-        error: function(rs,e){
-            console.log('noNOHelooNoNo')
-            console.log(rs.responseText)
-        }
-    })
-})
-</script> -->
 </body>
 </html>

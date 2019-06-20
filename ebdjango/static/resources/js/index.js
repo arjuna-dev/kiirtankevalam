@@ -26,9 +26,6 @@ $(".dropdown-animator, .drpdwn-item").click(function(){
         console.log("opacity0")
     }
 });
-
-
-
 });
 
 
