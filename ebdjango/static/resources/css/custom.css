@@ -108,13 +108,6 @@
     background-color: blue;
 } */
 
-.btnContainer{
-    /* width:2rem;
-    height:2rem;
-    float: right;
-    background-color: red; */
-}
-
 .pratik{
     width:2rem;
     float: right;
@@ -142,4 +135,16 @@
     z-index: 1000;
     bottom: 0%;
     left: 10px;
+}
+
+#alerto{
+    position: fixed;
+    z-index: 999;
+    bottom: 0;
+    width: 90%;
+    transform: translateX(-50%);
+    left: 50%;
+    padding-bottom: 0px;
+    display: none;
+    opacity: 0;
 }
