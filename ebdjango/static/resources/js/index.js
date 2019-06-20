@@ -5,7 +5,6 @@ $(document).ready(function(){
 let usernameText = $("#div_id_username .col-form-label")
 usernameText.text('Email*')
 
-
 //Animate dropdown menu
 let x = true
 $(".dropdown-animator, .drpdwn-item").click(function(){
