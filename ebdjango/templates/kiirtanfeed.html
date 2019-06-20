@@ -1,6 +1,7 @@
 {% extends "kiirtanfav.html" %}
 
 {% block kiirtantabs %}
+{% include "overtabs.html" %}
   <ul class="nav nav-tabs">
     <li class="nav-item">
       <a class="nav-link" href="/kiirtanfav/">Favorite</a>
@@ -15,6 +16,7 @@
       <a class="nav-link" href="/kiirtanuploads/">Uploads</a>
     </li>
   </ul>
+  {% include "uploadbutton.html" %}
 {% endblock kiirtantabs %}
 
 {% block youarenotloggedin %}

@@ -11,17 +11,17 @@
     <link rel="stylesheet" href="{% static 'resources/css/custom.css' %}">
 </head>
 <body>
-    <nav class="firstnav navbar navbar-expand-xs navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">Kiirtan Kevalam <span class="text-muted type-in-title">{{ typeintitle }}</span></a>
+    <nav class="firstnav navbar navbar-expand-xs navbar-dark bg-success">
+        <a class="navbar-brand" href="#">Kiirtan Kevalam</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 {% if user.is_authenticated %}
-                    <li><p class="text-muted">Hello {{ user.profile.sanskrit_name }}!</p></li>
+                    <li><p class="text-light">Hello {{ user.profile.sanskrit_name }}!</p></li>
                 {% endif %}
-                <li><p class="text-primary">Choose song type:</p></li>
+                <li><p class="text-light">Choose song type:</p></li>
                 <li class="nav-item">
                     <div class="menu-box-containers container">
                         <div class="row no-gutters choose-type">
@@ -63,7 +63,7 @@
             </ul>
             <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="Search user or song" aria-label="Search">
-            <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
+            <button class="btn btn-outline-primary text-light my-2 my-sm-0" type="submit">Search</button>
             </form>
         </div>
     </nav>
@@ -71,18 +71,6 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="#">Navbar</a>
     </nav>
-
-    <ul class="nav nav-tabs">
-        <li class="nav-item">
-          <a class="nav-link {{ kiirtanactive }}" href="/kiirtanfav/">Kiirtan</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link {{ psactive }}" href="/psfav/">P.S.</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link {{ bhajanactive }}" href="/bhajanfav/">Bhajan</a>
-        </li>
-      </ul>
 
     {% block kiirtantabs %}
     {% endblock kiirtantabs %}

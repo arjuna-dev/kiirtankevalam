@@ -136,3 +136,10 @@
 .baba{
     top: 20px;
 }
+
+.uploadBtn{
+    position: fixed;
+    z-index: 1000;
+    bottom: 0%;
+    left: 10px;
+}
