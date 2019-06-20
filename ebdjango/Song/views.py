@@ -164,6 +164,7 @@ def deletechord_view(request):
 kiirtanContext = {
     'allKiirtan': allKiirtan,
     'typeintitle': 'kiirtan',
+    'kiirtanactive': 'active'
 }
 
 def kiirtanfav_view(request):
@@ -201,6 +202,7 @@ def kiirtanuploads_view(request):
 psContext = {
     'allPs': allPs,
     'typeintitle': 'P.S.',
+    'psactive': 'active',
 }
 
 def psfav_view(request):
@@ -238,6 +240,8 @@ def psuploads_view(request):
 bhajanContext = {
     'allBhajan': allBhajan,
     'typeintitle': 'bhajan',
+    'bhajanactive': 'active',
+    'activefav': 'active',
 }
 
 def bhajanfav_view(request):

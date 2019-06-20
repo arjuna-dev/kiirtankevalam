@@ -36,7 +36,7 @@ urlpatterns = [
     path('psfeed/', psfeed_view),
     path('psall/', psall_view),
     path('psuploads/', psuploads_view),
-    path('bhajanfav/', bhajanfav_view),
+    path('bhajanfav/', bhajanfav_view, name='bhajan-fav-view'),
     path('bhajanfeed/', bhajanfeed_view),
     path('bhajanall/', bhajanall_view),
     path('bhajanuploads/', bhajanuploads_view),
