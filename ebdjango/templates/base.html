@@ -12,7 +12,7 @@
 </head>
 <body>
     <nav class="firstnav navbar navbar-expand-xs navbar-dark bg-success">
-        <a class="navbar-brand" href="/kiirtanfav/">Kiirtan Kevalam</a>
+        <a class="navbar-brand" href="/kiirtanfeed/">Kiirtan Kevalam</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -26,13 +26,13 @@
                     <div class="menu-box-containers container">
                         <div class="row no-gutters choose-type">
                             <div class="col">
-                                <a class="nav-link" href="/kiirtanfav/">Kiirtan<span class="sr-only">(current)</span></a>
+                                <a class="nav-link" href="/kiirtanfeed/">Kiirtan<span class="sr-only">(current)</span></a>
                             </div>
                             <div class="col">
-                                <a class="nav-link" href="/psfav/">P.S.<span class="sr-only">(current)</span></a>
+                                <a class="nav-link" href="/psfeed/">P.S.<span class="sr-only">(current)</span></a>
                             </div>
                             <div class="col">
-                                <a class="nav-link" href="/bhajanfav/">Bhajan<span class="sr-only">(current)</span></a>
+                                <a class="nav-link" href="/bhajanfeed/">Bhajan<span class="sr-only">(current)</span></a>
                             </div>
                         </div>
                     </div>
@@ -163,11 +163,14 @@ pratik.on('click', function(event){
     btn.attr('src', newsrc );
 
     event.preventDefault();
+    //Get html data and put it in a variable (pk)
     var pk = $(this).data('pid')
     console.log('pk:', pk)
     $.ajax({
         type: 'GET',
-        url: "{% url 'add-remove-song-view' %}",
+        //Trigger a view (which is pretty much a function)
+        url: "{% url 'toggle-favorite-song-view' %}",
+        //Fill in that function's variable (theId) with our html payload (pk)
         data: {'theId':pk},
         success: function(response){
             console.log('Hello, ajax successful')

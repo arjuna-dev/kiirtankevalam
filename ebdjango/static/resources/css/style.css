@@ -1,0 +1,184 @@
+*, *:before, *:after {
+    margin: 0;
+    border: 0;
+    box-sizing: border-box;
+  }
+  
+  html {
+    font-family: 'Roboto', sans-serif;
+    color: rgb(20, 20, 20);
+  }
+  
+  a {
+    text-decoration: underline;
+    color: rgb(22, 19, 202);
+  }
+  
+  #bg {
+    position: absolute;
+    z-index: -1000;
+    background-image: url(img/universe.jpg);
+    width: 100vw;
+    height: 300%;
+  }
+  
+  #message-and-payment{
+    display: flex;
+    justify-content: center;
+    background-color: #3996DA;
+    width: 100vw;
+    height: 12vw;
+    padding: 3vh;
+  }
+  
+  #message {
+    font-size: 1.7vw;
+    margin-right: 2vw;
+  }
+  
+  #payment{
+    padding-right: 1vw;
+  }
+  
+  #bar-container{
+    width: 40vw;
+    background-color: rgb(156, 156, 156);
+  }
+  
+  #bar{
+    width: 28.75%;
+    height: 1vw;
+    background-color: rgb(40, 196, 79);
+  }
+  
+  #bar-text{
+    display: inline-block;
+  }
+  
+  #collected{
+    font-weight: 300;
+    font-size: 3.5vw;
+    margin-top: 1vw;
+  }
+  
+  #total-amount{
+    font-size: 1.5vw;
+  }
+  
+  #donate-button{
+    float: right;
+    width:15vw;
+    margin-top: 0.3vw;
+    margin-right: 0.3vw;
+  }
+  
+  #donate-square{
+    /* margin: 15px; */
+    text-align: center;
+    /* padding: 5px; */
+    background-color: #FAE107;
+    width:15vw;
+    height: 4vw;
+  }
+  
+  #donate-text{
+    margin-top: 1vw; 
+  }
+  
+  #donate-text > a{
+    text-decoration: none;
+    color: inherit;
+    font-weight: 300;
+    font-size: 3.5vw;
+  }
+  
+  #sculpture-container {
+    display: flex;
+    justify-content: center;
+  }
+  
+  #lalita-img {
+    margin-top: 30vh;
+    width: 25vw;
+  }
+  
+  
+  /* _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
+  _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
+  _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_- */
+  
+  @media (max-aspect-ratio: 1/1) {
+    #message-and-payment{
+      display: block;
+      position: absolute;
+      width: 100vw;
+      height: 100vw;
+      padding: 2vh;
+      margin-top: 300vh;
+      transform: translateY(-100%)
+    }
+  
+    #message {
+      font-size: 5.6vw;
+      margin-bottom: 3vh;
+    }
+  
+    #payment{
+      padding-right: 0vw;
+    }
+  
+    #bar-container{
+      width: 90vw;
+      height: 5vw;
+    }
+  
+    #bar{
+      width: 12.5%;
+      height: 5vw;
+    }
+  
+    #bar-text{
+      display: inline-block;
+    }
+  
+    #collected{
+      font-weight: 300;
+      font-size: 5vh;
+      margin-top: 1vw;
+    }
+  
+    #total-amount{
+      font-size: 2.5vh;
+    }
+  
+    #donate-button{
+      display: block;
+      float: right;
+      width:30vw;
+      margin-top: 1vw;
+      margin-right: 3vw;
+    }
+  
+    #donate-square{
+      text-align: center;
+      background-color: #FAE107;
+      width: 30vw;
+      height: 10vw;
+    }
+  
+    #donate-text{
+      margin-top: 1vw; 
+    }
+  
+    #donate-text > a{
+      text-decoration: none;
+      color: inherit;
+      font-weight: 300;
+      font-size: 8vw;
+    }
+  
+    #lalita-img {
+      margin-top: 40vh;
+      width: 95vw;
+    }
+  }

@@ -23,6 +23,7 @@ class Song(models.Model):
     edit_date         = models.DateField(auto_now=True, auto_now_add=False)
     chords            = models.ManyToManyField('Chord', related_name='chords', through='ChordIndex')
     
+    
 
 class Profile(models.Model):
     user          = models.OneToOneField(User,on_delete=models.CASCADE)

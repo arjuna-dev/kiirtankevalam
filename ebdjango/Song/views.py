@@ -19,6 +19,8 @@ allBhajan   = Song.objects.filter(type='BH')
 allPs       = Song.objects.filter(type='PS')
 allChords   = Chord.objects.all()
 
+def lalita_view(request):
+    return render(request,"lalita.html",{})
 
 def song_view(request, songid): 
     song = allSongs.get(pk=songid)
@@ -71,7 +73,10 @@ def removesong_view(request, id):
         return HttpResponse(status=204)
 
 
-def addremovesong_view(request):
+def togglefavoritesong_view(request):
+    print("Hi there!")
+    print("How")
+    print("Are you?")
     songId = request.GET.get('theId')
     print(songId)
     isFavorite = False
@@ -95,7 +100,7 @@ def addremovesong_view(request):
             html = render_to_string('button.html', context, request=request)
             return JsonResponse({'form': html})
             
-# def addremovesong_view(request):
+# def togglefavoritesong_view(request):
 #     songId = request.POST.get('theId')
 #     print(songId)
 #     isFavorite = False
@@ -166,6 +171,7 @@ kiirtanContext = {
     'typeintitle': 'kiirtan',
     'kiirtanactive': 'active'
 }
+
 
 def kiirtanfav_view(request):
     if request.user.is_authenticated: 
