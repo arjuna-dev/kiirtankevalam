@@ -16,6 +16,7 @@
 {% endblock youarenotloggedin %}
 
 {% block renderkiirtans %}
-  
-  {% include 'renderer.html' with songlist=songList %}
+  <div id="songrenderer-div">
+    {% include 'renderer.html' %}
+  </div>
 {% endblock renderkiirtans %}

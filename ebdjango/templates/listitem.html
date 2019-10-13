@@ -2,12 +2,6 @@
 <div class="songlist-element">
     <li class="list-group-item">
         <h5 class="card-title">
-            {% comment %}
-            <a href="{% url 'song-view' songid=song.pk %}">{{ song.title }}</a> 
-            <div id="btn-section"> 
-                {% include "button.html" %}
-            </div>
-            {% endcomment %}
             {% if song in user.profile.liked_songs.all %}
                 <div class='btnContainer'>
                     <a href="{% url 'song-view' songid=song.pk %}">{{ song.title }}</a>
