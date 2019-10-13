@@ -22,11 +22,13 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from Song.views import record_view, song_view, profile_view, kiirtanfav_view, kiirtanall_view, kiirtanuploads_view, kiirtanfeed_view, psfav_view, psall_view, psuploads_view, psfeed_view, bhajanfav_view, bhajanall_view, bhajanuploads_view, bhajanfeed_view, signup, addsong_view, removesong_view, deletechord_view, createsong_view, editchords_view, addchord_view, togglefavoritesong_view, lalita_view
+from Song.views import record_view, song_view, profile_view, kiirtanfav_view, kiirtanall_view, kiirtanuploads_view, kiirtanfeed_view, psfav_view, psall_view, psuploads_view, psfeed_view, bhajanfav_view, bhajanall_view, bhajanuploads_view, bhajanfeed_view, signup, addsong_view, removesong_view, deletechord_view, createsong_view, editchords_view, addchord_view, togglefavoritesong_view, undertab_view, overtab_view,lalita_view
 
 urlpatterns = [
     path('', kiirtanfeed_view),
     path('lalita/', lalita_view),
+    path('overtab/', overtab_view, name='overtab-view'),
+    path('undertab/', undertab_view, name='undertab-view'),
     path('kiirtanfav/', kiirtanfav_view),
     path('kiirtanfeed/', kiirtanfeed_view),
     path('kiirtanall/', kiirtanall_view),

@@ -82,17 +82,17 @@
         </div>
     {% endif %}
 
-    {% block kiirtantabs %}
-    {% endblock kiirtantabs %}
+    {% block overtabs %}
+    {% endblock overtabs %}
 
-    {% block pstabs %}
-    {% endblock pstabs %}
-
-    {% block bhajantabs %}
-    {% endblock bhajantabs %}
+    {% block undertabs %}
+    {% endblock undertabs %}
 
     {% block youarenotloggedin %}
     {% endblock youarenotloggedin %}
+
+    {% block renderkiirtans %}
+    {% endblock renderkiirtans %}
 
     {% block bodyblock %} 
     {% endblock bodyblock %}
@@ -168,6 +168,7 @@ pratik.on('click', function(event){
     console.log('pk:', pk)
     $.ajax({
         type: 'GET',
+        cache: false,
         //Trigger a view (which is pretty much a function)
         url: "{% url 'toggle-favorite-song-view' %}",
         //Fill in that function's variable (theId) with our html payload (pk)
@@ -176,6 +177,63 @@ pratik.on('click', function(event){
             console.log('Hello, ajax successful')
             $('#btn-section').html(response['form'])
             console.log($('#btn-section').html(response['form']))
+        },
+        error: function(rs,e){
+            console.log('noNOHelooNoNo')
+            console.log(rs.responseText)
+        }
+    })
+})
+</script>
+<script>
+let overtab = $(".overtab")
+
+//overtab.on('click', function(event){
+$(document).on('click', '.overtab', function(event){
+
+    event.preventDefault();
+    var overtabdata = $(this).data('songtype')
+    console.log('overtabdata:', overtabdata)
+    $.ajax({
+        type: 'GET',
+        //Trigger a view (which is pretty much a function)
+        url: "{% url 'overtab-view' %}",
+        //Fill in that function's variable (songType) with our html payload (songType)
+        data: {'songType':overtabdata},
+        success: function(response){
+            console.log('Hello, ajax successful')
+            console.log('form[one]:', response['form'])
+            var responseAsJSON = JSON.parse(response['form'])
+            console.log('overtabs:', responseAsJSON['overtabshtml'])
+            $('#overtabs-div').html(responseAsJSON['overtabshtml'])
+            //console.log($('#overtabs-div').html(response['form']))
+        },
+        error: function(rs,e){
+            console.log('noNOHelooNoNo')
+            console.log(rs.responseText)
+        }
+    })
+})
+</script>
+
+<script>
+let undertab = $(".undertab")
+
+$(document).on('click', '.undertab', function(event){
+
+    event.preventDefault();
+    var undertabdata = $(this).data('listtype')
+    console.log('undertabdata:', undertabdata)
+    $.ajax({
+        type: 'GET',
+        //Trigger a view (which is pretty much a function)
+        url: "{% url 'undertab-view' %}",
+        //Fill in that function's variable (songType) with our html payload (songType)
+        data: {'listType':undertabdata},
+        success: function(response){
+            console.log('Hello, ajax successful2')
+            $('#undertabs-div').html(response['form'])
+            //console.log($('#overtabs-div').html(response['form']))
         },
         error: function(rs,e){
             console.log('noNOHelooNoNo')

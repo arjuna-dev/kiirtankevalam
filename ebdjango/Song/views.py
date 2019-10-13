@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.template.loader import render_to_string
+import json as simplejson
 
 from django.test import RequestFactory
 
@@ -74,9 +75,6 @@ def removesong_view(request, id):
 
 
 def togglefavoritesong_view(request):
-    print("Hi there!")
-    print("How")
-    print("Are you?")
     songId = request.GET.get('theId')
     print(songId)
     isFavorite = False
@@ -169,9 +167,89 @@ def deletechord_view(request):
 kiirtanContext = {
     'allKiirtan': allKiirtan,
     'typeintitle': 'kiirtan',
-    'kiirtanactive': 'active'
+    'kiirtanactive': 'active',
+    'feedactive': 'active',
+    'songList': allKiirtan,
 }
 
+
+#_-_-_-_-_-_-_overtab_view shall re-render the whole thing-_-_-_-_-_-_-_-_-
+#_-_-_-_-_-_-_(kiirtanfeed.html for now). in overtab_view we-_-_-_-_-
+#_-_-_-_-_-_-_will check all variables and pass all necesary-_-_-_-_-
+#_-_-_-_-_-_-_variables-_-_-_-_--_-_-_-_--_-_-_-_--_-_-_-_--_-_-_-_--_-_-_-_-
+
+def overtab_view(request):
+    overtabData = request.GET.get('songType')
+    print(overtabData)
+    # previousPage = request.META.get('HTTP_REFERER')
+    if overtabData == 'ki': 
+        context = {
+            'kiirtanactive': 'active',
+            'psactive': '',
+            'bhajanactive': '',
+        }
+    elif overtabData == 'ps': 
+        context = {
+            'kiirtanactive': '',
+            'psactive': 'active',
+            'bhajanactive': '',
+        }
+    elif overtabData == 'bh': 
+        context = {
+            'kiirtanactive': '',
+            'psactive': '',
+            'bhajanactive': 'active',
+        }
+
+    if request.is_ajax():
+        html = render_to_string('overtabs.html', context, request=request)
+        json = simplejson.dumps({'overtabshtml': html, 'undertabshtml': 'hi-there', 'songrenderer': 'songrenderer'})
+
+        return JsonResponse({'form': json})
+        # html = render_to_string('overtabs.html', context, request=request)
+        # return JsonResponse({'form': html})
+
+def undertab_view(request):
+    undertabData = request.GET.get('listType')
+    print(undertabData)
+    # previousPage = request.META.get('HTTP_REFERER')
+    if undertabData == 'fav': 
+        context = {
+            'favactive': 'active',
+            'feedactive': '',
+            'allactive': '',
+            'uploadsactive': '',
+        }
+    elif undertabData == 'feed': 
+        context = {
+            'favactive': '',
+            'feedactive': 'active',
+            'allactive': '',
+            'uploadsactive': '',
+        }
+    elif undertabData == 'all': 
+        context = {
+            'favactive': '',
+            'feedactive': '',
+            'allactive': 'active',
+            'uploadsactive': '',
+        }
+    elif undertabData == 'up': 
+        context = {
+            'favactive': '',
+            'feedactive': '',
+            'allactive': '',
+            'uploadsactive': 'active',
+        }
+
+    if request.is_ajax():
+        html = render_to_string('undertabs.html', context, request=request)
+        return JsonResponse({'form': html})
+
+def kiirtanfeed_view(request):
+    print('so...')
+    global kiirtanContext
+    return render(request,"kiirtanfeed.html",kiirtanContext)
 
 def kiirtanfav_view(request):
     if request.user.is_authenticated: 
@@ -186,10 +264,6 @@ def kiirtanfav_view(request):
 def kiirtanall_view(request):
     global kiirtanContext
     return render(request,"kiirtanall.html",kiirtanContext)
-
-def kiirtanfeed_view(request):
-    global kiirtanContext
-    return render(request,"kiirtanfeed.html",kiirtanContext)
 
 def kiirtanuploads_view(request):
     if request.user.is_authenticated: 
