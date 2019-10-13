@@ -109,6 +109,10 @@
 let pratik = $(".favBtn")
 var alerto = $('#alerto')
 pratik.on('click', function(event){
+  
+//$(".btnContainer").on('click', '.pratik', function(event){
+    
+    console.log('hey there:')
     alerto.show()
     anime({
         targets: '#alerto',
@@ -169,13 +173,11 @@ pratik.on('click', function(event){
     $.ajax({
         type: 'GET',
         cache: false,
-        //Trigger a view (which is pretty much a function)
         url: "{% url 'toggle-favorite-song-view' %}",
-        //Fill in that function's variable (theId) with our html payload (pk)
         data: {'theId':pk},
         success: function(response){
             console.log('Hello, ajax successful')
-            $('#btn-section').html(response['form'])
+            //$('#btn-section').html(response['form'])
             console.log($('#btn-section').html(response['form']))
         },
         error: function(rs,e){
@@ -186,7 +188,7 @@ pratik.on('click', function(event){
 })
 </script>
 <script>
-let overtab = $(".overtab")
+//let overtab = $(".overtab")
 
 //overtab.on('click', function(event){
 $(document).on('click', '.overtab', function(event){
@@ -202,10 +204,10 @@ $(document).on('click', '.overtab', function(event){
         data: {'songType':overtabdata},
         success: function(response){
             console.log('Hello, ajax successful')
-            console.log('form[one]:', response['form'])
             var responseAsJSON = JSON.parse(response['form'])
-            console.log('overtabs:', responseAsJSON['overtabshtml'])
             $('#overtabs-div').html(responseAsJSON['overtabshtml'])
+            $('#undertabs-div').html(responseAsJSON['undertabshtml'])
+            $('#songrenderer-div').html(responseAsJSON['songrendererhtml'])
             //console.log($('#overtabs-div').html(response['form']))
         },
         error: function(rs,e){
@@ -217,7 +219,7 @@ $(document).on('click', '.overtab', function(event){
 </script>
 
 <script>
-let undertab = $(".undertab")
+//let undertab = $(".undertab")
 
 $(document).on('click', '.undertab', function(event){
 
@@ -226,9 +228,7 @@ $(document).on('click', '.undertab', function(event){
     console.log('undertabdata:', undertabdata)
     $.ajax({
         type: 'GET',
-        //Trigger a view (which is pretty much a function)
         url: "{% url 'undertab-view' %}",
-        //Fill in that function's variable (songType) with our html payload (songType)
         data: {'listType':undertabdata},
         success: function(response){
             console.log('Hello, ajax successful2')

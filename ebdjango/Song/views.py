@@ -165,11 +165,10 @@ def deletechord_view(request):
 #_-_-_-_-_-_-_-_-_-_-_-_-Kiirtan views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 
 kiirtanContext = {
-    'allKiirtan': allKiirtan,
     'typeintitle': 'kiirtan',
     'kiirtanactive': 'active',
     'feedactive': 'active',
-    'songList': allKiirtan,
+    'songlist': allKiirtan,
 }
 
 
@@ -181,12 +180,26 @@ kiirtanContext = {
 def overtab_view(request):
     overtabData = request.GET.get('songType')
     print(overtabData)
-    # previousPage = request.META.get('HTTP_REFERER')
+
+    context2 = {
+        'favactive': '',
+        'feedactive': 'active',
+        'allactive': '',
+        'uploadsactive': '',
+    }
+
+    context3 = {
+        'songlist': allKiirtan,
+    }
+
     if overtabData == 'ki': 
         context = {
             'kiirtanactive': 'active',
             'psactive': '',
             'bhajanactive': '',
+        }
+        context3 = {
+            'songlist': allKiirtan,
         }
     elif overtabData == 'ps': 
         context = {
@@ -194,16 +207,23 @@ def overtab_view(request):
             'psactive': 'active',
             'bhajanactive': '',
         }
+        context3 = {
+            'songlist': allPs,
+        }
     elif overtabData == 'bh': 
         context = {
             'kiirtanactive': '',
             'psactive': '',
             'bhajanactive': 'active',
         }
-
+        context3 = {
+            'songlist': allBhajan,
+        }
     if request.is_ajax():
-        html = render_to_string('overtabs.html', context, request=request)
-        json = simplejson.dumps({'overtabshtml': html, 'undertabshtml': 'hi-there', 'songrenderer': 'songrenderer'})
+        html1 = render_to_string('overtabs.html', context, request=request)
+        html2 = render_to_string('undertabs.html', context2, request=request)
+        html3 = render_to_string('renderer.html', context3, request=request)
+        json = simplejson.dumps({'overtabshtml': html1, 'undertabshtml': html2, 'songrendererhtml': html3})
 
         return JsonResponse({'form': json})
         # html = render_to_string('overtabs.html', context, request=request)
@@ -247,7 +267,6 @@ def undertab_view(request):
         return JsonResponse({'form': html})
 
 def kiirtanfeed_view(request):
-    print('so...')
     global kiirtanContext
     return render(request,"kiirtanfeed.html",kiirtanContext)
 
