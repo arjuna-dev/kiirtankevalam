@@ -231,9 +231,10 @@ $(document).on('click', '.undertab', function(event){
         url: "{% url 'undertab-view' %}",
         data: {'listType':undertabdata},
         success: function(response){
-            console.log('Hello, ajax successful2')
-            $('#undertabs-div').html(response['form'])
-            //console.log($('#overtabs-div').html(response['form']))
+            console.log('Hello, ajax successful')
+            var responseAsJSON = JSON.parse(response['form'])
+            $('#undertabs-div').html(responseAsJSON['undertabshtml'])
+            $('#songrenderer-div').html(responseAsJSON['songrendererhtml'])
         },
         error: function(rs,e){
             console.log('noNOHelooNoNo')

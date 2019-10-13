@@ -12,13 +12,13 @@ from django.test import RequestFactory
 
 from django.db import connection
 
-allSongs    = Song.objects.all()
+allSongs     = Song.objects.all()
 # allSongs    = Song.objects.raw('SELECT * FROM Song_Song')
-allKiirtan  = Song.objects.filter(type='KI')
-allBhajan   = Song.objects.filter(type='BH')
+allKiirtan   = Song.objects.filter(type='KI')
+allBhajan    = Song.objects.filter(type='BH')
 # allBhajan   = Song.objects.raw('SELECT * FROM Song_Song WHERE type="BH"')
-allPs       = Song.objects.filter(type='PS')
-allChords   = Chord.objects.all()
+allPs        = Song.objects.filter(type='PS')
+allChords    = Chord.objects.all()
 
 def lalita_view(request):
     return render(request,"lalita.html",{})
@@ -98,31 +98,6 @@ def togglefavoritesong_view(request):
             html = render_to_string('button.html', context, request=request)
             return JsonResponse({'form': html})
             
-# def togglefavoritesong_view(request):
-#     songId = request.POST.get('theId')
-#     print(songId)
-#     isFavorite = False
-#     previousPage = request.META.get('HTTP_REFERER')
-#     if request.user.is_authenticated:
-#         user = request.user.profile
-#         song = Song.objects.get(pk=songId)
-#         thisSong = IsFavourite.objects.filter(song=song, profile=user)
-#         if thisSong.exists():
-#             thisSong.delete()
-#             isFavorite = False
-#         else:
-#             IsFavourite.objects.create(song=song, profile=user, is_favorite=True)
-#             isFavorite = True
-#         context = {
-#             'song': song,
-#             'songId': songId,
-#             'isFavorite': isFavorite,
-#         }
-#         if request.is_ajax():
-#             html = render_to_string('button.html', context, request=request)
-#             return JsonResponse({'form': html})
-
-
 @login_required
 def editchords_view(request):
     user                    = request.user.profile
@@ -176,95 +151,178 @@ kiirtanContext = {
 #_-_-_-_-_-_-_(kiirtanfeed.html for now). in overtab_view we-_-_-_-_-
 #_-_-_-_-_-_-_will check all variables and pass all necesary-_-_-_-_-
 #_-_-_-_-_-_-_variables-_-_-_-_--_-_-_-_--_-_-_-_--_-_-_-_--_-_-_-_--_-_-_-_-
+songtypecontext = {
+    'kiirtanactive': 'active',
+    'psactive': '',
+    'bhajanactive': '',
+}
 
 def overtab_view(request):
     overtabData = request.GET.get('songType')
     print(overtabData)
-
-    context2 = {
+    global songtypecontext
+    listtypecontext = {
         'favactive': '',
         'feedactive': 'active',
         'allactive': '',
         'uploadsactive': '',
     }
 
-    context3 = {
+    renderercontext = {
         'songlist': allKiirtan,
     }
 
     if overtabData == 'ki': 
-        context = {
-            'kiirtanactive': 'active',
-            'psactive': '',
-            'bhajanactive': '',
-        }
-        context3 = {
+        songtypecontext['kiirtanactive'] = 'active'
+        songtypecontext['psactive']      = ''
+        songtypecontext['bhajanactive']  = ''
+
+        renderercontext = {
             'songlist': allKiirtan,
         }
     elif overtabData == 'ps': 
-        context = {
-            'kiirtanactive': '',
-            'psactive': 'active',
-            'bhajanactive': '',
-        }
-        context3 = {
+        songtypecontext['kiirtanactive'] = ''
+        songtypecontext['psactive']      = 'active'
+        songtypecontext['bhajanactive']  = ''
+        renderercontext = {
             'songlist': allPs,
         }
     elif overtabData == 'bh': 
-        context = {
-            'kiirtanactive': '',
-            'psactive': '',
-            'bhajanactive': 'active',
-        }
-        context3 = {
+        songtypecontext['kiirtanactive'] = ''
+        songtypecontext['psactive']      = ''
+        songtypecontext['bhajanactive']  = 'active'
+        renderercontext = {
             'songlist': allBhajan,
         }
     if request.is_ajax():
-        html1 = render_to_string('overtabs.html', context, request=request)
-        html2 = render_to_string('undertabs.html', context2, request=request)
-        html3 = render_to_string('renderer.html', context3, request=request)
-        json = simplejson.dumps({'overtabshtml': html1, 'undertabshtml': html2, 'songrendererhtml': html3})
-
+        html1 = render_to_string('overtabs.html', songtypecontext, request=request)
+        html2 = render_to_string('undertabs.html', listtypecontext, request=request)
+        html3 = render_to_string('renderer.html', renderercontext, request=request)
+        json  = simplejson.dumps({'overtabshtml': html1, 'undertabshtml': html2, 'songrendererhtml': html3})
         return JsonResponse({'form': json})
-        # html = render_to_string('overtabs.html', context, request=request)
-        # return JsonResponse({'form': html})
+
+
+def whichSongType(songtypecontext):
+    if songtypecontext['kiirtanactive'] == 'active':
+        return 'kiirtan'
+    elif songtypecontext['psactive'] == 'active':
+        return 'ps'
+    elif songtypecontext['bhajanactive'] == 'active':
+        return 'bhajan'
+
+
+def whichListType(listtypecontext):
+    if listtypecontext['favactive'] == 'active':
+        return 'fav'
+    elif listtypecontext['feedactive'] == 'active':
+        return 'feed'
+    elif listtypecontext['allactive'] == 'active':
+        return 'all'
+    elif listtypecontext['uploadsactive'] == 'active':
+        return 'up'
 
 def undertab_view(request):
     undertabData = request.GET.get('listType')
     print(undertabData)
-    # previousPage = request.META.get('HTTP_REFERER')
+    global songtypecontext
+
+    if request.user.is_authenticated:
+        user = request.user.profile
+        upKiirtan = allKiirtan.filter(uploader=user)
+        upPs      = allPs.filter(uploader=user)
+        upBhajan  = allBhajan.filter(uploader=user)
+        favKiirtan     = user.liked_songs.all().filter(type="KI")
+        favBhajan      = user.liked_songs.all().filter(type="BH")
+        favPs          = user.liked_songs.all().filter(type="PS")
+
     if undertabData == 'fav': 
-        context = {
+        listtypecontext = {
             'favactive': 'active',
             'feedactive': '',
             'allactive': '',
             'uploadsactive': '',
         }
-    elif undertabData == 'feed': 
-        context = {
+    elif undertabData == 'feed':       
+        listtypecontext = {
             'favactive': '',
             'feedactive': 'active',
             'allactive': '',
             'uploadsactive': '',
         }
-    elif undertabData == 'all': 
-        context = {
+    elif undertabData == 'all':        
+        listtypecontext = {
             'favactive': '',
             'feedactive': '',
             'allactive': 'active',
             'uploadsactive': '',
         }
-    elif undertabData == 'up': 
-        context = {
+    elif undertabData == 'up':     
+        listtypecontext = {
             'favactive': '',
             'feedactive': '',
             'allactive': '',
             'uploadsactive': 'active',
         }
+    songtype = whichSongType(songtypecontext)
+    listtype = whichListType(listtypecontext)
+
+    if songtype == 'kiirtan': 
+        if listtype == 'fav':
+            renderercontext = {
+                'songlist': favKiirtan
+            }
+        elif listtype == 'feed':
+            renderercontext = {
+                'songlist': allKiirtan
+            }
+        elif listtype == 'all':
+            renderercontext = {
+                'songlist': allKiirtan
+            }
+        elif listtype == 'up':
+            renderercontext = {
+                'songlist': upKiirtan
+            }
+    if songtype == 'bhajan': 
+        if listtype == 'fav':
+            renderercontext = {
+                'songlist': favBhajan
+            }
+        elif listtype == 'feed':
+            renderercontext = {
+                'songlist': allBhajan
+            }
+        elif listtype == 'all':
+            renderercontext = {
+                'songlist': allBhajan
+            }
+        elif listtype == 'up':
+            renderercontext = {
+                'songlist': upBhajan
+            }
+    if songtype == 'ps': 
+        if listtype == 'fav':
+            renderercontext = {
+                'songlist': favPs
+            }
+        elif listtype == 'feed':
+            renderercontext = {
+                'songlist': allPs
+            }
+        elif listtype == 'all':
+            renderercontext = {
+                'songlist': allPs
+            }
+        elif listtype == 'up':
+            renderercontext = {
+                'songlist': upPs
+            }
 
     if request.is_ajax():
-        html = render_to_string('undertabs.html', context, request=request)
-        return JsonResponse({'form': html})
+        html2 = render_to_string('undertabs.html', listtypecontext, request=request)
+        html3 = render_to_string('renderer.html', renderercontext, request=request)
+        json = simplejson.dumps({'undertabshtml': html2, 'songrendererhtml': html3})
+        return JsonResponse({'form': json})
 
 def kiirtanfeed_view(request):
     global kiirtanContext
