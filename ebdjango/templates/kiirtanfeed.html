@@ -1,27 +1,21 @@
-{% extends "kiirtanfav.html" %}
+{% extends "base.html" %}
 
-{% block kiirtantabs %}
-{% include "overtabs.html" %}
-  <ul class="nav nav-tabs">
-    <li class="nav-item">
-      <a class="nav-link" href="/kiirtanfav/">Favorite</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link active" href="/kiirtanfeed/">Feed</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="/kiirtanall/">All</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="/kiirtanuploads/">Uploads</a>
-    </li>
-  </ul>
-  {% include "uploadbutton.html" %}
-{% endblock kiirtantabs %}
+{% block overtabs %}
+  <div id="overtabs-div">
+    {% include "overtabs.html" %}
+  </div>
+{% endblock overtabs %}
+
+{% block undertabs %}
+  <div id="undertabs-div">
+    {% include "undertabs.html" %}
+  </div>
+{% endblock undertabs %}
 
 {% block youarenotloggedin %}
 {% endblock youarenotloggedin %}
 
 {% block renderkiirtans %}
-  {% include 'renderer.html' with songlist=allKiirtan%}
+  
+  {% include 'renderer.html' with songlist=songList %}
 {% endblock renderkiirtans %}
