@@ -95,7 +95,7 @@ def togglefavoritesong_view(request):
             'isFavorite': isFavorite,
         }
         if request.is_ajax():
-            html = render_to_string('button.html', context, request=request)
+            html = render_to_string('listitem.html', context, request=request)
             return JsonResponse({'form': html})
             
 @login_required

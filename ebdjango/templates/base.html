@@ -104,13 +104,10 @@
 <script src="{% static 'vendors/js/bootstrap.min.js' %}"></script>
 <script src="{% static 'vendors/js/anime.min.js' %}"></script>
 <script src="{% static 'resources/js/index.js' %}"></script>
-<script>
 
-let pratik = $(".favBtn")
+<script>
 var alerto = $('#alerto')
-pratik.on('click', function(event){
-  
-//$(".btnContainer").on('click', '.pratik', function(event){
+$(document).on('click', '.favBtn', function(event){
     
     console.log('hey there:')
     alerto.show()
@@ -187,6 +184,7 @@ pratik.on('click', function(event){
     })
 })
 </script>
+
 <script>
 //let overtab = $(".overtab")
 
@@ -217,10 +215,8 @@ $(document).on('click', '.overtab', function(event){
     })
 })
 </script>
-
 <script>
 //let undertab = $(".undertab")
-
 $(document).on('click', '.undertab', function(event){
 
     event.preventDefault();
