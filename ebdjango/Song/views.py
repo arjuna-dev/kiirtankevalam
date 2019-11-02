@@ -135,9 +135,7 @@ def deletechord_view(request):
     return HttpResponseRedirect(previousPage)
 
 
-#_-_-_-_-_-_-_-_-_-_-_-_-Kiirtan views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
-#_-_-_-_-_-_-_-_-_-_-_-_-Kiirtan views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
-#_-_-_-_-_-_-_-_-_-_-_-_-Kiirtan views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
+#_-_-_-_-_-_-_-_-_-_-_-_- Mainrenderer views _-_-_-_-_-_-_-_-_-_-_-_-_-_-
 
 kiirtanContext = {
     'typeintitle': 'kiirtan',
@@ -146,11 +144,6 @@ kiirtanContext = {
     'songlist': allKiirtan,
 }
 
-
-#_-_-_-_-_-_-_overtab_view shall re-render the whole thing-_-_-_-_-_-_-_-_-
-#_-_-_-_-_-_-_(kiirtanfeed.html for now). in overtab_view we-_-_-_-_-
-#_-_-_-_-_-_-_will check all variables and pass all necesary-_-_-_-_-
-#_-_-_-_-_-_-_variables-_-_-_-_--_-_-_-_--_-_-_-_--_-_-_-_--_-_-_-_--_-_-_-_-
 songtypecontext = {
     'kiirtanactive': 'active',
     'psactive': '',
@@ -210,6 +203,7 @@ def whichSongType(songtypecontext):
     elif songtypecontext['bhajanactive'] == 'active':
         return 'bhajan'
 
+#Aaron: Iterate through songtypecontext dictionary and if active then ->
 
 def whichListType(listtypecontext):
     if listtypecontext['favactive'] == 'active':
@@ -227,13 +221,23 @@ def undertab_view(request):
     global songtypecontext
 
     if request.user.is_authenticated:
-        user = request.user.profile
-        upKiirtan = allKiirtan.filter(uploader=user)
-        upPs      = allPs.filter(uploader=user)
-        upBhajan  = allBhajan.filter(uploader=user)
-        favKiirtan     = user.liked_songs.all().filter(type="KI")
-        favBhajan      = user.liked_songs.all().filter(type="BH")
-        favPs          = user.liked_songs.all().filter(type="PS")
+        user        = request.user.profile
+        upKiirtan   = allKiirtan.filter(uploader=user)
+        upPs        = allPs.filter(uploader=user)
+        upBhajan    = allBhajan.filter(uploader=user)
+        favKiirtan  = user.liked_songs.all().filter(type="KI")
+        favBhajan   = user.liked_songs.all().filter(type="BH")
+        favPs       = user.liked_songs.all().filter(type="PS")
+    else:
+        upKiirtan   = None
+        upPs        = None
+        upBhajan    = None
+        favKiirtan  = None
+        favBhajan   = None
+        favPs       = None
+
+
+
 
     if undertabData == 'fav': 
         listtypecontext = {
@@ -266,57 +270,24 @@ def undertab_view(request):
     songtype = whichSongType(songtypecontext)
     listtype = whichListType(listtypecontext)
 
-    if songtype == 'kiirtan': 
-        if listtype == 'fav':
-            renderercontext = {
-                'songlist': favKiirtan
-            }
-        elif listtype == 'feed':
-            renderercontext = {
-                'songlist': allKiirtan
-            }
-        elif listtype == 'all':
-            renderercontext = {
-                'songlist': allKiirtan
-            }
-        elif listtype == 'up':
-            renderercontext = {
-                'songlist': upKiirtan
-            }
-    if songtype == 'bhajan': 
-        if listtype == 'fav':
-            renderercontext = {
-                'songlist': favBhajan
-            }
-        elif listtype == 'feed':
-            renderercontext = {
-                'songlist': allBhajan
-            }
-        elif listtype == 'all':
-            renderercontext = {
-                'songlist': allBhajan
-            }
-        elif listtype == 'up':
-            renderercontext = {
-                'songlist': upBhajan
-            }
-    if songtype == 'ps': 
-        if listtype == 'fav':
-            renderercontext = {
-                'songlist': favPs
-            }
-        elif listtype == 'feed':
-            renderercontext = {
-                'songlist': allPs
-            }
-        elif listtype == 'all':
-            renderercontext = {
-                'songlist': allPs
-            }
-        elif listtype == 'up':
-            renderercontext = {
-                'songlist': upPs
-            }
+    songTypeDictionary =	{
+        ("kiirtan", "fav"): { 'songlist': favKiirtan, 'type': "favorite"},
+        ("kiirtan", "feed"): { 'songlist': allKiirtan},
+        ("kiirtan", "all"): { 'songlist': allKiirtan},
+        ("kiirtan", "up"): { 'songlist': upKiirtan, 'type': "uploads"},
+        ("bhajan", "fav"): { 'songlist': favBhajan, 'type': "favorite"},
+        ("bhajan", "feed"): { 'songlist': allBhajan},
+        ("bhajan", "all"): { 'songlist': allBhajan},
+        ("bhajan", "up"): { 'songlist': upBhajan, 'type': "uploads"},
+        ("ps", "fav"): { 'songlist': favPs, 'type': "favorite"},
+        ("ps", "feed"): { 'songlist': allPs},
+        ("ps", "all"): { 'songlist': allPs},
+        ("ps", "up"): { 'songlist': upPs, 'type': "uploads"},
+    }
+
+    for aTuple, aContext in songTypeDictionary.items():
+        if aTuple == (songtype, listtype):
+            renderercontext = aContext
 
     if request.is_ajax():
         html2 = render_to_string('undertabs.html', listtypecontext, request=request)
@@ -324,111 +295,11 @@ def undertab_view(request):
         json = simplejson.dumps({'undertabshtml': html2, 'songrendererhtml': html3})
         return JsonResponse({'form': json})
 
-def kiirtanfeed_view(request):
+
+def mainrenderer_view(request):
     global kiirtanContext
-    return render(request,"kiirtanfeed.html",kiirtanContext)
+    return render(request,"mainrenderer.html",kiirtanContext)
 
-def kiirtanfav_view(request):
-    if request.user.is_authenticated: 
-        user = request.user
-        kiirtanLikes = user.profile.liked_songs.all().filter(type="KI")
-        global kiirtanContext
-        kiirtanContext["kiirtanLikes"]=kiirtanLikes
-        return render(request, "kiirtanfav.html", kiirtanContext)
-    else:
-        return render(request, "kiirtanfav.html", kiirtanContext)
-
-def kiirtanall_view(request):
-    global kiirtanContext
-    return render(request,"kiirtanall.html",kiirtanContext)
-
-def kiirtanuploads_view(request):
-    if request.user.is_authenticated: 
-        user = request.user.profile
-        global kiirtanContext
-        userUploads = allKiirtan.filter(uploader=user)
-        kiirtanContext["userUploads"]=userUploads
-        return render(request,"kiirtanuploads.html",kiirtanContext)
-    else:
-        return render(request,"kiirtanuploads.html",kiirtanContext)
-
-#_-_-_-_-_-_-_-_-_-_-_-_-PS views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
-#_-_-_-_-_-_-_-_-_-_-_-_-PS views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
-#_-_-_-_-_-_-_-_-_-_-_-_-PS views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
-
-psContext = {
-    'allPs': allPs,
-    'typeintitle': 'P.S.',
-    'psactive': 'active',
-}
-
-def psfav_view(request):
-    if request.user.is_authenticated:
-        user = request.user
-        psLikes = user.profile.liked_songs.all().filter(type="PS")
-        global psContext
-        psContext["psLikes"]=psLikes
-        return render(request,"psfav.html",psContext)
-    else:
-        return render(request,"psfav.html",psContext)
-
-def psall_view(request):
-    global psContext
-    return render(request,"psall.html",psContext)
-
-def psfeed_view(request):
-    global psContext
-    return render(request,"psfeed.html",psContext)
-
-def psuploads_view(request):
-    if request.user.is_authenticated: 
-        user = request.user.profile
-        global psContext
-        userUploads = allPs.filter(uploader=user)
-        psContext["userUploads"]=userUploads
-        return render(request,"psuploads.html",psContext)
-    else:
-        return render(request,"psuploads.html",psContext)
-
-#_-_-_-_-_-_-_-_-_-_-_-_-Bhajan views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
-#_-_-_-_-_-_-_-_-_-_-_-_-Bhajan views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
-#_-_-_-_-_-_-_-_-_-_-_-_-Bhajan views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
-
-bhajanContext = {
-    'allBhajan': allBhajan,
-    'typeintitle': 'bhajan',
-    'bhajanactive': 'active',
-    'activefav': 'active',
-}
-
-def bhajanfav_view(request):
-    if request.user.is_authenticated:
-        user = request.user
-        bhajanLikes = user.profile.liked_songs.all().filter(type="BH")
-        global bhajanContext
-        bhajanContext["bhajanLikes"]=bhajanLikes
-        return render(request,"bhajanfav.html",bhajanContext)
-    else:
-        return render(request,"bhajanfav.html",bhajanContext)
-
-def bhajanall_view(request):
-    global bhajanContext
-    return render(request,"bhajanall.html",bhajanContext)
-
-def bhajanfeed_view(request):
-    global bhajanContext
-    return render(request,"bhajanfeed.html",bhajanContext)
-
-def bhajanuploads_view(request):
-    if request.user.is_authenticated: 
-        user = request.user.profile
-        print(user.sanskrit_name)
-        global bhajanContext
-        userUploads = allBhajan.filter(uploader=user)
-        bhajanContext["userUploads"]=userUploads
-        return render(request,"bhajanuploads.html",bhajanContext)
-    else:
-        return render(request,"bhajanuploads.html",bhajanContext)
 
 #_-_-_-_-_-_-_-_-_-_-_-_-Other views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 #_-_-_-_-_-_-_-_-_-_-_-_-Other views_-_-_-_-_-_-_-_-_-_-_-_-_-_-

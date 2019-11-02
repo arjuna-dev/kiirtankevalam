@@ -1,8 +1,30 @@
 {% load static %}
 <ul class="list-group list-group-flush">
-    {% if songlist %}
-      {% for song in songlist %}
-        {% include "listitem.html" %}
-      {% endfor %}
-    {% endif %}
+      {% if songlist %}
+        {% for song in songlist %}
+          {% include "listitem.html" %}
+        {% endfor %}
+      {% elif  user.is_authenticated and type == "uploads" %}
+        <div class="jumbotron">
+            <p>You havent uploaded songs yet {{ typeintitle }} 🙃</p>
+        </div>
+      {% elif  user.is_authenticated and type == "favorite" %}
+        <div class="jumbotron">
+            <p>No favorite songs yet {{ typeintitle }} 🤔</p>
+            <hr class="my-4">
+            <p>Check "Feed" and "All" tabs to add {{ typeintitle }} to your favorites</p>
+        </div>
+      {% elif type == "uploads" %}
+      <div class="jumbotron">
+          <p>It looks like you are not looged in 🤔</p>
+          <hr class="my-4">
+          <p>Log in or sign up to be able to upload songs</p>
+      </div>
+      {% elif type == "favorite" %}
+      <div class="jumbotron">
+          <p>It looks like you are not looged in 🤔</p>
+          <hr class="my-4">
+          <p>Log in or sign up to add songs to your favorites</p>
+      </div>
+      {% endif %}
 </ul>

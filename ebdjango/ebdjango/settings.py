@@ -33,8 +33,8 @@ ALLOWED_HOSTS = [
 ]
 
 LOGIN_URL = '/accounts/login/'
-LOGIN_REDIRECT_URL = '/kiirtanfav/'
-LOGOUT_REDIRECT_URL = '/kiirtanfav/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = "/media/"
