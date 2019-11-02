@@ -164,7 +164,6 @@ $(document).on('click', '.favBtn', function(event){
     btn.attr('src', newsrc );
 
     event.preventDefault();
-    //Get html data and put it in a variable (pk)
     var pk = $(this).data('pid')
     console.log('pk:', pk)
     $.ajax({
