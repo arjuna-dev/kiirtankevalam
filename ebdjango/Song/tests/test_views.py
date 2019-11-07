@@ -6,6 +6,7 @@ import json
 import requests
 from django.contrib.auth.models import User
 from Song.forms import SongForm
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 # song = Song(title="songy", pk=10000, type="KI", upload_date="1923-08-23")
 # song.save()
@@ -63,32 +64,24 @@ class TestViews(TestCase):
         self.assertTemplateUsed(response, 'createsong.html')
 
     # POST Method
+    def test_create_song_view_POST(self):
+        testUser = User.objects.create(username='testuser')
+        testUser.set_password('12345')
+        testUser.save()
+        testProfile = Profile.objects.create(
+            user=testUser,
+            sanskrit_name = "Shanti",
+            country       = "Mexico"
+        )
+        testProfile.save()
+        logged_in = self.client.login(username='testuser', password='12345')
+        self.client.login(username='testuser', password='12345')
 
-    # def test_create_song_view_POST(self):
-    #     testUser = User.objects.create(username='testuser')
-    #     testUser.set_password('12345')
-    #     testUser.save()
-    #     testProfile = Profile.objects.create(
-    #         user=testUser,
-    #         sanskrit_name = "Shanti",
-    #         country       = "Mexico"
-    #     )
-    #     testProfile.save()
-    #     # logged_in = self.client.login(username='testuser', password='12345')
-    #     self.client.login(username='testuser', password='12345')
-    #     # response = self.client.get(self.createsong_url)
-    #     response = self.client.post(self.createsong_url, {
-    #         'title': 'song34', 
-    #         'type': 'KI', 
-    #         'description': '', 
-    #         'written_by': '', 
-    #         'song_text': '', 
-    #         # 'create_song_form': 'Create Song'
-    #     })
-    #     # self.assertTrue(testUser.is_authenticated)
-    #     self.assertTrue(Song.objects.filter(title='song34').exists()) 
-    #     # self.assertEquals(response.status_code, 200)
-    #     # self.assertEquals(self.Song.objects.last().title, "song34")
+        audio = SimpleUploadedFile("103_VASANTA_AJ_JAGALO_04Tsyry.mp3", b"file_content", content_type="audio/mp3")
+
+        response = self.client.post(self.createsong_url, {'title': 'Hello', 'type': 'KI', 'audio_file': audio})
+
+        self.assertTrue(Song.objects.filter(title='Hello').exists()) 
 
 
     # def test_create_song_view_POST_no_data(self):
