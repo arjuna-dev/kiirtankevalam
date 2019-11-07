@@ -7,6 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.template.loader import render_to_string
 import json as simplejson
+from django.middleware import csrf
 
 from django.test import RequestFactory
 
@@ -28,12 +29,14 @@ def song_view(request, songid):
     songChords = ChordIndex.objects.filter(song=song)
     return render(request, "song.html", {"song":song,"songChords":songChords,})
 
+@login_required
 def createsong_view(request):
     previousPage   = request.META.get('HTTP_REFERER')
     user           = request.user.profile
-    lastSongByUser = Song.objects.filter(uploader=user).last()
     if request.method == 'POST':
         create_song_form  = SongForm(request.POST, request.FILES)
+        print('request.POST:')
+        print(request.POST)
         if create_song_form.is_valid():
             newSong          = create_song_form.save()
             newSong.uploader = user
@@ -151,6 +154,7 @@ songtypecontext = {
 }
 
 def overtab_view(request):
+    print(csrf.get_token(request))
     overtabData = request.GET.get('songType')
     print(overtabData)
     global songtypecontext
