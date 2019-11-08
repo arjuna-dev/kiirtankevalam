@@ -81,3 +81,24 @@ class TestViews(TestCase):
         
         self.assertEquals(User.objects.last().username, 'testuser')
         self.assertTrue(testUser.is_authenticated)
+
+# With Selenium
+
+import unittest
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+
+class TestSignup(unittest.TestCase):
+
+    def setUp(self):
+        self.driver = webdriver.Firefox(executable_path='/Users/i5/Documents/Documents/Docs/CODE/2ndSemester/Kiirtan-Kevalam/kiirtanenv/geckodriver')
+
+    def test_click_favorite_not_logged_in(self):
+        self.driver.get("http://localhost:8000/")
+        self.driver.find_element_by_class_name('pratik').click()
+
+    def tearDown(self):
+        self.driver.quit
+
+if __name__ == '__main__':
+    unittest.main()

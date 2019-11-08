@@ -90,24 +90,6 @@
     border: none;
 }
 
-/* #square-container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-#square{
-    width: 30px;
-    height: 30px;
-    background-color: violet;
-}
-
-.svg-attributes svg{
-    color: red;
-    background-color: blue;
-} */
-
 .pratik{
     width:2rem;
     float: right;
@@ -138,10 +120,10 @@
 }
 
 #alerto{
-    position: fixed;
+    position: absolute;
     z-index: 999;
-    bottom: 0;
-    width: 90%;
+    margin-top: 0%;
+    width: 100%;
     transform: translateX(-50%);
     left: 50%;
     padding-bottom: 0px;
