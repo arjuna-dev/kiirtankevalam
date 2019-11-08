@@ -26,13 +26,13 @@
                     <div class="menu-box-containers container">
                         <div class="row no-gutters choose-type">
                             <div class="col">
-                                <a class="nav-link {{ kiirtanactive }} overtab" href="#" data-songtype='ki'>Kiirtan<span class="sr-only">(current)</span></a>
+                                <a class="nav-link {{ kiirtanactive }} overtab clickBurgerMenu" href="#" data-songtype='ki'>Kiirtan<span class="sr-only">(current)</span></a>
                             </div>
                             <div class="col">
-                                <a class="nav-link {{ psactive }} overtab" href="#" data-songtype='ps'>P.S.<span class="sr-only">(current)</span></a>
+                                <a class="nav-link {{ psactive }} overtab clickBurgerMenu" href="#" data-songtype='ps'>P.S.<span class="sr-only">(current)</span></a>
                             </div>
                             <div class="col">
-                                <a class="nav-link {{ bhajanactive }} overtab" href="#" data-songtype='bh'>Bhajan<span class="sr-only">(current)</span></a>
+                                <a class="nav-link {{ bhajanactive }} overtab clickBurgerMenu" href="#" data-songtype='bh'>Bhajan<span class="sr-only">(current)</span></a>
                             </div>
                         </div>
                     </div>
@@ -185,14 +185,22 @@ $(document).on('click', '.favBtn', function(event){
 </script>
 
 <script>
-//let overtab = $(".overtab")
-
-//overtab.on('click', function(event){
 $(document).on('click', '.overtab', function(event){
 
-    event.preventDefault();
+    //event.preventDefault();
+    
+    //Hide burger menu after choosing song type (if button is on burger menu)
+    var burger = $(".navbar-toggler-icon")
+
+    if ($(this).hasClass('clickBurgerMenu')) {
+        burger.click()
+        console.log('super super')
+    }
+
+    //Continue with ajax
     var overtabdata = $(this).data('songtype')
     console.log('overtabdata:', overtabdata)
+    
     $.ajax({
         type: 'GET',
         //Trigger a view (which is pretty much a function)
