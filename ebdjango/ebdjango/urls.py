@@ -35,7 +35,6 @@ urlpatterns = [
     path('editchords/', editchords_view, name='edit-chords-view'),
     path('profile/', profile_view),
     path('signup/', signup, name='signup'),
-    # path('login/', user_login, name='user_login'),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     path('addsongview/<int:id>', addsong_view, name='add-song-view'),
