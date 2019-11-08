@@ -18,17 +18,10 @@ class TestViews(TestCase):
         self.client = Client()
         self.profile_url = reverse(profile_view)
         # self.addsong_url = reverse(addsong_view)
-        self.song_url = reverse(song_view, args=['1001'])
         self.createsong_url = reverse(createsong_view)
         self.editchords_url = reverse(editchords_view)
         self.Song = Song
-        self.songy = Song.objects.create(
-            id=1001,
-            title="songy", 
-            type="KI",
-            upload_date="1923-08-23",
-            audio_file = "103_VASANTA_AJ_JAGALO_04Tsyry.mp3"
-        )
+
 
     def test_profile_view_GET(self):
         response = self.client.get(self.profile_url)
@@ -36,6 +29,14 @@ class TestViews(TestCase):
         self.assertTemplateUsed(response, 'profile.html')
 
     def test_song_view_GET(self):
+        self.song_url = reverse(song_view, args=['100100'])
+        self.songy = Song.objects.create(
+            id=100100,
+            title="songy", 
+            type="KI",
+            upload_date="1923-08-23",
+            audio_file = "103_VASANTA_AJ_JAGALO_04Tsyry.mp3"
+        )
         response = self.client.get(self.song_url)
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'song.html')
