@@ -30,6 +30,7 @@ ALLOWED_HOSTS = [
     'django-env.nyir2pgnby.us-west-2.elasticbeanstalk.com',
     '127.0.0.1',
     'kiirtan.org',
+    'localhost'
 ]
 
 LOGIN_URL = '/accounts/login/'
