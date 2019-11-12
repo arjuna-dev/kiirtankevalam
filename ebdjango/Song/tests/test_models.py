@@ -1,37 +1,31 @@
-from django.test import TestCase, Client
-from Song.models import Song, ChordIndex, Chord, IsFavourite, Profile
+from django.test import TestCase
+from Song.models import Song, ChordIndex, IsFavourite, Profile
 from django.urls import reverse
-from Song.views import addchord_view
+from Song.forms import UserForm, UserProfileInfoForm, SongForm, AddChordForm
 from django.contrib.auth.models import User
-from django.core.files.uploadedfile import SimpleUploadedFile
-from Song.views import profile_view, song_view, createsong_view, editchords_view, addsong_view
+
 
 class TestModels(TestCase):
 
-    def setUp(self):
-        self.client = Client()
-        # self.addsong_url = reverse(addsong_view)
-        self.createsong_url = reverse(createsong_view)
+    def create_user(self, username="bobby103", password="Passw0rd"):
+        return User.objects.create(username=username, password=password)
 
-    # POST Method
-    def test_create_song_view_POST(self):
-        testUser = User.objects.create(username='testuser')
-        testUser.set_password('12345')
-        testUser.save()
-        testProfile = Profile.objects.create(
-            user=testUser,
-            sanskrit_name = "Shanti",
-            country       = "Mexico"
+    def test_user_creation(self):
+        user = self.create_user()
+        self.assertTrue(isinstance(user, User))
+
+    def create_song(self):
+        return Song.objects.create(
+            id=100100,
+            title="songy", 
+            type="KI",
+            upload_date="1923-08-23",
+            audio_file = "103_VASANTA_AJ_JAGALO_04Tsyry.mp3"
         )
-        testProfile.save()
-        logged_in = self.client.login(username='testuser', password='12345')
-        self.client.login(username='testuser', password='12345')
 
-        audio = SimpleUploadedFile("103_VASANTA_AJ_JAGALO_04Tsyry.mp3", b"file_content", content_type="audio/mp3")
-
-        response = self.client.post(self.createsong_url, {'title': 'Hello', 'type': 'KI', 'audio_file': audio})
-
-        self.assertTrue(Song.objects.filter(title='Hello').exists()) 
+    def test_song_creation(self):
+        song = self.create_song()
+        self.assertTrue(isinstance(song, Song))
       
 
     # def test_add_chord(self):

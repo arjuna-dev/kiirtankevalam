@@ -6,6 +6,8 @@ import json
 import requests
 from django.contrib.auth.models import User
 from Song.forms import SongForm
+from django.core.files.uploadedfile import SimpleUploadedFile
+import time
 
 
 # song = Song(title="songy", pk=10000, type="KI", upload_date="1923-08-23")
@@ -82,24 +84,50 @@ class TestViews(TestCase):
         self.assertEquals(User.objects.last().username, 'testuser')
         self.assertTrue(testUser.is_authenticated)
 
+    # POST Method
+    def test_create_song_view_POST(self):
+        testUser = User.objects.create(username='testuser')
+        testUser.set_password('12345')
+        testUser.save()
+        testProfile = Profile.objects.create(
+            user=testUser,
+            sanskrit_name = "Shanti",
+            country       = "Mexico"
+        )
+        testProfile.save()
+        logged_in = self.client.login(username='testuser', password='12345')
+        self.client.login(username='testuser', password='12345')
+
+        audio = SimpleUploadedFile("103_VASANTA_AJ_JAGALO_04Tsyry.mp3", b"file_content", content_type="audio/mp3")
+
+        response = self.client.post(self.createsong_url, {'title': 'Hello', 'type': 'KI', 'audio_file': audio})
+
+        self.assertTrue(Song.objects.filter(title='Hello').exists()) 
+
 # With Selenium
 
-# import unittest
-# from selenium import webdriver
-# from selenium.webdriver.common.keys import Keys
+import unittest
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 
-# class TestSignup(unittest.TestCase):
+class TestSignup(unittest.TestCase):
 
-#     def setUp(self):
-#         self.driver = webdriver.Firefox(executable_path='/Users/i5/Documents/Documents/Docs/CODE/2ndSemester/Kiirtan-Kevalam/kiirtanenv/geckodriver')
+    def setUp(self):
+        # self.driver = webdriver.Firefox(executable_path='/Users/i5/Documents/Documents/Docs/CODE/2ndSemester/Kiirtan-Kevalam/kiirtanenv/geckodriver')
+        options = webdriver.ChromeOptions()
+        options.add_argument('headless')
+        options.add_argument('window-size=1200x600')
+        self.driver = webdriver.Chrome(chrome_options=options)
 
-#     def test_click_favorite_not_logged_in(self):
-#         self.driver.get("http://localhost:8000/")
-#         self.driver.find_element_by_class_name('pratik').click()
-#         self.assertTrue(self.driver.find_element_by_id('alerto').is_displayed())
 
-#     def tearDown(self):
-#         self.driver.quit
+    def test_click_favorite_not_logged_in(self):
+        self.driver.get("http://localhost:8000/")
+        self.driver.find_element_by_class_name('pratik').click()
+        time.sleep(0.03)
+        self.assertTrue(self.driver.find_element_by_id('alerto').is_displayed())
 
-# if __name__ == '__main__':
-#     unittest.main()
+    def tearDown(self):
+        self.driver.quit
+
+if __name__ == '__main__':
+    unittest.main()

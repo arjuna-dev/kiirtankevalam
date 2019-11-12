@@ -11,7 +11,7 @@ class UserForm(forms.ModelForm):
 class UserProfileInfoForm(forms.ModelForm):
      class Meta():
          model = Profile
-         fields = ('sanskrit_name', 'country', 'city', 'profile_pic')
+         fields = ('confirm_email', 'sanskrit_name', 'country', 'city', 'profile_pic')
 
 class SongForm(forms.ModelForm):
     class Meta():
