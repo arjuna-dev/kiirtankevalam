@@ -61,7 +61,7 @@ class Comment(models.Model):
     song      = models.ForeignKey('Song', null=True, on_delete=models.SET_NULL)
     comment   = models.TextField()
 
-class ImmageAsComment(models.Model):
+class ImageAsComment(models.Model):
     uploader   = models.ForeignKey('Profile', null=True, on_delete=models.SET_NULL)
     song       = models.ForeignKey('Song', null=True, on_delete=models.SET_NULL)
     image_file  = models.ImageField(upload_to='alternate_chords/')
