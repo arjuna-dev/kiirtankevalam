@@ -7,7 +7,7 @@
             <form enctype="multipart/form-data" method="POST" action="">
                 {% csrf_token %}
                 {{ create_song_form|crispy }}
-                <input class="btn btn-primary" type="submit" name="create_song_form" value="Create Song">
+                <input class="btn btn-primary" type="submit" name="create_song_form" value="Next">
             </form>
         </div>
 {% endblock bodyblock %}
