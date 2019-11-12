@@ -13,6 +13,7 @@ class TestModels(TestCase):
     def test_user_creation(self):
         user = self.create_user("bobby", "password")
         self.assertTrue(isinstance(user, User))
+        self.assertTrue(User.objects.filter(username='bobby').exists())
 
     def create_song(self):
         return Song.objects.create(
@@ -26,6 +27,7 @@ class TestModels(TestCase):
     def test_song_creation(self):
         song = self.create_song()
         self.assertTrue(isinstance(song, Song))
+        self.assertTrue(Song.objects.filter(title='songy').exists())
 
     def create_Chord(self):
         return Chord.objects.create(
@@ -45,6 +47,8 @@ class TestModels(TestCase):
     def test_AlternateChordImage_creation(self):
         chordImage = self.create_AlternateChordImage()
         self.assertTrue(isinstance(chordImage, AlternateChordImage))
+        self.assertTrue(Chord.objects.filter(name='A minor').exists())
+        self.assertTrue(AlternateChordImage.objects.filter(image_file='chordy.jpg').exists())
     
 
     def create_profile(self, user, confirm_email, sanskrit_name, country, city, profile_pic):
@@ -61,6 +65,7 @@ class TestModels(TestCase):
         user = self.create_user("bobbo", "password")
         aProfile = self.create_profile(user, "asd@jdd.com", "Manju", "France", "Paris", "you.jpg")
         self.assertTrue(isinstance(aProfile, Profile))
+        self.assertTrue(Profile.objects.filter(sanskrit_name='Manju').exists())
 
     def create_comment(self):
         songy = self.create_song()
@@ -75,6 +80,7 @@ class TestModels(TestCase):
     def test_comment_creation(self):
         commenty = self.create_comment()
         self.assertTrue(isinstance(commenty, Comment))
+        self.assertTrue(Comment.objects.filter(comment='This is a test comment').exists())
 
     def create_ImageAsComment(self):
         songy = self.create_song()
@@ -89,11 +95,6 @@ class TestModels(TestCase):
     def test_ImageAsComment_creation(self):
         image = self.create_ImageAsComment()
         self.assertTrue(isinstance(image, ImageAsComment))
-
-
-# class ImmageAsComment(models.Model):
-#     uploader   = models.ForeignKey('Profile', null=True, on_delete=models.SET_NULL)
-#     song       = models.ForeignKey('Song', null=True, on_delete=models.SET_NULL)
-#     image_file  = models.ImageField(upload_to='alternate_chords/')
+        self.assertTrue(Song.objects.filter(title='songy').exists()) 
       
 
