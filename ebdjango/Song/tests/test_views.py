@@ -106,28 +106,28 @@ class TestViews(TestCase):
 
 # With Selenium
 
-import unittest
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
+# import unittest
+# from selenium import webdriver
+# from selenium.webdriver.common.keys import Keys
 
-class TestSignup(unittest.TestCase):
+# class TestSignup(unittest.TestCase):
 
-    def setUp(self):
-        # self.driver = webdriver.Firefox(executable_path='/Users/i5/Documents/Documents/Docs/CODE/2ndSemester/Kiirtan-Kevalam/kiirtanenv/geckodriver')
-        options = webdriver.ChromeOptions()
-        options.add_argument('headless')
-        options.add_argument('window-size=1200x600')
-        self.driver = webdriver.Chrome(chrome_options=options)
+#     def setUp(self):
+#         # self.driver = webdriver.Firefox(executable_path='/Users/i5/Documents/Documents/Docs/CODE/2ndSemester/Kiirtan-Kevalam/kiirtanenv/geckodriver')
+#         options = webdriver.ChromeOptions()
+#         options.add_argument('headless')
+#         options.add_argument('window-size=1200x600')
+#         self.driver = webdriver.Chrome(chrome_options=options)
 
 
-    def test_click_favorite_not_logged_in(self):
-        self.driver.get("http://localhost:8000/")
-        self.driver.find_element_by_class_name('pratik').click()
-        time.sleep(0.03)
-        self.assertTrue(self.driver.find_element_by_id('alerto').is_displayed())
+#     def test_click_favorite_not_logged_in(self):
+#         self.driver.get("http://localhost:8000/")
+#         self.driver.find_element_by_class_name('pratik').click()
+#         time.sleep(0.03)
+#         self.assertTrue(self.driver.find_element_by_id('alerto').is_displayed())
 
-    def tearDown(self):
-        self.driver.quit
+#     def tearDown(self):
+#         self.driver.quit
 
-if __name__ == '__main__':
-    unittest.main()
+# if __name__ == '__main__':
+#     unittest.main()
