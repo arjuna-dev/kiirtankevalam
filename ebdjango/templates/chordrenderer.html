@@ -1,15 +1,13 @@
 {% if songChordIndex %}
-<div class="jumbotron">
-    <p>
-        {% for object in songChordIndex %}
-            {% if object.chord.acronym != "x" %}
-            <button class="btn btn-dark text-primary">{{ object.chord.acronym }}</button>
-            {% else %}
-                 <hr>
-            {% endif %}
-        {% endfor %}
-    </p>
-</div>
+<p>
+    {% for object in songChordIndex %}
+        {% if object.chord.acronym != "x" %}
+        <button class="btn btn-dark text-primary">{{ object.chord.acronym }}</button>
+        {% else %}
+                <hr>
+        {% endif %}
+    {% endfor %}
+</p>
 {% else %}
     <div class="jumbotron">
         <p>Add some chords to your song 😉</p>
