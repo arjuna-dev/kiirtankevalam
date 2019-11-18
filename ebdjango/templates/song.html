@@ -6,17 +6,18 @@
     <div class="card-body">
         <h3 class="card-title">{{ song.title }}</h3>
         <h6 class="card-subtitle mb-2 text-muted">Shared by {{ song.uploader }}</h6>
-            <div class="jumbotron">
-                {% with songChords as songChordIndex %}
-                    {% include "chordrenderer.html" %}
-                {% endwith %}
-            </div>
+        <div class="jumbotron">
+            <audio class="audio-controls" controls autoplay>
+                <source src="{{ song.audio_file.url }}" type="audio/ogg">
+            </audio> 
+            {% with songChords as songChordIndex %}
+                {% include "chordrenderer.html" %}
+            {% endwith %}
+            <Button class="btn btn-primary play-button">Play</Button>
+        </div>
     </div>
 </div>
 
-<audio class="audio-controls" controls autoplay>
-    <source src="{{ song.audio_file.url }}" type="audio/ogg">
-</audio> 
 
     
 {% endblock bodyblock %}
