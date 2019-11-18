@@ -1,16 +1,20 @@
 $(document).ready(function(){
 
-        //Using howler.js
+    //Using howler.js
 
-        var sound = new Howl({
-            src: ['../../../media/songs/a.mp3']
-          });
+    var sound = new Howl({
+        src: ['../../../media/songs/a.mp3']
+    });
 
-    
-         $('.play-button').click(function(){
-            console.log("Yousef")
-            sound.play();
-         })
+    $('.play-button').click(function(){
+        console.log("Yousef")
+        sound.play();
+    })
+
+    $('.waveform').click(function(){
+        console.log("Masef")
+        sound.play();
+    })
     
     //Change Username label from Django backend form to Email*
     let usernameText = $("#div_id_username .col-form-label")
