@@ -1,16 +1,22 @@
 $(document).ready(function(){
 
-        //Using howler.js
+    //Using howler.js
 
-        var sound = new Howl({
-            src: ['../../../media/songs/a.mp3']
-          });
+    var sound = new Howl({
+        src: ['../../../media/songs/a.mp3']
+    });
 
-    
-         $('.play-button').click(function(){
-            console.log("Yousef")
-            sound.play();
-         })
+    duration.innerHTML = self.formatTime(Math.round(sound.duration()));
+
+    $('.play-button').click(function(){
+        console.log("Yousefo")
+        sound.play();
+    })
+
+    $('.card').click(function(){
+        console.log("Masefi")
+        sound.seek(60);
+    });
     
     //Change Username label from Django backend form to Email*
     let usernameText = $("#div_id_username .col-form-label")
