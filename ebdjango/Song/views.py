@@ -53,30 +53,6 @@ def createsong_view(request):
                                 'allChords': allChords,
                                 })
 
-def addsong_view(request, id):
-    previousPage = request.META.get('HTTP_REFERER')
-    if request.user.is_authenticated:
-        user = request.user.profile
-        song = Song.objects.get(pk=id)
-        IsFavourite.objects.create(song=song, profile=user, is_favorite=True)
-        return HttpResponseRedirect(previousPage)
-        # return HttpResponse(status=204)
-    else:
-        return HttpResponse(status=204)
-
-def removesong_view(request, id):
-    previousPage = request.META.get('HTTP_REFERER')
-    if request.user.is_authenticated:
-        user = request.user.profile
-        song = Song.objects.get(pk=id)
-        thisSong = IsFavourite.objects.filter(song=song, profile=user)
-        thisSong.delete()
-        return HttpResponseRedirect(previousPage)
-        # return HttpResponse(status=204)
-    else:
-        return HttpResponse(status=204)
-
-
 def togglefavoritesong_view(request):
     songId = request.GET.get('theId')
     print(songId)
