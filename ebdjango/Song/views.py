@@ -88,9 +88,9 @@ def togglefavoritesong_view(request):
 
 @login_required
 def editchords_view(request):
-    user                    = request.user.profile
-    lastSongByUser          = Song.objects.filter(uploader=user).last()
-    songChords              = ChordIndex.objects.filter(song=lastSongByUser).values()
+    user             = request.user.profile
+    lastSongByUser   = Song.objects.filter(uploader=user).last()
+    lastSongChords       = ChordIndex.objects.filter(song=lastSongByUser).values()
     # Code to look into queries (learning purposes)
     # print('\n\n', connection.queries)
     # print('\n\n', songChords.query, '\n\n')
@@ -98,7 +98,7 @@ def editchords_view(request):
     previousPage = request.META.get('HTTP_REFERER')
     return render(request,"editchords.html",
                                 {
-                                'songChords': songChords,
+                                'songChords': lastSongChords,
                                 'song': lastSongByUser,
                                 'allChords':allChords,
                                 })
