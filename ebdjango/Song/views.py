@@ -8,10 +8,12 @@ from django.urls import reverse
 from django.template.loader import render_to_string
 import json as simplejson
 from django.middleware import csrf
-
 from django.test import RequestFactory
-
 from django.db import connection
+
+
+import timeit
+import time
 
 allSongs     = Song.objects.all()
 # allSongs    = Song.objects.raw('SELECT * FROM Song_Song')
@@ -26,7 +28,18 @@ def lalita_view(request):
 
 def song_view(request, songid): 
     song = allSongs.get(pk=songid)
-    songChords = ChordIndex.objects.filter(song=song)
+    songChords = ChordIndex.objects.filter(song=song).values()
+    # The value of .values(), way more performant. This is the test: (learning purposes)
+    # def timeWithoutValues():
+    #     songChords = ChordIndex.objects.filter(song=song)
+    # def timeWithValues():
+    #     songChords = ChordIndex.objects.filter(song=song).values()
+    # timeWithoutValues = timeit.timeit(timeWithoutValues, number=100)/100
+    # timeWithValues = timeit.timeit(timeWithValues, number=100)/100
+    # print("timeWithoutValues")
+    # print(timeWithoutValues)
+    # print("timeWithValues")
+    # print(timeWithValues)
     return render(request, "song.html", {"song":song,"songChords":songChords,})
 
 @login_required
@@ -68,17 +81,17 @@ def togglefavoritesong_view(request):
         context = {
             'song': song,
             'songId': songId,
-            'isFavorite': isFavorite,
         }
         if request.is_ajax():
             html = render_to_string('listitem.html', context, request=request)
             return JsonResponse({'form': html})
-            
+
 @login_required
 def editchords_view(request):
     user                    = request.user.profile
     lastSongByUser          = Song.objects.filter(uploader=user).last()
-    songChords              = ChordIndex.objects.filter(song=lastSongByUser)
+    songChords              = ChordIndex.objects.filter(song=lastSongByUser).values()
+    # Code to look into queries (learning purposes)
     # print('\n\n', connection.queries)
     # print('\n\n', songChords.query, '\n\n')
     # print(songChords.explain())
