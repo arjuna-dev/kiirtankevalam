@@ -22,7 +22,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from Song.views import mainrenderer_view, record_view, song_view, profile_view, signup, addsong_view, removesong_view, deletechord_view, createsong_view, editchords_view, addchord_view, togglefavoritesong_view, undertab_view, overtab_view,lalita_view
+from Song.views import mainrenderer_view, record_view, song_view, profile_view, signup, deletechord_view, createsong_view, editchords_view, addchord_view, togglefavoritesong_view, undertab_view, overtab_view,lalita_view
 
 urlpatterns = [
     path('', mainrenderer_view),
@@ -37,8 +37,6 @@ urlpatterns = [
     path('signup/', signup, name='signup'),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('addsongview/<int:id>', addsong_view, name='add-song-view'),
-    path('removesongview/<int:id>', removesong_view, name='remove-song-view'),
     path('togglefavoritesongview/', togglefavoritesong_view, name='toggle-favorite-song-view'),
     path('addchord/<int:idChord>', addchord_view, name='add-chord-view'),
     path('deletechord/', deletechord_view, name='delete-chord-view'),
