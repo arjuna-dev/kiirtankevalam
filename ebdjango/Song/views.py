@@ -56,7 +56,6 @@ def createsong_view(request):
 def togglefavoritesong_view(request):
     songId = request.GET.get('theId')
     print(songId)
-    isFavorite = False
     previousPage = request.META.get('HTTP_REFERER')
     if request.user.is_authenticated:
         user = request.user.profile
@@ -64,10 +63,8 @@ def togglefavoritesong_view(request):
         thisSongIsFavourite = IsFavourite.objects.filter(song=song, profile=user)
         if thisSongIsFavourite.exists():
             thisSongIsFavourite.delete()
-            isFavorite = False
         else:
             IsFavourite.objects.create(song=song, profile=user, is_favorite=True)
-            isFavorite = True
         context = {
             'song': song,
             'songId': songId,
