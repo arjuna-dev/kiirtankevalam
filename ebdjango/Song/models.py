@@ -75,11 +75,6 @@ class FavoriteManager(models.Manager):
             else:
                 IsFavourite.manager.create_favorite(song, profile, True)
 
-    # def check_if_favorite(self, song, profile):
-    #     songToCheck = super().get_queryset().filter(song=song, profile=profile)
-    #     isFavorite  = songToCheck.exists()
-    #     return isFavorite
-
 class IsFavourite(models.Model):
     song         = models.ForeignKey(Song, on_delete=models.CASCADE)
     profile       = models.ForeignKey(Profile, on_delete=models.CASCADE)
