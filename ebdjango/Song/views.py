@@ -15,11 +15,12 @@ from django.db import connection
 import timeit
 import time
 
-allSongs     = Song.objects.all()
+# SQL queries for learning purposes
 # allSongs    = Song.objects.raw('SELECT * FROM Song_Song')
+# allBhajan   = Song.objects.raw('SELECT * FROM Song_Song WHERE type="BH"')
+allSongs     = Song.objects.all()
 allKiirtan   = Song.objects.filter(type='KI')
 allBhajan    = Song.objects.filter(type='BH')
-# allBhajan   = Song.objects.raw('SELECT * FROM Song_Song WHERE type="BH"')
 allPs        = Song.objects.filter(type='PS')
 allChords    = Chord.objects.all()
 
@@ -90,7 +91,7 @@ def togglefavoritesong_view(request):
 def editchords_view(request):
     user             = request.user.profile
     lastSongByUser   = Song.objects.filter(uploader=user).last()
-    lastSongChords       = ChordIndex.objects.filter(song=lastSongByUser).values()
+    lastSongChords   = ChordIndex.objects.filter(song=lastSongByUser).values()
     # Code to look into queries (learning purposes)
     # print('\n\n', connection.queries)
     # print('\n\n', songChords.query, '\n\n')
