@@ -8,11 +8,6 @@ from Song.forms import SongForm
 from django.core.files.uploadedfile import SimpleUploadedFile
 import time
 
-
-# song = Song(title="songy", pk=10000, type="KI", upload_date="1923-08-23")
-# song.save()
-
-
 class TestViews(TestCase):
 
     def setUp(self):
