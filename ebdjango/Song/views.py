@@ -51,10 +51,9 @@ def togglefavoritesong_view(request):
 
 @login_required
 def editchords_view(request):
-    user             = request.user.profile
-    lastSongByUser   = Song.objects.filter(uploader=user).last()
+    lastSongByUser = Song.manager.get_last_song_by_user(request)
     lastSongChords   = ChordIndex.objects.filter(song=lastSongByUser)
-    return render(request,"editchords.html",
+    return render(request,"editchords.html",    
                                 {
                                 'songChords': lastSongChords,
                                 'song': lastSongByUser,
@@ -62,20 +61,16 @@ def editchords_view(request):
                                 })
 
 def addchord_view(request, idChord):
-    user                    = request.user.profile
+    lastSongByUser          = Song.manager.get_last_song_by_user(request)
     chord                   = Chord.objects.get(pk=idChord)
-    songsByUser             = Song.objects.filter(uploader=user)
-    lastSongByUser          = songsByUser.last()
     previousPage            = request.META.get('HTTP_REFERER')
     ChordIndex.objects.create(song=lastSongByUser, chord=chord)
-    chordIndexCount = ChordIndex.objects.all().count()
+    chordIndexCount         = ChordIndex.objects.all().count()
     return HttpResponseRedirect(previousPage)
 
 def deletechord_view(request):
     previousPage            = request.META.get('HTTP_REFERER')
-    user                    = request.user.profile
-    songsByUser             = Song.objects.filter(uploader=user)
-    lastSongByUser          = songsByUser.last()
+    lastSongByUser          = Song.manager.get_last_song_by_user(request)
     lastChord               = ChordIndex.objects.filter(song=lastSongByUser).last()
     index                   = lastChord.id
     thisChord = ChordIndex.objects.filter(id=index)

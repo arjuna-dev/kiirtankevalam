@@ -79,7 +79,6 @@ class TestViews(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'createsong.html')
 
-
     #Logged in
 
     def test_logged_in(self):
