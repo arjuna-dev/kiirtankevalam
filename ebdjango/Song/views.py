@@ -145,16 +145,6 @@ def whichSongType(songtypecontext):
     elif songtypecontext['bhajanactive'] == 'active':
         return 'bhajan'
 
-def whichListType(listtypecontext):
-    if listtypecontext['favactive'] == 'active':
-        return 'fav'
-    elif listtypecontext['feedactive'] == 'active':
-        return 'feed'
-    elif listtypecontext['allactive'] == 'active':
-        return 'all'
-    elif listtypecontext['uploadsactive'] == 'active':
-        return 'up'
-
 def undertab_view(request):
     undertabData = request.GET.get('listType')
     print(undertabData)
@@ -172,7 +162,8 @@ def undertab_view(request):
             listtypecontext = theContext
 
     songtype = whichSongType(songtypecontext)
-    listtype = whichListType(listtypecontext)
+    listtype = undertabData
+
     if request.user.is_authenticated:
         user        = request.user.profile
         songTypeDictionary =	{
