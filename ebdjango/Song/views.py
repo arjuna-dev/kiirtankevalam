@@ -40,14 +40,14 @@ def createsong_view(request):
 def togglefavoritesong_view(request):
     songId = request.GET.get('theId')
     if request.user.is_authenticated:
-        user = request.user.profile
-        song = Song.objects.get(pk=songId)
-        thisSongIsFavourite = IsFavourite.objects.filter(song=song, profile=user)
-        if thisSongIsFavourite.exists():
-            thisSongIsFavourite.delete()
+        profile        = request.user.profile
+        song          = Song.objects.get(pk=songId)
+        aFavorite     = IsFavourite.manager.get_favorite(song=song, profile=profile)
+        isFavorite    = IsFavourite.manager.check_if_favorite(aFavorite)
+        if isFavorite:
+            aFavorite.delete()
         else:
-            IsFavourite.objects.create(song=song, profile=user, is_favorite=True)
-            # IsFavourite.manager.create_favorite(song, user, True)
+            IsFavourite.manager.create_favorite(song, profile, True)
         context = {
             'song': song,
             'songId': songId,
