@@ -21,13 +21,13 @@ class BhajanManager(models.Manager):
         return super().get_queryset().filter(type="BH")
 
 class Song(models.Model):
-    title          = models.CharField(max_length=120)
     SONG_TYPES     = (
         ('KI', 'Kiirtan'),
         ('PS', 'Prabhat Samgiita'),
         ('BH', 'Bhajan'),
     )
     type           = models.CharField(max_length=30, choices=SONG_TYPES)
+    title          = models.CharField(max_length=120)
     capo           = models.PositiveIntegerField(blank=True, null=True, validators=[MaxValueValidator(12)])
     description    = models.TextField(blank=True)
     uploader       = models.ForeignKey('Profile', null=True, on_delete=models.SET_NULL)
