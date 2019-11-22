@@ -8,12 +8,6 @@ from django.urls import reverse
 from django.template.loader import render_to_string
 import json as simplejson
 from django.middleware import csrf
-from django.test import RequestFactory
-from django.db import connection
-
-
-import timeit
-import time
 
 allSongs     = Song.objects.all()
 allKiirtan   = Song.objects.filter(type='KI')
