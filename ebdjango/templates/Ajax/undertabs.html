@@ -1,0 +1,25 @@
+<script>
+    $(document).on('click', '.undertab', function (event) {
+
+        event.preventDefault();
+        var undertabdata = $(this).data('listtype')
+        console.log('undertabdata:', undertabdata)
+        $.ajax({
+            type: 'GET',
+            url: "{% url 'undertab-view' %}",
+            data: {
+                'listType': undertabdata
+            },
+            success: function (response) {
+                console.log('Hello, ajax successful')
+                var responseAsJSON = JSON.parse(response['form'])
+                $('#undertabs-div').html(responseAsJSON['undertabshtml'])
+                $('#songrenderer-div').html(responseAsJSON['songrendererhtml'])
+            },
+            error: function (rs, e) {
+                console.log('noNOHelooNoNo')
+                console.log(rs.responseText)
+            }
+        })
+    })
+</script>

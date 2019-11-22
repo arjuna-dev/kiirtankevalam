@@ -1,0 +1,80 @@
+<script>
+    var alerto = $('#alerto')
+    $(document).on('click', '.favBtn', function (event) {
+
+        console.log('hey there:')
+        alerto.show()
+        anime({
+            targets: '#alerto',
+            opacity: 1,
+        })
+        var btn = $(this).find(':first-child');
+        var src = btn.attr('src');
+        var newsrc
+        if (src == '/static/resources/img/pratik-selected.png') {
+            newsrc = '/static/resources/img/pratik.png'
+        } else {
+            newsrc = '/static/resources/img/pratik-selected.png'
+            $(this).find(':nth-child(2)').toggleClass('star')
+            $(this).find(':nth-child(2)').toggleClass('poppe')
+            $(this).find(':nth-child(3)').toggleClass('bab')
+            $(this).find(':nth-child(3)').toggleClass('poppe')
+
+            $(this).find(':nth-child(2)').show()
+            $(this).find(':nth-child(3)').show()
+
+            anime({
+                targets: '.star',
+                scale: 11,
+                opacity: 1,
+            });
+            anime({
+                targets: '.bab',
+                opacity: 1,
+            });
+            setTimeout(() => {
+                anime({
+                    targets: '.poppe',
+                    opacity: 0,
+                    duration: 5000,
+                });
+            }, 500);
+            setTimeout(() => {
+                $(this).find(':nth-child(2)').hide()
+                $(this).find(':nth-child(3)').hide()
+                anime({
+                    targets: '.star',
+                    scale: 1,
+                });
+                $(this).find(':nth-child(2)').toggleClass('star')
+                $(this).find(':nth-child(2)').toggleClass('poppe')
+                $(this).find(':nth-child(3)').toggleClass('bab')
+                $(this).find(':nth-child(3)').toggleClass('poppe')
+            }, 1000);
+
+        }
+
+        btn.attr('src', newsrc);
+
+        event.preventDefault();
+        var pk = $(this).data('pid')
+        console.log('pk:', pk)
+        $.ajax({
+            type: 'GET',
+            cache: false,
+            url: "{% url 'toggle-favorite-song-view' %}",
+            data: {
+                'theId': pk
+            },
+            success: function (response) {
+                console.log('Hello, ajax successful')
+                //$('#btn-section').html(response['form'])
+                console.log($('#btn-section').html(response['form']))
+            },
+            error: function (rs, e) {
+                console.log('noNOHelooNoNo')
+                console.log(rs.responseText)
+            }
+        })
+    })
+</script>
