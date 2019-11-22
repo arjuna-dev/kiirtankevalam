@@ -1,7 +1,7 @@
 from django.test import TestCase
 from Song.models import Song, ChordIndex, IsFavourite, Profile, AlternateChordImage, Chord, Comment, ImageAsComment
 from django.urls import reverse
-from Song.forms import UserForm, UserProfileInfoForm, SongForm, AddChordForm
+from Song.forms import UserForm, UserProfileInfoForm, SongForm
 from django.contrib.auth.models import User
 
 
