@@ -38,23 +38,16 @@ def createsong_view(request):
                                 })
 
 def togglefavoritesong_view(request):
-    songId = request.GET.get('theId')
-    if request.user.is_authenticated:
-        profile        = request.user.profile
-        song          = Song.objects.get(pk=songId)
-        aFavorite     = IsFavourite.manager.get_favorite(song=song, profile=profile)
-        isFavorite    = IsFavourite.manager.check_if_favorite(aFavorite)
-        if isFavorite:
-            aFavorite.delete()
-        else:
-            IsFavourite.manager.create_favorite(song, profile, True)
-        context = {
-            'song': song,
-            'songId': songId,
-        }
-        if request.is_ajax():
-            html = render_to_string('listitem.html', context, request=request)
-            return JsonResponse({'form': html})
+    songId  = request.GET.get('theId')
+    song    = Song.objects.get(pk=songId)
+    IsFavourite.manager.toggle_favorite(request, song)
+    context = {
+        'song': song,
+        'songId': songId,
+    }
+    if request.is_ajax():
+        html = render_to_string('listitem.html', context, request=request)
+        return JsonResponse({'form': html})
 
 @login_required
 def editchords_view(request):

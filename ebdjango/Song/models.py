@@ -65,6 +65,16 @@ class FavoriteManager(models.Manager):
         isFavorite  = aFavorite.exists()
         return isFavorite
 
+    def toggle_favorite(self, request, song):
+        if request.user.is_authenticated:
+            profile        = request.user.profile
+            aFavorite     = IsFavourite.manager.get_favorite(song=song, profile=profile)
+            isFavorite    = IsFavourite.manager.check_if_favorite(aFavorite)
+            if isFavorite:
+                aFavorite.delete()
+            else:
+                IsFavourite.manager.create_favorite(song, profile, True)
+
     # def check_if_favorite(self, song, profile):
     #     songToCheck = super().get_queryset().filter(song=song, profile=profile)
     #     isFavorite  = songToCheck.exists()
