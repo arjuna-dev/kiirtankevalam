@@ -29,16 +29,12 @@ def createsong_view(request):
     user           = request.user.profile
     if request.method == 'POST':
         create_song_form  = SongForm(request.POST, request.FILES)
-        print('request.POST:')
-        print(request.POST)
         if create_song_form.is_valid():
             newSong          = create_song_form.save()
             newSong.uploader = user
             newSong.save()
-            print("form is valid")
             return HttpResponseRedirect(reverse(editchords_view))
         else:
-            print("form not valid")
             return HttpResponseRedirect(previousPage)
     else:
         create_song_form = SongForm()
@@ -49,7 +45,6 @@ def createsong_view(request):
 
 def togglefavoritesong_view(request):
     songId = request.GET.get('theId')
-    print(songId)
     previousPage = request.META.get('HTTP_REFERER')
     if request.user.is_authenticated:
         user = request.user.profile
