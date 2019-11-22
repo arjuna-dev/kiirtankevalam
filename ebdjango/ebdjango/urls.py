@@ -22,7 +22,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from Song.views import mainrenderer_view, record_view, song_view, profile_view, signup, deletechord_view, createsong_view, editchords_view, addchord_view, togglefavoritesong_view, undertab_view, overtab_view,lalita_view
+from Song.views import mainrenderer_view, song_view, profile_view, signup, deletechord_view, createsong_view, editchords_view, addchord_view, togglefavoritesong_view, undertab_view, overtab_view,lalita_view
 
 urlpatterns = [
     path('', mainrenderer_view),
@@ -30,7 +30,6 @@ urlpatterns = [
     path('overtab/', overtab_view, name='overtab-view'),
     path('undertab/', undertab_view, name='undertab-view'),
     path('song/<int:songid>', song_view, name='song-view'),
-    path('record/', record_view),
     path('createsong/', createsong_view, name='create-song-view'),
     path('editchords/', editchords_view, name='edit-chords-view'),
     path('profile/', profile_view),

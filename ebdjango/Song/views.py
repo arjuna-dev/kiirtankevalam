@@ -270,9 +270,6 @@ def mainrenderer_view(request):
 def renderer_view(request):
     return render(request,"renderer.html",{})
 
-def record_view(request):
-    return render(request,"record.html",{})
-
 def profile_view(request):
     return render(request,"profile.html",{})
 
