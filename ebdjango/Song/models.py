@@ -15,6 +15,12 @@ class BhajanManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(type="BH")
 
+class SongManager(models.Manager):
+    def get_last_song_by_user(self, request):
+        user             = request.user.profile
+        lastSongByUser   = Song.objects.filter(uploader=user).last()
+        return lastSongByUser
+
 class Song(models.Model):
     SONG_TYPES     = (
         ('KI', 'Kiirtan'),
@@ -37,6 +43,7 @@ class Song(models.Model):
     kiirtan        = KiirtanManager()
     bhajan         = PSManager()
     ps             = BhajanManager()
+    manager        = SongManager()
     
 class Profile(models.Model):
     user             = models.OneToOneField(User,on_delete=models.CASCADE)
