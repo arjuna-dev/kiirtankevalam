@@ -1,8 +1,6 @@
 <script>
     var alerto = $('#alerto')
     $(document).on('click', '.favBtn', function (event) {
-
-        console.log('hey there:')
         alerto.show()
         anime({
             targets: '#alerto',
@@ -19,10 +17,8 @@
             $(this).find(':nth-child(2)').toggleClass('poppe')
             $(this).find(':nth-child(3)').toggleClass('bab')
             $(this).find(':nth-child(3)').toggleClass('poppe')
-
             $(this).find(':nth-child(2)').show()
             $(this).find(':nth-child(3)').show()
-
             anime({
                 targets: '.star',
                 scale: 11,
@@ -53,9 +49,7 @@
             }, 1000);
 
         }
-
         btn.attr('src', newsrc);
-
         event.preventDefault();
         var pk = $(this).data('pid')
         console.log('pk:', pk)
