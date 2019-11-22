@@ -1,6 +1,6 @@
 from django.test import TestCase, Client
 from django.urls import reverse
-from Song.views import profile_view, song_view, createsong_view, editchords_view
+from Song.views import profile_view, song_view, createsong_view, editchords_view, signup
 from Song.models import Song, Profile, ChordIndex, Chord, IsFavourite
 import json
 import requests
@@ -21,7 +21,13 @@ class TestViews(TestCase):
         self.profile_url = reverse(profile_view)
         self.createsong_url = reverse(createsong_view)
         self.editchords_url = reverse(editchords_view)
+        self.signup_url = reverse(signup)
         self.Song = Song
+
+    def test_signup_view_GET(self):
+        response = self.client.get(self.signup_url)
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, 'signup.html')
 
     def test_profile_view_GET(self):
         response = self.client.get(self.profile_url)
@@ -46,7 +52,6 @@ class TestViews(TestCase):
     def test_editchords_view_GET_not_logged_in(self):
         response = self.client.get(self.editchords_url)
         self.assertEquals(response.status_code, 302)
-        self.assertTemplateUsed(response, 'editchords.html')
 
     def test_song_view_GET(self):
         self.song_url = reverse(song_view, args=['100100'])
