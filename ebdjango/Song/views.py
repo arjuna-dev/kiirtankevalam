@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from Song.models import Song, Profile, IsFavourite, Chord, ChordIndex
-from Song.forms import UserForm, UserProfileInfoForm, SongForm, AddChordForm
+from Song.forms import UserForm, UserProfileInfoForm, SongForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
