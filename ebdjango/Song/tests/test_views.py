@@ -3,7 +3,6 @@ from django.urls import reverse
 from Song.views import profile_view, song_view, createsong_view, editchords_view, signup
 from Song.models import Song, Profile, ChordIndex, Chord, IsFavourite
 import json
-import requests
 from django.contrib.auth.models import User
 from Song.forms import SongForm
 from django.core.files.uploadedfile import SimpleUploadedFile
