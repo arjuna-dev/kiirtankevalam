@@ -52,10 +52,18 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
+class FavoriteManager(models.Manager):
+    def create_favorite(self, song, profile, is_favorite):
+        favorite = self.create(song=song, profile=profile, is_favorite=is_favorite)
+        return favorite
+
 class IsFavourite(models.Model):
     song         = models.ForeignKey(Song, on_delete=models.CASCADE)
     profile       = models.ForeignKey(Profile, on_delete=models.CASCADE)
     is_favorite  = models.BooleanField(default=True)
+
+    objects      = models.Manager()
+    manager      = FavoriteManager()
 
 class Chord(models.Model):
     name            = models.CharField(max_length=100)
