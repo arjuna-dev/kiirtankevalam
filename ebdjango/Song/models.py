@@ -38,8 +38,10 @@ class Song(models.Model):
     edit_date      = models.DateField(auto_now=True, auto_now_add=False)
     chords         = models.ManyToManyField('Chord', related_name='chords', through='ChordIndex')
 
-    objects = models.Manager() # The default manager
-    all_objects = SongManager() # The specific managers
+    objects        = models.Manager()
+    kiirtan        = KiirtanManager()
+    bhajan         = PSManager()
+    ps             = BhajanManager()
     
 class Profile(models.Model):
     user             = models.OneToOneField(User,on_delete=models.CASCADE)
