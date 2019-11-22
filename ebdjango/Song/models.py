@@ -3,11 +3,6 @@ from django.contrib.auth.models import User
 from django_countries.fields import CountryField
 from django.core.validators import MaxValueValidator
 
-
-class SongManager(models.Manager):
-    def get_queryset(self):
-        return super().get_queryset()
-
 class KiirtanManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(type="KI")
