@@ -9,7 +9,6 @@ from django.template.loader import render_to_string
 import json as simplejson
 from django.middleware import csrf
 
-allSongs     = Song.objects.all()
 allKiirtan   = Song.objects.filter(type='KI')
 allBhajan    = Song.objects.filter(type='BH')
 allPs        = Song.objects.filter(type='PS')
@@ -19,7 +18,7 @@ def lalita_view(request):
     return render(request,"lalita.html",{})
 
 def song_view(request, songid): 
-    song = allSongs.get(pk=songid)
+    song = Song.objects.get(pk=songid)
     songChords = ChordIndex.objects.filter(song=song).values()
     return render(request, "song.html", {"song":song,"songChords":songChords,})
 
