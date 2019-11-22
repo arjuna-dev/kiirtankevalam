@@ -160,22 +160,6 @@ def undertab_view(request):
     print(undertabData)
     global songtypecontext
 
-    if request.user.is_authenticated:
-        user        = request.user.profile
-        upKiirtan   = Song.kiirtan.all().filter(uploader=user)
-        upPs        = Song.ps.all().filter(uploader=user)
-        upBhajan    = Song.bhajan.all().filter(uploader=user)
-        favKiirtan  = user.liked_songs.all().filter(type="KI")
-        favBhajan   = user.liked_songs.all().filter(type="BH")
-        favPs       = user.liked_songs.all().filter(type="PS")
-    else:
-        upKiirtan   = None
-        upPs        = None
-        upBhajan    = None
-        favKiirtan  = None
-        favBhajan   = None
-        favPs       = None
-
     if undertabData == 'fav': 
         listtypecontext = {
             'favactive': 'active',
@@ -206,25 +190,42 @@ def undertab_view(request):
         }
     songtype = whichSongType(songtypecontext)
     listtype = whichListType(listtypecontext)
+    if request.user.is_authenticated:
+        user        = request.user.profile
+        songTypeDictionary =	{
+            ("kiirtan", "fav"): { 'songlist': user.liked_songs.all().filter(type="KI"), 'type': "favorite"},
+            ("kiirtan", "feed"): { 'songlist': Song.kiirtan.all()},
+            ("kiirtan", "all"): { 'songlist': Song.kiirtan.all()},
+            ("kiirtan", "up"): { 'songlist': Song.kiirtan.all().filter(uploader=user), 'type': "uploads"},
+            ("bhajan", "fav"): { 'songlist': user.liked_songs.all().filter(type="BH"), 'type': "favorite"},
+            ("bhajan", "feed"): { 'songlist': Song.bhajan.all()},
+            ("bhajan", "all"): { 'songlist': Song.bhajan.all()},
+            ("bhajan", "up"): { 'songlist': Song.bhajan.all().filter(uploader=user), 'type': "uploads"},
+            ("ps", "fav"): { 'songlist': user.liked_songs.all().filter(type="PS"), 'type': "favorite"},
+            ("ps", "feed"): { 'songlist': Song.ps.all()},
+            ("ps", "all"): { 'songlist': Song.ps.all()},
+            ("ps", "up"): { 'songlist': Song.ps.all().filter(uploader=user), 'type': "uploads"},
+        }
+    else:
+        songTypeDictionary =	{
+            ("kiirtan", "fav"): { 'songlist': None, 'type': "favorite"},
+            ("kiirtan", "feed"): { 'songlist': Song.kiirtan.all()},
+            ("kiirtan", "all"): { 'songlist': Song.kiirtan.all()},
+            ("kiirtan", "up"): { 'songlist': None, 'type': "uploads"},
+            ("bhajan", "fav"): { 'songlist': None, 'type': "favorite"},
+            ("bhajan", "feed"): { 'songlist': Song.bhajan.all()},
+            ("bhajan", "all"): { 'songlist': Song.bhajan.all()},
+            ("bhajan", "up"): { 'songlist': None, 'type': "uploads"},
+            ("ps", "fav"): { 'songlist': None, 'type': "favorite"},
+            ("ps", "feed"): { 'songlist': Song.ps.all()},
+            ("ps", "all"): { 'songlist': Song.ps.all()},
+            ("ps", "up"): { 'songlist': None, 'type': "uploads"},
+        }
 
-    songTypeDictionary =	{
-        ("kiirtan", "fav"): { 'songlist': favKiirtan, 'type': "favorite"},
-        ("kiirtan", "feed"): { 'songlist': Song.kiirtan.all()},
-        ("kiirtan", "all"): { 'songlist': Song.kiirtan.all()},
-        ("kiirtan", "up"): { 'songlist': upKiirtan, 'type': "uploads"},
-        ("bhajan", "fav"): { 'songlist': favBhajan, 'type': "favorite"},
-        ("bhajan", "feed"): { 'songlist': Song.bhajan.all()},
-        ("bhajan", "all"): { 'songlist': Song.bhajan.all()},
-        ("bhajan", "up"): { 'songlist': upBhajan, 'type': "uploads"},
-        ("ps", "fav"): { 'songlist': favPs, 'type': "favorite"},
-        ("ps", "feed"): { 'songlist': Song.ps.all()},
-        ("ps", "all"): { 'songlist': Song.ps.all()},
-        ("ps", "up"): { 'songlist': upPs, 'type': "uploads"},
-    }
 
-    for aTuple, aContext in songTypeDictionary.items():
-        if aTuple == (songtype, listtype):
-            renderercontext = aContext
+    for theTuple, theContext in songTypeDictionary.items():
+        if theTuple == (songtype, listtype):
+            renderercontext = theContext
 
     if request.is_ajax():
         html2 = render_to_string('undertabs.html', listtypecontext, request=request)
