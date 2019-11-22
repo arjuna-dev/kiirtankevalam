@@ -66,7 +66,7 @@ def togglefavoritesong_view(request):
 def editchords_view(request):
     user             = request.user.profile
     lastSongByUser   = Song.objects.filter(uploader=user).last()
-    lastSongChords   = ChordIndex.objects.filter(song=lastSongByUser).values()
+    lastSongChords   = ChordIndex.objects.filter(song=lastSongByUser)
     previousPage = request.META.get('HTTP_REFERER')
     return render(request,"editchords.html",
                                 {
