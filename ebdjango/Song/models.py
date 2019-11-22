@@ -3,16 +3,26 @@ from django.contrib.auth.models import User
 from django_countries.fields import CountryField
 from django.core.validators import MaxValueValidator
 
-# Create your models here.
+class KiirtanManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(type="KI")
+
+class PSManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(type="PS")
+
+class BhajanManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(type="BH")
 
 class Song(models.Model):
-    title          = models.CharField(max_length=120)
     SONG_TYPES     = (
         ('KI', 'Kiirtan'),
         ('PS', 'Prabhat Samgiita'),
         ('BH', 'Bhajan'),
     )
     type           = models.CharField(max_length=30, choices=SONG_TYPES)
+    title          = models.CharField(max_length=120)
     capo           = models.PositiveIntegerField(blank=True, null=True, validators=[MaxValueValidator(12)])
     description    = models.TextField(blank=True)
     uploader       = models.ForeignKey('Profile', null=True, on_delete=models.SET_NULL)
@@ -22,6 +32,11 @@ class Song(models.Model):
     upload_date    = models.DateField(auto_now=False, auto_now_add=True)
     edit_date      = models.DateField(auto_now=True, auto_now_add=False)
     chords         = models.ManyToManyField('Chord', related_name='chords', through='ChordIndex')
+
+    objects        = models.Manager()
+    kiirtan        = KiirtanManager()
+    bhajan         = PSManager()
+    ps             = BhajanManager()
     
 class Profile(models.Model):
     user             = models.OneToOneField(User,on_delete=models.CASCADE)

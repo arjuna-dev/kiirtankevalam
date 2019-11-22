@@ -9,17 +9,11 @@ from django.template.loader import render_to_string
 import json as simplejson
 from django.middleware import csrf
 
-allSongs     = Song.objects.all()
-allKiirtan   = Song.objects.filter(type='KI')
-allBhajan    = Song.objects.filter(type='BH')
-allPs        = Song.objects.filter(type='PS')
-allChords    = Chord.objects.all()
-
 def lalita_view(request):
     return render(request,"lalita.html",{})
 
 def song_view(request, songid): 
-    song = allSongs.get(pk=songid)
+    song = Song.objects.get(pk=songid)
     songChords = ChordIndex.objects.filter(song=song).values()
     return render(request, "song.html", {"song":song,"songChords":songChords,})
 
@@ -40,7 +34,7 @@ def createsong_view(request):
         create_song_form = SongForm()
     return render(request,"createsong.html",
                                 {'create_song_form':create_song_form,
-                                'allChords': allChords,
+                                'allChords': Chord.objects.all(),
                                 })
 
 def togglefavoritesong_view(request):
@@ -72,7 +66,7 @@ def editchords_view(request):
                                 {
                                 'songChords': lastSongChords,
                                 'song': lastSongByUser,
-                                'allChords':allChords,
+                                'allChords':Chord.objects.all(),
                                 })
 
 def addchord_view(request, idChord):
@@ -109,7 +103,7 @@ kiirtanContext = {
     'typeintitle': 'kiirtan',
     'kiirtanactive': 'active',
     'feedactive': 'active',
-    'songlist': allKiirtan,
+    'songlist': Song.kiirtan.all(),
 }
 
 songtypecontext = {
@@ -131,7 +125,7 @@ def overtab_view(request):
     }
 
     renderercontext = {
-        'songlist': allKiirtan,
+        'songlist': Song.kiirtan.all(),
     }
 
     if overtabData == 'ki': 
@@ -140,21 +134,21 @@ def overtab_view(request):
         songtypecontext['bhajanactive']  = ''
 
         renderercontext = {
-            'songlist': allKiirtan,
+            'songlist': Song.kiirtan.all(),
         }
     elif overtabData == 'ps': 
         songtypecontext['kiirtanactive'] = ''
         songtypecontext['psactive']      = 'active'
         songtypecontext['bhajanactive']  = ''
         renderercontext = {
-            'songlist': allPs,
+            'songlist': Song.ps.all(),
         }
     elif overtabData == 'bh': 
         songtypecontext['kiirtanactive'] = ''
         songtypecontext['psactive']      = ''
         songtypecontext['bhajanactive']  = 'active'
         renderercontext = {
-            'songlist': allBhajan,
+            'songlist': Song.bhajan.all(),
         }
     if request.is_ajax():
         html1 = render_to_string('overtabs.html', songtypecontext, request=request)
@@ -189,9 +183,9 @@ def undertab_view(request):
 
     if request.user.is_authenticated:
         user        = request.user.profile
-        upKiirtan   = allKiirtan.filter(uploader=user)
-        upPs        = allPs.filter(uploader=user)
-        upBhajan    = allBhajan.filter(uploader=user)
+        upKiirtan   = Song.kiirtan.all().filter(uploader=user)
+        upPs        = Song.ps.all().filter(uploader=user)
+        upBhajan    = Song.bhajan.all().filter(uploader=user)
         favKiirtan  = user.liked_songs.all().filter(type="KI")
         favBhajan   = user.liked_songs.all().filter(type="BH")
         favPs       = user.liked_songs.all().filter(type="PS")
@@ -236,16 +230,16 @@ def undertab_view(request):
 
     songTypeDictionary =	{
         ("kiirtan", "fav"): { 'songlist': favKiirtan, 'type': "favorite"},
-        ("kiirtan", "feed"): { 'songlist': allKiirtan},
-        ("kiirtan", "all"): { 'songlist': allKiirtan},
+        ("kiirtan", "feed"): { 'songlist': Song.kiirtan.all()},
+        ("kiirtan", "all"): { 'songlist': Song.kiirtan.all()},
         ("kiirtan", "up"): { 'songlist': upKiirtan, 'type': "uploads"},
         ("bhajan", "fav"): { 'songlist': favBhajan, 'type': "favorite"},
-        ("bhajan", "feed"): { 'songlist': allBhajan},
-        ("bhajan", "all"): { 'songlist': allBhajan},
+        ("bhajan", "feed"): { 'songlist': Song.bhajan.all()},
+        ("bhajan", "all"): { 'songlist': Song.bhajan.all()},
         ("bhajan", "up"): { 'songlist': upBhajan, 'type': "uploads"},
         ("ps", "fav"): { 'songlist': favPs, 'type': "favorite"},
-        ("ps", "feed"): { 'songlist': allPs},
-        ("ps", "all"): { 'songlist': allPs},
+        ("ps", "feed"): { 'songlist': Song.ps.all()},
+        ("ps", "all"): { 'songlist': Song.ps.all()},
         ("ps", "up"): { 'songlist': upPs, 'type': "uploads"},
     }
 
