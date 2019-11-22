@@ -45,9 +45,9 @@ def song_view(request, songid):
 
 @login_required
 def createsong_view(request):
-    previousPage   = request.META.get('HTTP_REFERER')
-    user           = request.user.profile
-    if request.method == 'POST':
+    previousPage  = request.META.get('HTTP_REFERER')
+    user          = request.user.profile
+    if request.method     == 'POST':
         create_song_form  = SongForm(request.POST, request.FILES)
         print('request.POST:')
         print(request.POST)
