@@ -15,9 +15,6 @@ from django.db import connection
 import timeit
 import time
 
-# SQL queries for learning purposes
-# allSongs    = Song.objects.raw('SELECT * FROM Song_Song')
-# allBhajan   = Song.objects.raw('SELECT * FROM Song_Song WHERE type="BH"')
 allSongs     = Song.objects.all()
 allKiirtan   = Song.objects.filter(type='KI')
 allBhajan    = Song.objects.filter(type='BH')
@@ -30,17 +27,6 @@ def lalita_view(request):
 def song_view(request, songid): 
     song = allSongs.get(pk=songid)
     songChords = ChordIndex.objects.filter(song=song).values()
-    # The value of .values(), way more performant. This is the test: (learning purposes)
-    # def timeWithoutValues():
-    #     songChords = ChordIndex.objects.filter(song=song)
-    # def timeWithValues():
-    #     songChords = ChordIndex.objects.filter(song=song).values()
-    # timeWithoutValues = timeit.timeit(timeWithoutValues, number=100)/100
-    # timeWithValues = timeit.timeit(timeWithValues, number=100)/100
-    # print("timeWithoutValues")
-    # print(timeWithoutValues)
-    # print("timeWithValues")
-    # print(timeWithValues)
     return render(request, "song.html", {"song":song,"songChords":songChords,})
 
 @login_required
@@ -92,10 +78,6 @@ def editchords_view(request):
     user             = request.user.profile
     lastSongByUser   = Song.objects.filter(uploader=user).last()
     lastSongChords   = ChordIndex.objects.filter(song=lastSongByUser).values()
-    # Code to look into queries (learning purposes)
-    # print('\n\n', connection.queries)
-    # print('\n\n', songChords.query, '\n\n')
-    # print(songChords.explain())
     previousPage = request.META.get('HTTP_REFERER')
     return render(request,"editchords.html",
                                 {
@@ -194,8 +176,6 @@ def whichSongType(songtypecontext):
     elif songtypecontext['bhajanactive'] == 'active':
         return 'bhajan'
 
-#Aaron: Iterate through songtypecontext dictionary and if active then ->
-
 def whichListType(listtypecontext):
     if listtypecontext['favactive'] == 'active':
         return 'fav'
@@ -226,9 +206,6 @@ def undertab_view(request):
         favKiirtan  = None
         favBhajan   = None
         favPs       = None
-
-
-
 
     if undertabData == 'fav': 
         listtypecontext = {
@@ -293,8 +270,6 @@ def mainrenderer_view(request):
 
 
 #_-_-_-_-_-_-_-_-_-_-_-_-Other views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
-#_-_-_-_-_-_-_-_-_-_-_-_-Other views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
-#_-_-_-_-_-_-_-_-_-_-_-_-Other views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 
 def renderer_view(request):
     return render(request,"renderer.html",{})
@@ -305,8 +280,6 @@ def record_view(request):
 def profile_view(request):
     return render(request,"profile.html",{})
 
-#_-_-_-_-_-_-_-_-_-_-_-_-Signup/Login Forms_-_-_-_-_-_-_-_-_-_-_-_-_-_-
-#_-_-_-_-_-_-_-_-_-_-_-_-Signup/Login Forms_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 #_-_-_-_-_-_-_-_-_-_-_-_-Signup/Login Forms_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 
 @login_required
@@ -349,22 +322,3 @@ def signup(request):
                           {'user_form':user_form,
                            'profile_form':profile_form,
                            'registered':registered})
-
-# def user_login(request):
-#     if request.method == 'POST':
-#         username = request.POST.get('username')
-#         password = request.POST.get('password')
-#         user = authenticate(username=username, password=password)
-#         if user:
-#             if user.is_active:
-#                 login(request,user)
-#                 return HttpResponseRedirect(reverse(kiirtanfav_view))
-#             else:
-#                 return HttpResponse("Your account was inactive.")
-#         else:
-#             print("Someone tried to login and failed.")
-#             print("They used username: {} and password: {}".format(username,password))
-#             return HttpResponse("Invalid login details given")
-#     else:
-#         return render(request, 'registration/login.html', {})
-
