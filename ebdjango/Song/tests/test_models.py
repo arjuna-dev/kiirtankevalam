@@ -4,7 +4,6 @@ from django.urls import reverse
 from Song.forms import UserForm, UserProfileInfoForm, SongForm
 from django.contrib.auth.models import User
 
-
 class TestModels(TestCase):
 
     def create_user(self, username, password):
