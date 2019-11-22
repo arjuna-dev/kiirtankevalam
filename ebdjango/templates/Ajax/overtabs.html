@@ -1,0 +1,40 @@
+<script>
+    $(document).on('click', '.overtab', function (event) {
+
+        //event.preventDefault();
+
+        //Hide burger menu after choosing song type (if button is on burger menu)
+        var burger = $(".navbar-toggler-icon")
+
+        if ($(this).hasClass('clickBurgerMenu')) {
+            burger.click()
+            console.log('super super')
+        }
+
+        //Continue with ajax
+        var overtabdata = $(this).data('songtype')
+        console.log('overtabdata:', overtabdata)
+
+        $.ajax({
+            type: 'GET',
+            //Trigger a view (which is pretty much a function)
+            url: "{% url 'overtab-view' %}",
+            //Fill in that function's variable (songType) with our html payload (songType)
+            data: {
+                'songType': overtabdata
+            },
+            success: function (response) {
+                console.log('Hello, ajax successful')
+                var responseAsJSON = JSON.parse(response['form'])
+                $('#overtabs-div').html(responseAsJSON['overtabshtml'])
+                $('#undertabs-div').html(responseAsJSON['undertabshtml'])
+                $('#songrenderer-div').html(responseAsJSON['songrendererhtml'])
+                //console.log($('#overtabs-div').html(response['form']))
+            },
+            error: function (rs, e) {
+                console.log('noNOHelooNoNo')
+                console.log(rs.responseText)
+            }
+        })
+    })
+</script>

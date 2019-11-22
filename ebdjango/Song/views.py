@@ -14,7 +14,7 @@ def lalita_view(request):
 
 def song_view(request, songid): 
     song = Song.objects.get(pk=songid)
-    songChords = ChordIndex.objects.filter(song=song).values()
+    songChords = ChordIndex.objects.filter(song=song)
     return render(request, "song.html", {"song":song,"songChords":songChords,})
 
 @login_required
