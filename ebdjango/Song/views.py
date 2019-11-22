@@ -160,34 +160,17 @@ def undertab_view(request):
     print(undertabData)
     global songtypecontext
 
-    if undertabData == 'fav': 
-        listtypecontext = {
-            'favactive': 'active',
-            'feedactive': '',
-            'allactive': '',
-            'uploadsactive': '',
-        }
-    elif undertabData == 'feed':       
-        listtypecontext = {
-            'favactive': '',
-            'feedactive': 'active',
-            'allactive': '',
-            'uploadsactive': '',
-        }
-    elif undertabData == 'all':        
-        listtypecontext = {
-            'favactive': '',
-            'feedactive': '',
-            'allactive': 'active',
-            'uploadsactive': '',
-        }
-    elif undertabData == 'up':     
-        listtypecontext = {
-            'favactive': '',
-            'feedactive': '',
-            'allactive': '',
-            'uploadsactive': 'active',
-        }
+    listTypeDictionary = {
+        'fav': {'favactive': 'active','feedactive': '','allactive': '','uploadsactive': ''},
+        'feed': {'favactive': '','feedactive': 'active','allactive': '','uploadsactive': ''},
+        'all': {'favactive': '','feedactive': '','allactive': 'active','uploadsactive': ''},
+        'up': {'favactive': '','feedactive': '','allactive': '','uploadsactive': 'active'}
+    }
+
+    for listType, theContext in listTypeDictionary.items():
+        if listType == undertabData:
+            listtypecontext = theContext
+
     songtype = whichSongType(songtypecontext)
     listtype = whichListType(listtypecontext)
     if request.user.is_authenticated:
