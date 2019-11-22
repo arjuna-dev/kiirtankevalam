@@ -92,43 +92,26 @@ songtypecontext = {
 }
 
 def overtab_view(request):
-    print(csrf.get_token(request))
     overtabData = request.GET.get('songType')
-    print(overtabData)
     global songtypecontext
-    listtypecontext = {
-        'favactive': '',
-        'feedactive': 'active',
-        'allactive': '',
-        'uploadsactive': '',
-    }
+
+    listtypecontext = {'favactive': '','feedactive': 'active','allactive': '','uploadsactive': ''}
 
     renderercontext = {
         'songlist': Song.kiirtan.all(),
     }
 
-    if overtabData == 'ki': 
-        songtypecontext['kiirtanactive'] = 'active'
-        songtypecontext['psactive']      = ''
-        songtypecontext['bhajanactive']  = ''
+    songTypeDictionary = {
+        'ki': ({'kiirtanactive': 'active','psactive': '','bhajanactive': ''}, {'songlist':Song.kiirtan.all()}),
+        'ps': ({'kiirtanactive': '','psactive': 'active','bhajanactive': ''}, {'songlist':Song.ps.all()}),
+        'bh': ({'kiirtanactive': '','psactive': '','bhajanactive': 'active'}, {'songlist':Song.bhajan.all()})
+    }
 
-        renderercontext = {
-            'songlist': Song.kiirtan.all(),
-        }
-    elif overtabData == 'ps': 
-        songtypecontext['kiirtanactive'] = ''
-        songtypecontext['psactive']      = 'active'
-        songtypecontext['bhajanactive']  = ''
-        renderercontext = {
-            'songlist': Song.ps.all(),
-        }
-    elif overtabData == 'bh': 
-        songtypecontext['kiirtanactive'] = ''
-        songtypecontext['psactive']      = ''
-        songtypecontext['bhajanactive']  = 'active'
-        renderercontext = {
-            'songlist': Song.bhajan.all(),
-        }
+    for listType, theContext in songTypeDictionary.items():
+        if listType == overtabData:
+            songtypecontext = theContext[0]
+            renderercontext = theContext[1]
+
     if request.is_ajax():
         html1 = render_to_string('overtabs.html', songtypecontext, request=request)
         html2 = render_to_string('undertabs.html', listtypecontext, request=request)
@@ -195,7 +178,6 @@ def undertab_view(request):
             ("ps", "all"): { 'songlist': Song.ps.all()},
             ("ps", "up"): { 'songlist': None, 'type': "uploads"},
         }
-
 
     for theTuple, theContext in songTypeDictionary.items():
         if theTuple == (songtype, listtype):
