@@ -78,10 +78,17 @@ def editchords_view(request):
 def addchord_view(request, idChord):
     user                    = request.user.profile
     chord                   = Chord.objects.get(pk=idChord)
+    print('chord')
+    print(chord)
     songsByUser             = Song.objects.filter(uploader=user)
     lastSongByUser          = songsByUser.last()
+    print('lastSongByUser')
+    print(lastSongByUser)
     previousPage            = request.META.get('HTTP_REFERER')
-    filterUserLastSong       = ChordIndex.objects.create(song=lastSongByUser, chord=chord)
+    ChordIndex.objects.create(song=lastSongByUser, chord=chord)
+    chordIndexCount = ChordIndex.objects.all().count()
+    print("chordIndexCount")
+    print(chordIndexCount)
     return HttpResponseRedirect(previousPage)
 
 def deletechord_view(request):
