@@ -43,6 +43,11 @@ class TestViews(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'editchords.html')
 
+    def test_editchords_view_GET_not_logged_in(self):
+        response = self.client.get(self.editchords_url)
+        self.assertEquals(response.status_code, 302)
+        self.assertTemplateUsed(response, 'editchords.html')
+
     def test_song_view_GET(self):
         self.song_url = reverse(song_view, args=['100100'])
         self.songy = Song.objects.create(
