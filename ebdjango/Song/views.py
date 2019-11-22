@@ -9,7 +9,7 @@ from django.template.loader import render_to_string
 import json as simplejson
 from django.middleware import csrf
 
-allKiirtan   = Song.objects.filter(type='KI')
+# allKiirtan   = Song.kiirtan.all()
 allBhajan    = Song.objects.filter(type='BH')
 allPs        = Song.objects.filter(type='PS')
 allChords    = Chord.objects.all()
@@ -108,7 +108,7 @@ kiirtanContext = {
     'typeintitle': 'kiirtan',
     'kiirtanactive': 'active',
     'feedactive': 'active',
-    'songlist': allKiirtan,
+    'songlist': Song.kiirtan.all(),
 }
 
 songtypecontext = {
@@ -130,7 +130,7 @@ def overtab_view(request):
     }
 
     renderercontext = {
-        'songlist': allKiirtan,
+        'songlist': Song.kiirtan.all(),
     }
 
     if overtabData == 'ki': 
@@ -139,7 +139,7 @@ def overtab_view(request):
         songtypecontext['bhajanactive']  = ''
 
         renderercontext = {
-            'songlist': allKiirtan,
+            'songlist': Song.kiirtan.all(),
         }
     elif overtabData == 'ps': 
         songtypecontext['kiirtanactive'] = ''
@@ -188,7 +188,7 @@ def undertab_view(request):
 
     if request.user.is_authenticated:
         user        = request.user.profile
-        upKiirtan   = allKiirtan.filter(uploader=user)
+        upKiirtan   = Song.kiirtan.all().filter(uploader=user)
         upPs        = allPs.filter(uploader=user)
         upBhajan    = allBhajan.filter(uploader=user)
         favKiirtan  = user.liked_songs.all().filter(type="KI")
@@ -235,8 +235,8 @@ def undertab_view(request):
 
     songTypeDictionary =	{
         ("kiirtan", "fav"): { 'songlist': favKiirtan, 'type': "favorite"},
-        ("kiirtan", "feed"): { 'songlist': allKiirtan},
-        ("kiirtan", "all"): { 'songlist': allKiirtan},
+        ("kiirtan", "feed"): { 'songlist': Song.kiirtan.all()},
+        ("kiirtan", "all"): { 'songlist': Song.kiirtan.all()},
         ("kiirtan", "up"): { 'songlist': upKiirtan, 'type': "uploads"},
         ("bhajan", "fav"): { 'songlist': favBhajan, 'type': "favorite"},
         ("bhajan", "feed"): { 'songlist': allBhajan},
