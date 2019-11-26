@@ -11,12 +11,12 @@ from .models import Chord, ChordIndex, IsFavourite, Profile, Song
 
 
 def lalita_view(request):
-    return render(request,"lalita.html",{})
+    return render(request,'lalita.html',{})
 
 def song_view(request, songid): 
     song = Song.objects.get(pk=songid)
     songChords = ChordIndex.objects.filter(song=song)
-    return render(request, "song.html", {"song":song,"songChords":songChords})
+    return render(request, 'song.html', {'song':song,'songChords':songChords})
 
 @login_required
 def createsong_view(request):
@@ -33,7 +33,7 @@ def createsong_view(request):
             return HttpResponseRedirect(previousPage)
     else:
         create_song_form = SongForm()
-    return render(request,"createsong.html",
+    return render(request,'createsong.html',
                                 {'create_song_form':create_song_form,
                                 'allChords': Chord.objects.all(),
                                 })
@@ -56,7 +56,7 @@ def editchords_view(request):
     lastSongChords   = ChordIndex.objects.filter(song=lastSongByUser)
     return render(
         request,
-        "editchords.html",
+        'editchords.html',
         {
             'songChords': lastSongChords,
             'song': lastSongByUser,
@@ -132,8 +132,8 @@ def whichSongType(songtypecontext):
         return 'bhajan'
 
 def undertab_view(request):
+
     undertabData = request.GET.get('listType')
-    print(undertabData)
     global songtypecontext
 
     listTypeDictionary = {
@@ -151,66 +151,84 @@ def undertab_view(request):
     listtype = undertabData
 
     if request.user.is_authenticated:
-        user               = request.user.profile
-        songTypeDictionary =	{
-            ("kiirtan", "fav"): { 'songlist': user.liked_songs.all().filter(type="KI"), 'type': "favorite"},
-            ("kiirtan", "feed"): { 'songlist': Song.query.song_type('KI')},
-            ("kiirtan", "all"): { 'songlist': Song.query.song_type('KI')},
-            ("kiirtan", "up"): { 'songlist': Song.query.song_type('KI').filter(uploader=user), 'type': "uploads"},
-            ("bhajan", "fav"): { 'songlist': user.liked_songs.all().filter(type="BH"), 'type': "favorite"},
-            ("bhajan", "feed"): { 'songlist': Song.query.song_type('BH')},
-            ("bhajan", "all"): { 'songlist': Song.query.song_type('BH')},
-            ("bhajan", "up"): { 'songlist': Song.query.song_type('BH').filter(uploader=user), 'type': "uploads"},
-            ("ps", "fav"): { 'songlist': user.liked_songs.all().filter(type="PS"), 'type': "favorite"},
-            ("ps", "feed"): { 'songlist': Song.query.song_type('PS')},
-            ("ps", "all"): { 'songlist': Song.query.song_type('BH')},
-            ("ps", "up"): { 'songlist': Song.query.song_type('BH').filter(uploader=user), 'type': "uploads"},
-        }
+        user              = request.user.profile
+        liked_songs       = user.liked_songs.all()
+        uploaded_songs    = Song.query.song_type('KI').filter(uploader=user)
+        # liked_bhajan   = user.liked_songs.all().filter(type='BH')
+        # liked_ps       = user.liked_songs.all().filter(type='PS')
     else:
-        songTypeDictionary =	{
-            ("kiirtan", "fav"): { 'songlist': None, 'type': "favorite"},
-            ("kiirtan", "feed"): { 'songlist': Song.query.song_type('KI')},
-            ("kiirtan", "all"): { 'songlist': Song.query.song_type('KI')},
-            ("kiirtan", "up"): { 'songlist': None, 'type': "uploads"},
-            ("bhajan", "fav"): { 'songlist': None, 'type': "favorite"},
-            ("bhajan", "feed"): { 'songlist': Song.query.song_type('BH')},
-            ("bhajan", "all"): { 'songlist': Song.query.song_type('BH')},
-            ("bhajan", "up"): { 'songlist': None, 'type': "uploads"},
-            ("ps", "fav"): { 'songlist': None, 'type': "favorite"},
-            ("ps", "feed"): { 'songlist': Song.query.song_type('BH')},
-            ("ps", "all"): { 'songlist': Song.query.song_type('BH')},
-            ("ps", "up"): { 'songlist': None, 'type': "uploads"},
-        }
+        liked_songs       = None
+        uploaded_songs    = None
+        # liked_bhajan   = None
+        # liked_ps       = None
+
+    songTypeDictionary =	{
+        ('kiirtan', 'fav'): { 'songlist': liked_songs, 'type': 'favorite'},
+        ('kiirtan', 'feed'): { 'songlist': Song.query.song_type('KI'), 'type': 'feed'},
+        ('kiirtan', 'all'): { 'songlist': Song.query.song_type('KI'), 'type': 'all'},
+        ('kiirtan', 'up'): { 'songlist': uploaded_songs, 'type': 'uploads'},
+        ('bhajan', 'fav'): { 'songlist': liked_songs, 'type': 'favorite'},
+        ('bhajan', 'feed'): { 'songlist': Song.query.song_type('BH'), 'type': 'feed'},
+        ('bhajan', 'all'): { 'songlist': Song.query.song_type('BH'), 'type': 'all'},
+        ('bhajan', 'up'): { 'songlist': uploaded_songs, 'type': 'uploads'},
+        ('ps', 'fav'): { 'songlist': liked_songs, 'type': 'favorite'},
+        ('ps', 'feed'): { 'songlist': Song.query.song_type('PS'), 'type': 'feed'},
+        ('ps', 'all'): { 'songlist': Song.query.song_type('BH'), 'type': 'all'},
+        ('ps', 'up'): { 'songlist': uploaded_songs, 'type': 'uploads'},
+    }
+    # else:
+    #     songTypeDictionary =	{
+    #         ('kiirtan', 'fav'): { 'songlist': None, 'type': 'favorite'},
+    #         ('kiirtan', 'feed'): { 'songlist': Song.query.song_type('KI')},
+    #         ('kiirtan', 'all'): { 'songlist': Song.query.song_type('KI')},
+    #         ('kiirtan', 'up'): { 'songlist': None, 'type': 'uploads'},
+    #         ('bhajan', 'fav'): { 'songlist': None, 'type': 'favorite'},
+    #         ('bhajan', 'feed'): { 'songlist': Song.query.song_type('BH')},
+    #         ('bhajan', 'all'): { 'songlist': Song.query.song_type('BH')},
+    #         ('bhajan', 'up'): { 'songlist': None, 'type': 'uploads'},
+    #         ('ps', 'fav'): { 'songlist': None, 'type': 'favorite'},
+    #         ('ps', 'feed'): { 'songlist': Song.query.song_type('BH')},
+    #         ('ps', 'all'): { 'songlist': Song.query.song_type('BH')},
+    #         ('ps', 'up'): { 'songlist': None, 'type': 'uploads'},
+    #     }
 
     for theTuple, theContext in songTypeDictionary.items():
-        if theTuple == (songtype, listtype):
+        if theTuple == (songtype, listtype) and request.user.is_authenticated:
+            print(theContext['type'])
+            if theContext['type'] == 'favorite':
+                theContext['songlist'] = theContext['songlist'].filter(type='BH')
             renderercontext = theContext
+        elif theTuple == (songtype, listtype) and theContext['type'] == 'favorite' or theContext['type'] == 'uploads':
+            print('mememememe')
+            theContext['songlist'] = None
+            renderercontext = theContext
+            
 
     if request.is_ajax():
-        html2 = render_to_string('undertabs.html', listtypecontext, request=request)
-        html3 = render_to_string('renderer.html', renderercontext, request=request)
-        json = simplejson.dumps({'undertabshtml': html2, 'songrendererhtml': html3})
+        undertabs_div     = render_to_string('undertabs.html', listtypecontext, request=request)
+        songrenderer_div  = render_to_string('renderer.html', renderercontext, request=request)
+        json              = simplejson.dumps({'undertabs_div': undertabs_div, 'songrenderer_div': songrenderer_div})
         return JsonResponse({'form': json})
 
 
 def mainrenderer_view(request):
     global kiirtanContext
-    return render(request,"mainrenderer.html",kiirtanContext)
+    return render(request,'mainrenderer.html',kiirtanContext)
 
 
 #_-_-_-_-_-_-_-_-_-_-_-_-Other views_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 
 def renderer_view(request):
-    return render(request,"renderer.html",{})
+    return render(request,'renderer.html',{})
 
 def profile_view(request):
-    return render(request,"profile.html",{})
+    return render(request,'profile.html',{})
 
 #_-_-_-_-_-_-_-_-_-_-_-_-Signup/Login Forms_-_-_-_-_-_-_-_-_-_-_-_-_-_-
 
 @login_required
 def special(request):
-    return HttpResponse("You are logged in !")
+    return HttpResponse('You are logged in !')
 
 @login_required
 def user_logout(request):
@@ -238,7 +256,7 @@ def signup(request):
                 password=user_form.cleaned_data['password'],
             )
             login(request, user)
-            return HttpResponseRedirect("/kiirtanfav/")
+            return HttpResponseRedirect('/kiirtanfav/')
         else:
             print(user_form.errors,profile_form.errors)
     else:

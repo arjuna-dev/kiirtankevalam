@@ -6,11 +6,11 @@
         {% endfor %}
       {% elif  user.is_authenticated and type == "uploads" %}
         <div class="jumbotron">
-            <p>You havent uploaded songs yet {{ typeintitle }} 🙃</p>
+            <p>You havent uploaded songs yet 🙃</p>
         </div>
       {% elif  user.is_authenticated and type == "favorite" %}
         <div class="jumbotron">
-            <p>No favorite songs yet {{ typeintitle }} 🤔</p>
+            <p>No favorite songs yet 🤔</p>
             <hr class="my-4">
             <p>Check "Feed" and "All" tabs to add {{ typeintitle }} to your favorites</p>
         </div>
