@@ -1,7 +1,9 @@
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator
 from django.db import models
+
 from django_countries.fields import CountryField
+
 
 class QueryManager(models.Manager):
     def song_type(self, song_type):

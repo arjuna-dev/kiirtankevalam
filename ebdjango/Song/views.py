@@ -1,5 +1,4 @@
 import json as simplejson
-
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -7,7 +6,6 @@ from django.middleware import csrf
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.urls import reverse
-
 from .forms import SongForm, UserForm, UserProfileInfoForm
 from .models import Chord, ChordIndex, IsFavourite, Profile, Song
 
@@ -153,7 +151,7 @@ def undertab_view(request):
     listtype = undertabData
 
     if request.user.is_authenticated:
-        user        = request.user.profile
+        user               = request.user.profile
         songTypeDictionary =	{
             ("kiirtan", "fav"): { 'songlist': user.liked_songs.all().filter(type="KI"), 'type': "favorite"},
             ("kiirtan", "feed"): { 'songlist': Song.query.song_type('KI')},

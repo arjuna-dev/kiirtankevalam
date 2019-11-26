@@ -1,12 +1,14 @@
-from django.test import TestCase, Client
-from django.urls import reverse
-from Song.views import profile_view, song_view, createsong_view, editchords_view, signup
-from Song.models import Song, Profile, ChordIndex, Chord, IsFavourite
 import json
-from django.contrib.auth.models import User
-from Song.forms import SongForm
-from django.core.files.uploadedfile import SimpleUploadedFile
 import time
+from django.contrib.auth.models import User
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import Client, TestCase
+from django.urls import reverse
+from Song.forms import SongForm
+from Song.models import Chord, ChordIndex, IsFavourite, Profile, Song
+from Song.views import (createsong_view, editchords_view, profile_view, signup,
+                        song_view)
+
 
 class TestViews(TestCase):
 
