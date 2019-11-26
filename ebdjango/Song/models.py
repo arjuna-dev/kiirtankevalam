@@ -1,19 +1,16 @@
-from django.db import models
 from django.contrib.auth.models import User
-from django_countries.fields import CountryField
 from django.core.validators import MaxValueValidator
+from django.db import models
+from django_countries.fields import CountryField
 
-class KiirtanManager(models.Manager):
-    def get_queryset(self):
-        return super().get_queryset().filter(type="KI")
-
-class PSManager(models.Manager):
-    def get_queryset(self):
-        return super().get_queryset().filter(type="PS")
-
-class BhajanManager(models.Manager):
-    def get_queryset(self):
-        return super().get_queryset().filter(type="BH")
+class QueryManager(models.Manager):
+    def song_type(self, song_type):
+        if song_type == 'KI':
+            return super().get_queryset().filter(type='KI')
+        elif song_type == 'PS':
+            return super().get_queryset().filter(type='PS')
+        elif song_type == 'BH':
+            return super().get_queryset().filter(type='BH')
 
 class SongManager(models.Manager):
     def get_last_song_by_user(self, request):
@@ -40,10 +37,8 @@ class Song(models.Model):
     chords         = models.ManyToManyField('Chord', related_name='chords', through='ChordIndex')
 
     objects        = models.Manager()
-    kiirtan        = KiirtanManager()
-    bhajan         = PSManager()
-    ps             = BhajanManager()
     manager        = SongManager()
+    query          = QueryManager()
     
 class Profile(models.Model):
     user             = models.OneToOneField(User,on_delete=models.CASCADE)

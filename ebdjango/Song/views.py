@@ -1,13 +1,16 @@
-from django.shortcuts import render
-from Song.models import Song, Profile, IsFavourite, Chord, ChordIndex
-from Song.forms import UserForm, UserProfileInfoForm, SongForm
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.urls import reverse
-from django.template.loader import render_to_string
 import json as simplejson
+
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.middleware import csrf
+from django.shortcuts import render
+from django.template.loader import render_to_string
+from django.urls import reverse
+
+from .forms import SongForm, UserForm, UserProfileInfoForm
+from .models import Chord, ChordIndex, IsFavourite, Profile, Song
+
 
 def lalita_view(request):
     return render(request,"lalita.html",{})
@@ -15,7 +18,7 @@ def lalita_view(request):
 def song_view(request, songid): 
     song = Song.objects.get(pk=songid)
     songChords = ChordIndex.objects.filter(song=song)
-    return render(request, "song.html", {"song":song,"songChords":songChords,})
+    return render(request, "song.html", {"song":song,"songChords":songChords})
 
 @login_required
 def createsong_view(request):
@@ -53,12 +56,14 @@ def togglefavoritesong_view(request):
 def editchords_view(request):
     lastSongByUser = Song.manager.get_last_song_by_user(request)
     lastSongChords   = ChordIndex.objects.filter(song=lastSongByUser)
-    return render(request,"editchords.html",    
-                                {
-                                'songChords': lastSongChords,
-                                'song': lastSongByUser,
-                                'allChords':Chord.objects.all(),
-                                })
+    return render(
+        request,
+        "editchords.html",
+        {
+            'songChords': lastSongChords,
+            'song': lastSongByUser,
+            'allChords':Chord.objects.all(),
+        })
 
 def addchord_view(request, idChord):
     previousPage            = request.META.get('HTTP_REFERER')
@@ -82,7 +87,7 @@ kiirtanContext = {
     'typeintitle': 'kiirtan',
     'kiirtanactive': 'active',
     'feedactive': 'active',
-    'songlist': Song.kiirtan.all(),
+    'songlist': Song.query.song_type('KI'),
 }
 
 songtypecontext = {
@@ -98,13 +103,13 @@ def overtab_view(request):
     listtypecontext = {'favactive': '','feedactive': 'active','allactive': '','uploadsactive': ''}
 
     renderercontext = {
-        'songlist': Song.kiirtan.all(),
+        'songlist': Song.query.song_type('KI'),
     }
 
     songTypeDictionary = {
-        'ki': ({'kiirtanactive': 'active','psactive': '','bhajanactive': ''}, {'songlist':Song.kiirtan.all()}),
-        'ps': ({'kiirtanactive': '','psactive': 'active','bhajanactive': ''}, {'songlist':Song.ps.all()}),
-        'bh': ({'kiirtanactive': '','psactive': '','bhajanactive': 'active'}, {'songlist':Song.bhajan.all()})
+        'ki': ({'kiirtanactive': 'active','psactive': '','bhajanactive': ''}, {'songlist':Song.query.song_type('KI')}),
+        'ps': ({'kiirtanactive': '','psactive': 'active','bhajanactive': ''}, {'songlist':Song.query.song_type('BH')}),
+        'bh': ({'kiirtanactive': '','psactive': '','bhajanactive': 'active'}, {'songlist':Song.query.song_type('BH')})
     }
 
     for listType, theContext in songTypeDictionary.items():
@@ -151,31 +156,31 @@ def undertab_view(request):
         user        = request.user.profile
         songTypeDictionary =	{
             ("kiirtan", "fav"): { 'songlist': user.liked_songs.all().filter(type="KI"), 'type': "favorite"},
-            ("kiirtan", "feed"): { 'songlist': Song.kiirtan.all()},
-            ("kiirtan", "all"): { 'songlist': Song.kiirtan.all()},
-            ("kiirtan", "up"): { 'songlist': Song.kiirtan.all().filter(uploader=user), 'type': "uploads"},
+            ("kiirtan", "feed"): { 'songlist': Song.query.song_type('KI')},
+            ("kiirtan", "all"): { 'songlist': Song.query.song_type('KI')},
+            ("kiirtan", "up"): { 'songlist': Song.query.song_type('KI').filter(uploader=user), 'type': "uploads"},
             ("bhajan", "fav"): { 'songlist': user.liked_songs.all().filter(type="BH"), 'type': "favorite"},
-            ("bhajan", "feed"): { 'songlist': Song.bhajan.all()},
-            ("bhajan", "all"): { 'songlist': Song.bhajan.all()},
-            ("bhajan", "up"): { 'songlist': Song.bhajan.all().filter(uploader=user), 'type': "uploads"},
+            ("bhajan", "feed"): { 'songlist': Song.query.song_type('BH')},
+            ("bhajan", "all"): { 'songlist': Song.query.song_type('BH')},
+            ("bhajan", "up"): { 'songlist': Song.query.song_type('BH').filter(uploader=user), 'type': "uploads"},
             ("ps", "fav"): { 'songlist': user.liked_songs.all().filter(type="PS"), 'type': "favorite"},
-            ("ps", "feed"): { 'songlist': Song.ps.all()},
-            ("ps", "all"): { 'songlist': Song.ps.all()},
-            ("ps", "up"): { 'songlist': Song.ps.all().filter(uploader=user), 'type': "uploads"},
+            ("ps", "feed"): { 'songlist': Song.query.song_type('PS')},
+            ("ps", "all"): { 'songlist': Song.query.song_type('BH')},
+            ("ps", "up"): { 'songlist': Song.query.song_type('BH').filter(uploader=user), 'type': "uploads"},
         }
     else:
         songTypeDictionary =	{
             ("kiirtan", "fav"): { 'songlist': None, 'type': "favorite"},
-            ("kiirtan", "feed"): { 'songlist': Song.kiirtan.all()},
-            ("kiirtan", "all"): { 'songlist': Song.kiirtan.all()},
+            ("kiirtan", "feed"): { 'songlist': Song.query.song_type('KI')},
+            ("kiirtan", "all"): { 'songlist': Song.query.song_type('KI')},
             ("kiirtan", "up"): { 'songlist': None, 'type': "uploads"},
             ("bhajan", "fav"): { 'songlist': None, 'type': "favorite"},
-            ("bhajan", "feed"): { 'songlist': Song.bhajan.all()},
-            ("bhajan", "all"): { 'songlist': Song.bhajan.all()},
+            ("bhajan", "feed"): { 'songlist': Song.query.song_type('BH')},
+            ("bhajan", "all"): { 'songlist': Song.query.song_type('BH')},
             ("bhajan", "up"): { 'songlist': None, 'type': "uploads"},
             ("ps", "fav"): { 'songlist': None, 'type': "favorite"},
-            ("ps", "feed"): { 'songlist': Song.ps.all()},
-            ("ps", "all"): { 'songlist': Song.ps.all()},
+            ("ps", "feed"): { 'songlist': Song.query.song_type('BH')},
+            ("ps", "all"): { 'songlist': Song.query.song_type('BH')},
             ("ps", "up"): { 'songlist': None, 'type': "uploads"},
         }
 
