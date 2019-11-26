@@ -12,11 +12,11 @@
             success: function (response) {
                 console.log('Hello, ajax successful')
                 var responseAsJSON = JSON.parse(response['form'])
-                $('#undertabs-div').html(responseAsJSON['undertabshtml'])
-                $('#songrenderer-div').html(responseAsJSON['songrendererhtml'])
+                $('#undertabs-div').html(responseAsJSON['undertabs_div'])
+                $('#songrenderer-div').html(responseAsJSON['songrenderer_div'])
             },
             error: function (rs, e) {
-                console.log('noNOHelooNoNo')
+                console.log('Ajax not successful')
                 console.log(rs.responseText)
             }
         })
