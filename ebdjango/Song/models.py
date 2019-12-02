@@ -1,18 +1,12 @@
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator
 from django.db import models
-
 from django_countries.fields import CountryField
 
 
 class QueryManager(models.Manager):
     def song_type(self, song_type):
-        if song_type == 'KI':
-            return super().get_queryset().filter(type='KI')
-        elif song_type == 'PS':
-            return super().get_queryset().filter(type='PS')
-        elif song_type == 'BH':
-            return super().get_queryset().filter(type='BH')
+        return super().get_queryset().filter(type=song_type)
 
 class SongManager(models.Manager):
     def get_last_song_by_user(self, request):
