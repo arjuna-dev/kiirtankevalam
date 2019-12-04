@@ -20,7 +20,6 @@ from django.urls import path, include
 #For serving media:
 from django.conf import settings
 from django.conf.urls.static import static
-
 from Song.views import mainrenderer_view, song_view, profile_view, signup, deletechord_view, createsong_view, editchords_view, addchord_view, togglefavoritesong_view, undertab_view, overtab_view,lalita_view
 
 urlpatterns = [
