@@ -149,37 +149,37 @@ def undertab_view(request):
     songtype = whichSongType(songtypecontext)
     listtype = undertabData
 
-    if request.user.is_authenticated:
-        user               = request.user.profile
-        songTypeDictionary =	{
-            ("kiirtan", "fav"): { 'songlist': user.liked_songs.all().filter(type="KI"), 'type': "favorite"},
-            ("kiirtan", "feed"): { 'songlist': Song.query.song_type('KI')},
-            ("kiirtan", "all"): { 'songlist': Song.query.song_type('KI')},
-            ("kiirtan", "up"): { 'songlist': Song.query.song_type('KI').filter(uploader=user), 'type': "uploads"},
-            ("bhajan", "fav"): { 'songlist': user.liked_songs.all().filter(type="BH"), 'type': "favorite"},
-            ("bhajan", "feed"): { 'songlist': Song.query.song_type('BH')},
-            ("bhajan", "all"): { 'songlist': Song.query.song_type('BH')},
-            ("bhajan", "up"): { 'songlist': Song.query.song_type('BH').filter(uploader=user), 'type': "uploads"},
-            ("ps", "fav"): { 'songlist': user.liked_songs.all().filter(type="PS"), 'type': "favorite"},
-            ("ps", "feed"): { 'songlist': Song.query.song_type('PS')},
-            ("ps", "all"): { 'songlist': Song.query.song_type('BH')},
-            ("ps", "up"): { 'songlist': Song.query.song_type('BH').filter(uploader=user), 'type': "uploads"},
-        }
-    else:
-        songTypeDictionary =	{
-            ("kiirtan", "fav"): { 'songlist': None, 'type': "favorite"},
-            ("kiirtan", "feed"): { 'songlist': Song.query.song_type('KI')},
-            ("kiirtan", "all"): { 'songlist': Song.query.song_type('KI')},
-            ("kiirtan", "up"): { 'songlist': None, 'type': "uploads"},
-            ("bhajan", "fav"): { 'songlist': None, 'type': "favorite"},
-            ("bhajan", "feed"): { 'songlist': Song.query.song_type('BH')},
-            ("bhajan", "all"): { 'songlist': Song.query.song_type('BH')},
-            ("bhajan", "up"): { 'songlist': None, 'type': "uploads"},
-            ("ps", "fav"): { 'songlist': None, 'type': "favorite"},
-            ("ps", "feed"): { 'songlist': Song.query.song_type('BH')},
-            ("ps", "all"): { 'songlist': Song.query.song_type('BH')},
-            ("ps", "up"): { 'songlist': None, 'type': "uploads"},
-        }
+    # if request.user.is_authenticated:
+    user               = request.user.profile
+    songTypeDictionary =	{
+        ("kiirtan", "fav"): { 'songlist': user.liked_songs.all().filter(type="KI"), 'type': "favorite"},
+        ("kiirtan", "feed"): { 'songlist': Song.query.song_type('KI')},
+        ("kiirtan", "all"): { 'songlist': Song.query.song_type('KI')},
+        ("kiirtan", "up"): { 'songlist': Song.query.song_type('KI').filter(uploader=user), 'type': "uploads"},
+        ("bhajan", "fav"): { 'songlist': user.liked_songs.all().filter(type="BH"), 'type': "favorite"},
+        ("bhajan", "feed"): { 'songlist': Song.query.song_type('BH')},
+        ("bhajan", "all"): { 'songlist': Song.query.song_type('BH')},
+        ("bhajan", "up"): { 'songlist': Song.query.song_type('BH').filter(uploader=user), 'type': "uploads"},
+        ("ps", "fav"): { 'songlist': user.liked_songs.all().filter(type="PS"), 'type': "favorite"},
+        ("ps", "feed"): { 'songlist': Song.query.song_type('PS')},
+        ("ps", "all"): { 'songlist': Song.query.song_type('BH')},
+        ("ps", "up"): { 'songlist': Song.query.song_type('BH').filter(uploader=user), 'type': "uploads"},
+    }
+    # else:
+    #     songTypeDictionary =	{
+    #         ("kiirtan", "fav"): { 'songlist': None, 'type': "favorite"},
+    #         ("kiirtan", "feed"): { 'songlist': Song.query.song_type('KI')},
+    #         ("kiirtan", "all"): { 'songlist': Song.query.song_type('KI')},
+    #         ("kiirtan", "up"): { 'songlist': None, 'type': "uploads"},
+    #         ("bhajan", "fav"): { 'songlist': None, 'type': "favorite"},
+    #         ("bhajan", "feed"): { 'songlist': Song.query.song_type('BH')},
+    #         ("bhajan", "all"): { 'songlist': Song.query.song_type('BH')},
+    #         ("bhajan", "up"): { 'songlist': None, 'type': "uploads"},
+    #         ("ps", "fav"): { 'songlist': None, 'type': "favorite"},
+    #         ("ps", "feed"): { 'songlist': Song.query.song_type('BH')},
+    #         ("ps", "all"): { 'songlist': Song.query.song_type('BH')},
+    #         ("ps", "up"): { 'songlist': None, 'type': "uploads"},
+    #     }
 
     for theTuple, theContext in songTypeDictionary.items():
         if theTuple == (songtype, listtype):
