@@ -10,8 +10,8 @@ from .forms import SongForm, UserForm, UserProfileInfoForm
 from .models import Chord, ChordIndex, IsFavourite, Profile, Song
 from django.views.generic import TemplateView
 
-class lalita_view(TemplateView):
-    template_name = "lalita.html"
+# class lalita_view(TemplateView):
+#     template_name = "lalita.html"
 
 # def lalita_view(request):
 #     return render(request,"lalita.html",{})
