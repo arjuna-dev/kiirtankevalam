@@ -8,13 +8,9 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from .forms import SongForm, UserForm, UserProfileInfoForm
 from .models import Chord, ChordIndex, IsFavourite, Profile, Song
-from django.views.generic import TemplateView
 
-class lalita_view(TemplateView):
-    template_name = "lalita.html"
-
-# def lalita_view(request):
-#     return render(request,"lalita.html",{})
+def lalita_view(request):
+    return render(request,"lalita.html",{})
 
 def song_view(request, songid): 
     song = Song.objects.get(pk=songid)
