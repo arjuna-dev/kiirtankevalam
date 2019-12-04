@@ -20,12 +20,15 @@ from django.urls import path, include
 #For serving media:
 from django.conf import settings
 from django.conf.urls.static import static
-
-from Song.views import mainrenderer_view, song_view, profile_view, signup, deletechord_view, createsong_view, editchords_view, addchord_view, togglefavoritesong_view, undertab_view, overtab_view,lalita_view
+from Song.views import mainrenderer_view, song_view, profile_view, signup, deletechord_view, createsong_view, editchords_view, addchord_view, togglefavoritesong_view, undertab_view, overtab_view
+#,lalita_view
+from django.views.generic import TemplateView
 
 urlpatterns = [
+    #TemplateView.as_view: good option to serve static (no backend) pages. Doesn't require code in views.py:
+    path('lalita/', TemplateView.as_view(template_name="lalita.html")),
+    # path('lalita/', lalita_view),
     path('', mainrenderer_view),
-    path('lalita/', lalita_view),
     path('overtab/', overtab_view, name='overtab-view'),
     path('undertab/', undertab_view, name='undertab-view'),
     path('song/<int:songid>', song_view, name='song-view'),
