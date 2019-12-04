@@ -186,9 +186,9 @@ def undertab_view(request):
             renderercontext = theContext
 
     if request.is_ajax():
-        html2 = render_to_string('undertabs.html', listtypecontext, request=request)
-        html3 = render_to_string('renderer.html', renderercontext, request=request)
-        json = simplejson.dumps({'undertabshtml': html2, 'songrendererhtml': html3})
+        undertabshtml = render_to_string('undertabs.html', listtypecontext, request=request)
+        songrendererhtml = render_to_string('renderer.html', renderercontext, request=request)
+        json = simplejson.dumps({'undertabshtml': undertabshtml, 'songrendererhtml': songrendererhtml})
         return JsonResponse({'form': json})
 
 
