@@ -30,7 +30,7 @@ class TestViews(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'profile.html')
 
-    def test_editchords_view_GET(self):
+    def login(self):
         testUser = User.objects.create(username='testuser')
         testUser.set_password('12345')
         testUser.save()
@@ -41,6 +41,10 @@ class TestViews(TestCase):
         )
         testProfile.save()
         logged_in = self.client.login(username='testuser', password='12345')
+        return testUser
+        
+    def test_editchords_view_GET(self):
+        self.login()
         response = self.client.get(self.editchords_url)
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'editchords.html')
@@ -67,16 +71,7 @@ class TestViews(TestCase):
         self.assertEquals(response.status_code, 302)
 
     def test_createsong_view_GET(self):
-        testUser = User.objects.create(username='testuser')
-        testUser.set_password('12345')
-        testUser.save()
-        testProfile = Profile.objects.create(
-            user=testUser,
-            sanskrit_name = "Shanti",
-            country       = "Mexico"
-        )
-        testProfile.save()
-        logged_in = self.client.login(username='testuser', password='12345')
+        self.login()
         response = self.client.get(self.createsong_url)
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'createsong.html')
@@ -84,66 +79,65 @@ class TestViews(TestCase):
     #Logged in
 
     def test_logged_in(self):
-        testUser = User.objects.create(username='testuser')
-        testUser.set_password('12345')
-        testUser.save()
-        logged_in = self.client.login(username='testuser', password='12345')
-        testProfile = Profile.objects.create(
-            user=testUser,
-            sanskrit_name = "Shanti",
-            country       = "Mexico"
-        )
-        testProfile.save()
+        testUser = self.login()
         self.assertEquals(User.objects.last().username, 'testuser')
         self.assertTrue(testUser.is_authenticated)
 
     # POST Method
     def test_create_song_view_POST(self):
-        testUser = User.objects.create(username='testuser')
-        testUser.set_password('12345')
-        testUser.save()
-        testProfile = Profile.objects.create(
-            user=testUser,
-            sanskrit_name = "Shanti",
-            country       = "Mexico"
-        )
-        testProfile.save()
-        logged_in = self.client.login(username='testuser', password='12345')
-        self.client.login(username='testuser', password='12345')
-
+        self.login()
         audio = SimpleUploadedFile("103_VASANTA_AJ_JAGALO_04Tsyry.mp3", b"file_content", content_type="audio/mp3")
-
         response = self.client.post(self.createsong_url, {'title': 'Hello', 'type': 'KI', 'audio_file': audio})
-
         self.assertTrue(Song.objects.filter(title='Hello').exists()) 
 
-# # With Selenium
+# With Selenium
 
-# import unittest
-# from selenium import webdriver
-# from selenium.webdriver.common.keys import Keys
+import unittest
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 
-# class TestSignup(unittest.TestCase):
+class TestSignup(unittest.TestCase):
 
-#     def setUp(self):
-#         # self.driver = webdriver.Firefox(executable_path='/Users/i5/Documents/Documents/Docs/CODE/2ndSemester/Kiirtan-Kevalam/kiirtanenv/geckodriver')
-#         options = webdriver.ChromeOptions()
-#         options.add_argument('headless')
-#         options.add_argument('window-size=1200x600')
-#         self.driver = webdriver.Chrome(chrome_options=options)
+    def setUp(self):
+        self.driver = webdriver.Firefox(executable_path='/Users/i5/Documents/Documents/Docs/CODE/2ndSemester/Kiirtan-Kevalam/kiirtanenv/geckodriver')
+        # options = webdriver.ChromeOptions()
+        # options.add_argument('headless')
+        # options.add_argument('window-size=1200x600')
+        # self.driver = webdriver.Chrome(chrome_options=options)
+
+    def test_click_favorite_not_logged_in(self):
+        self.driver.get("http://localhost:8000/")
+        self.driver.find_element_by_class_name('pratik').click()
+        time.sleep(0.03)
+        self.assertTrue(self.driver.find_element_by_id('alerto').is_displayed())
+
+    # def test_kiirtan_are_rendered(self):
+    #     self.driver.get("http://localhost:8000/")
+    #     overtabs             = self.driver.find_elements_by_class_name('overtab')
+    #     undertabs            = self.driver.find_elements_by_class_name('undertab')
+    #     rendered_songs       = self.driver.find_elements_by_class_name('favBtn')
+    #     songtype_dict        = {}
+    #     listtype_dict        = {}
+    #     rendered_songs_list  = []
+
+    #     for element in overtabs:
+    #         songtype_dict[element.get_attribute('data-songtype')] = element
+            
+    #     for element in undertabs:
+    #         listtype_dict[element.get_attribute('data-listtype')] = element
+
+    #     for element in rendered_songs:
+    #         rendered_songs_list.append(element.get_attribute('data-pid'))
+
+    #     songtype_dict['bh'].click()
+    #     print(rendered_songs_list)
+    #     print(rendered_songs_list[3])
+    #     song = Song.objects.get(pk=rendered_songs_list[3])
+        
 
 
-#     def test_click_favorite_not_logged_in(self):
-#         self.driver.get("http://localhost:8000/")
-#         self.driver.find_element_by_class_name('pratik').click()
-#         time.sleep(0.03)
-#         self.assertTrue(self.driver.find_element_by_id('alerto').is_displayed())
+    def tearDown(self):
+        self.driver.quit
 
-#     def test_homepage_is_rendered(self):
-#         self.driver.get("http://localhost:8000/")
-
-#     def tearDown(self):
-#         self.driver.quit
-
-# if __name__ == '__main__':
-#     unittest.main()
+if __name__ == '__main__':
+    unittest.main()
