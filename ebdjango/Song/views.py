@@ -13,7 +13,7 @@ def lalita_view(request):
     return render(request,"lalita.html",{})
 
 def song_view(request, songid): 
-    song = Song.objects.get(pk=songid)
+    song       = Song.objects.get(pk=songid)
     songChords = ChordIndex.objects.filter(song=song)
     return render(request, "song.html", {"song":song,"songChords":songChords})
 
