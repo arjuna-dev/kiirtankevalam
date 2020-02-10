@@ -237,7 +237,7 @@ def signup(request):
                 password=user_form.cleaned_data['password'],
             )
             login(request, user)
-            return HttpResponseRedirect("/kiirtanfav/")
+            return HttpResponseRedirect("/")
         else:
             print(user_form.errors,profile_form.errors)
     else:
