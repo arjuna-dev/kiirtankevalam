@@ -1,7 +1,11 @@
+
+*.pyc
+local_settings.py
+
 bin/*
 include/*
 lib/*
-.python
+.pythongit
 pip-selfcheck.json
 
 # Byte-compiled / optimized / DLL files
